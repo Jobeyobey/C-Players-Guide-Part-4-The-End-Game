@@ -42,7 +42,7 @@
 
 #### Game Object
 This will keep track of and run the game. It should know the players in the game, how many rounds there are,
-how many rounds are left, whe nthe game ends etc.
+how many rounds are left, when the game ends etc.
 
 It must have a 'Run' method to run the game loop.
 
@@ -62,10 +62,10 @@ Characters will track their own weapons, which will also affect the choice of ac
 
 #### Interfaces
 In the Fountain of Objects game, we used Interfaces for Commands and Sensing.
-Commands had a single 'Execute' function that would take the gameobject as an argument.
+Commands had a single 'Execute' function that would take the 'game' object as an argument.
 Commands would then extend the ICommand, adding in their own logic and executing it by
 overwriting the Execute command of the Interface. The same was done for senses, however
-instead of an' Execute' command, it was 'CanSense' and 'DisplaySense', which were both
+instead of an 'Execute' command, it was 'CanSense' and 'DisplaySense', which were both
 overwritten. This can be used to allow easy expansion of the game in future, when adding new actions.
 
 #### Item
