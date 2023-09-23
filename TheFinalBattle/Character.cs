@@ -12,7 +12,7 @@ namespace TheFinalBattleComponents
         public string Name { get; init; } = "Unnamed";
         public int MaxHp { get; }
         public int CurrentHP { get; private set; }
-        public List<Action> actionList = new List<Action>(); // List for each character to add their available actions to upon construction
+        public List<Attack> attackList = new List<Attack>(); // List for each character to add their available actions to upon construction
 
         // Basic constructor
         public Character(int maxHp)
@@ -29,7 +29,7 @@ namespace TheFinalBattleComponents
             Name = name;
 
             // Add actions character can do here
-            actionList.Add(Action.Nothing);
+            attackList.Add(Attack.Punch);
         }
     }
 
@@ -40,7 +40,7 @@ namespace TheFinalBattleComponents
             Name = "SKELETON";
 
             // Add actions character can do here
-            actionList.Add(Action.Nothing);
+            attackList.Add(Attack.BoneCrunch);
         }
     }
 }

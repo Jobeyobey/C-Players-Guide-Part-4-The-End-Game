@@ -79,7 +79,7 @@ namespace TheFinalBattleComponents
         {
             IAction action; // Prepare memory for action
 
-            // Get current player to pick action
+            // Get current player to pick action for active character
             if (player1Turn)
             {
                 int characterIndex = turnNumber % Player1.Party.Count;
@@ -97,67 +97,130 @@ namespace TheFinalBattleComponents
         public IAction GetAction(TheFinalBattle game, Character character, bool isHuman)
         {
             Console.WriteLine($"It is {character.Name}'s turn...");
-            ListActions(character);
+            Action chosenAction = PickAction(isHuman);
 
-            IAction action;
+            // Resolve chosen action
+            if (chosenAction == Action.Nothing) return new NothingAction(character);
+            if (chosenAction == Action.Attack)
+            {
+                ListAttacks(character);
+
+                IAction attack;
+
+                if (isHuman)
+                {
+                    attack = HumanAttack(character);
+                }
+                else
+                {
+                    attack = ComputerAttack(character);
+                }
+
+                return attack;
+            }
+
+            // Code should not be able to get to here, but if it somehow does, do 'nothing' action.
+            return new NothingAction(character);
+        }
+
+        // List actions character can take
+        public static Action PickAction(bool isHuman)
+        {
+            // Print list of available actions. Also add actions to easily accessible list.
+            List<string> actionList = new List<string>();
+            foreach (Action action in Enum.GetValues(typeof(Action)))
+            {
+                Console.WriteLine($"- {action}");
+
+                string tempAction = action.ToString().ToLower(); // Ensure actions are lower case to easier match user inputs later on
+                actionList.Add(tempAction);
+            }
+
+            string? chosenAction; // Prepare chosenAction string for player/computer to fill in below
 
             if (isHuman)
             {
-                action = HumanAction(character);
+                chosenAction = Console.ReadLine();
+
+                // Prevent chosenAction being null
+                while (chosenAction == null)
+                {
+                    Console.WriteLine("Please input a valid action.");
+                    chosenAction = Console.ReadLine();
+                }
+
+                // Ensure chosenAction is valid
+                while (true)
+                {
+                    chosenAction = chosenAction.ToLower();
+                    if (actionList.Contains(chosenAction)) break;
+
+                    // If code reached here, input was invalid
+                    Console.WriteLine("That is not a valid action. Pick an action from the list.");
+                    chosenAction = Console.ReadLine();
+                }
             }
-            else
+            else // If computer player, pick random action
             {
-                action = ComputerAction(character);
+                Thread.Sleep(1500); // Delay computer player choice for easier reading
+
+                // Pick a random action for character from available list
+                Random random = new Random();
+                int randomIndex = random.Next(actionList.Count);
+                chosenAction = actionList[randomIndex];
             }
 
-            return action;
+            // Player or computer should have by now input a valid action. Resolve action.
+            if (chosenAction == "attack") return Action.Attack;
+            else return Action.Nothing;
         }
 
-        // List character's available actions
-        public static void ListActions(Character character)
+        // List character's available attacks
+        public static void ListAttacks(Character character)
         {
-            Console.WriteLine("Available Actions:");
-            foreach (Action action in character.actionList)
+            Console.WriteLine("Available Attacks:");
+            foreach (Attack attack in character.attackList)
             {
-                Console.WriteLine($"- {action}");
+                Console.WriteLine($"- {attack}");
             }
         }
 
-        // Allow human player to pick character action
-        // TODO add validation that action picked is available to character
-        public static IAction HumanAction(Character character)
+        // Allow human player to pick character attack
+        // TODO add validation that attack picked is available to character
+        public static IAction HumanAttack(Character character)
         {
-            string chosenAction = Console.ReadLine();
+            string? chosenAttack = Console.ReadLine();
             while (true)
             {
-                if (chosenAction == "Nothing") return new NothingAction(character);
+                if (chosenAttack == "punch") return new Punch(character);
+                if (chosenAttack == "bonecrunch") return new BoneCrunch(character);
 
                 // If code reached here, chosenAction was invalid
                 Console.WriteLine("Action not recognised. Please pick from the list by typing in the name of the action you'd like to take.");
-                chosenAction = Console.ReadLine();
+                chosenAttack = Console.ReadLine();
             }
         }
 
         // Allow computer player to pick character action
-        public static IAction ComputerAction(Character character)
+        public static IAction ComputerAttack(Character character)
         {
-            // Get list of Action Enum values
-            List<string> availableActions = new List<string>();
-            foreach(Action action in character.actionList)
+            // Get list of available Attacks
+            List<string> availableAttacks = new List<string>();
+            foreach(Attack action in character.attackList)
             {
-                availableActions.Add(action.ToString());
+                availableAttacks.Add(action.ToString());
             }
 
-            // Pick a random action for character (from available list)
+            // Pick a random attack for character (from available list)
             Random random = new Random();
-            int randomIndex = random.Next(availableActions.Count);
-            string randomAction = availableActions[randomIndex];
+            int randomIndex = random.Next(availableAttacks.Count);
+            string randomAttack = availableAttacks[randomIndex];
 
             Thread.Sleep(1500); // Delay computer choice a moment
 
-            if (randomAction == "Nothing") return new NothingAction(character);
-            if (randomAction == "TestAction") return new TestAction(character);
-            else return new NothingAction(character);
+            if (randomAttack == "punch") return new Punch(character);
+            if (randomAttack == "bonecrunch") return new BoneCrunch(character);
+            else return new Punch(character);
         }
     }
 }
