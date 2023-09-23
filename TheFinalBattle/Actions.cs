@@ -28,33 +28,37 @@ namespace TheFinalBattleComponents
     }
 
     // ATTACKS
-    public class Punch : IAction
+    public class PunchAction : IAction
     {
         Character ActiveCharacter { get; } // Character activating command
+        Character TargetCharacter { get; } // Character being targeted
 
-        public Punch(Character character)
+        public PunchAction(Character character, Character target)
         {
             ActiveCharacter = character;
+            TargetCharacter = target;
         }
 
         public void Execute(TheFinalBattle game)
         {
-            Console.WriteLine($"{ActiveCharacter.Name} did PUNCH");
+            Console.WriteLine($"{ActiveCharacter.Name} did PUNCH on {TargetCharacter.Name}");
         }
     }
 
-    public class BoneCrunch : IAction
+    public class BoneCrunchAction : IAction
     {
         Character ActiveCharacter { get; } // Character activating command
+        Character TargetCharacter { get; } // Character being targeted
 
-        public BoneCrunch(Character character)
+        public BoneCrunchAction(Character character, Character target)
         {
             ActiveCharacter = character;
+            TargetCharacter = target;
         }
 
         public void Execute(TheFinalBattle game)
         {
-            Console.WriteLine($"{ActiveCharacter.Name} did BONECRUNCH");
+            Console.WriteLine($"{ActiveCharacter.Name} did BONECRUNCH on {TargetCharacter.Name}");
         }
     }
 

@@ -10,11 +10,11 @@ have other capabilities later).
 Programmer’s (the player character’s) attack is called punch. The Skeleton’s attack is called bone
 crunch.
 
-[ ] The program must be capable of representing an attack action, our second action type. An attack
+[X] The program must be capable of representing an attack action, our second action type. An attack
 action must represent which attack is being used and the target of the attack. When this action runs,
 it should state the attacker, the attack, and the target. For example: “TOG used PUNCH on SKELETON.”
 
-[ ] Our computer player should pick an attack action instead of a do-nothing action. The attack action
+[X] Our computer player should pick an attack action instead of a do-nothing action. The attack action
 can be simple for now: always use the character’s standard attack and always target the other party’s
 first character. (If you want to choose a random target or some other logic, you can.)
 
