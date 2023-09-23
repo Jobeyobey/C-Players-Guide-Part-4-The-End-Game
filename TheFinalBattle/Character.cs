@@ -14,10 +14,10 @@ namespace TheFinalBattleComponents
         public int CurrentHP { get; private set; }
 
         // Basic constructor
-        public Character(int maxHp, int currentHP)
+        public Character(int maxHp)
         {
             MaxHp = maxHp;
-            CurrentHP = currentHP;
+            CurrentHP = maxHp;
         }
         public void SkipTurn()
         {
@@ -26,9 +26,22 @@ namespace TheFinalBattleComponents
         public abstract void SpecialAttack();
     }
 
+    public class MainCharacter : Character
+    {
+        public MainCharacter(int maxHp, string name) : base(maxHp)
+        {
+            Name = name;
+        }
+
+        public override void SpecialAttack()
+        {
+            //TODO
+        }
+    }
+
     public class Skeleton : Character
     {
-        public Skeleton(int maxHp, int currentHP) : base(maxHp, currentHP)
+        public Skeleton(int maxHp) : base(maxHp)
         {
             Name = "SKELETON";
         }

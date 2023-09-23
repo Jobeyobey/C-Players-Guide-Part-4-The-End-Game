@@ -10,13 +10,13 @@ namespace TheFinalBattleComponents
     // TheFinalBattle will track the status of the whole game and run it
     public class TheFinalBattle
     {
-        public Player Player1 { get; }
-        public Player Player2 { get; }
+        public Player Player1 { get; private set; }
+        public Player Player2 { get; private set; }
 
-        public TheFinalBattle(Player player1, Player player2) // Constructor
+        public TheFinalBattle() // Constructor
         {
-            Player1 = player1;
-            Player2 = player2;
+            Player1 = new Player(false);
+            Player2 = new Player(false);
         }
 
         public void Run() // Run the game
@@ -48,11 +48,29 @@ namespace TheFinalBattleComponents
         }
         public void MakeHeroParty()
         {
-            Player1.Party.Add(new Skeleton(10, 10));
+            // Get player to input name for TOG
+            Console.WriteLine("What will the True Programmer's name be? ");
+            string? name = Console.ReadLine();
+
+            while (true) // Check name is valid
+            {
+                if (name == null || name == "")
+                {
+                    Console.WriteLine("Please input a valid name. ");
+                    name = Console.ReadLine();
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            // Create and add TOG to party
+            Player1.Party.Add(new MainCharacter(20, name));
         }
         public void MakeMonsterParty()
         {
-            Player2.Party.Add(new Skeleton(10, 10));
+            Player2.Party.Add(new Skeleton(10));
         }
         public void TakeTurn(bool player1Turn, int turnNumber)
         {
