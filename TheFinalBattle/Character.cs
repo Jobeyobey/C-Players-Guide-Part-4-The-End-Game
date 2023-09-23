@@ -12,6 +12,7 @@ namespace TheFinalBattleComponents
         public string Name { get; init; } = "Unnamed";
         public int MaxHp { get; }
         public int CurrentHP { get; private set; }
+        public List<Action> actionList = new List<Action>(); // List for each character to add their available actions to upon construction
 
         // Basic constructor
         public Character(int maxHp)
@@ -19,11 +20,6 @@ namespace TheFinalBattleComponents
             MaxHp = maxHp;
             CurrentHP = maxHp;
         }
-        public void SkipTurn()
-        {
-            Console.WriteLine($"{Name} did NOTHING");
-        }
-        public abstract void SpecialAttack();
     }
 
     public class MainCharacter : Character
@@ -31,11 +27,9 @@ namespace TheFinalBattleComponents
         public MainCharacter(int maxHp, string name) : base(maxHp)
         {
             Name = name;
-        }
 
-        public override void SpecialAttack()
-        {
-            //TODO
+            // Add actions character can do here
+            actionList.Add(Action.Nothing);
         }
     }
 
@@ -44,10 +38,9 @@ namespace TheFinalBattleComponents
         public Skeleton(int maxHp) : base(maxHp)
         {
             Name = "SKELETON";
-        }
-        public override void SpecialAttack()
-        {
-            //TODO
+
+            // Add actions character can do here
+            actionList.Add(Action.Nothing);
         }
     }
 }
