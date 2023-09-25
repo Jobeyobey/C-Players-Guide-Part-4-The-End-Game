@@ -59,12 +59,12 @@
             }
 
             // Create and add TOG to party
-            Player1.Party.Add(new MainCharacter(20, name));
+            Player1.Party.Add(new MainCharacter(name));
         }
 
         public void MakeMonsterParty()
         {
-            Player2.Party.Add(new Skeleton(10));
+            Player2.Party.Add(new Skeleton("SKELETON ONE"));
         }
 
         public void TakeTurn(bool player1Turn, int turnNumber)
@@ -89,22 +89,22 @@
         public IAction GetAction(TheFinalBattle game, Character character, bool isHuman)
         {
             Console.WriteLine($"It is {character.Name}'s turn...");
-            Action chosenAction = PickAction(isHuman);
+            ActionType chosenAction = PickAction(isHuman);
 
             // Resolve chosen action
-            if (chosenAction == Action.Nothing) return new NothingAction(character);
-            if (chosenAction == Action.Attack)  return PickAttack(game, character, isHuman);
+            if (chosenAction == ActionType.Nothing) return new NothingAction(character);
+            if (chosenAction == ActionType.Attack)  return PickAttack(game, character, isHuman);
 
             // Code should not be able to get to here, but if it somehow does, do 'nothing' action.
             return new NothingAction(character);
         }
 
         // List actions character can take
-        public Action PickAction(bool isHuman)
+        public ActionType PickAction(bool isHuman)
         {
             // Print list of available actions. Also add actions to easily accessible list.
             List<string> actionList = new List<string>();
-            foreach (Action action in Enum.GetValues(typeof(Action)))
+            foreach (ActionType action in Enum.GetValues(typeof(ActionType)))
             {
                 Console.WriteLine($"- {action}");
 
@@ -123,8 +123,8 @@
             }
 
             // Player or computer should have by now input a valid action. Resolve action.
-            if (chosenAction == "attack") return Action.Attack;
-            else                          return Action.Nothing;
+            if (chosenAction == "attack") return ActionType.Attack;
+            else                          return ActionType.Nothing;
         }
 
         public IAction PickAttack(TheFinalBattle game, Character character, bool isHuman)
@@ -133,7 +133,7 @@
 
             // Print list of available attacks. Also add attacks to easily accessible list.
             List<string> attackList = new List<string>();
-            foreach (Attack attack in character.attackList)
+            foreach (AttackType attack in character.attackList)
             {
                 Console.WriteLine($"- {attack}");
 
@@ -154,8 +154,8 @@
             // Pick target of attack
             Character target = PickTarget(isHuman);
 
-            if (chosenAttack == "bonecrunch") return new BoneCrunchAction(character, target);
-            else                              return new PunchAction(character, target);
+            if (chosenAttack == "bonecrunch") return new BoneCrunch(character, target);
+            else                              return new Punch(character, target);
         }
 
         public Character PickTarget(bool isHuman)
@@ -172,7 +172,7 @@
                 targetParty = Player1.Party;
             }
 
-            // Print list of available targets. Also add targets to easily accessible list.
+            // List available target
             List<string> targetList = new List<string>();
             foreach (Character target in targetParty)
             {
@@ -182,6 +182,7 @@
                 targetList.Add(tempTarget);
             }
 
+            // Let player pick their target
             string chosenTarget;
 
             if (isHuman)
@@ -201,7 +202,7 @@
         // Input a list (actions, attacks etc.). Return a string indicating human's choice.
         public static string HumanPickFromList(List<string> list)
         {
-            string chosenAction = Console.ReadLine();
+            string? chosenAction = Console.ReadLine();
 
             // Prevent chosenAction being null
             while (chosenAction == null)
@@ -227,7 +228,7 @@
         // Input a list (actions, attacks etc.). Return a string indicating computer's choice.
         public static string ComputerPickFromList(List<string> list)
         {
-            Thread.Sleep(1500); // Delay computer player choice for easier reading
+            Thread.Sleep(1200); // Delay computer player choice for easier reading
 
             // Pick a random action for character from available list
             Random random = new Random();

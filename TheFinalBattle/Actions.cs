@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using TheFinalBattleComponents;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TheFinalBattleComponents
 {
@@ -28,40 +30,72 @@ namespace TheFinalBattleComponents
     }
 
     // ATTACKS
-    public class PunchAction : IAction
+    public abstract class Attack : IAction
     {
-        Character ActiveCharacter { get; } // Character activating command
-        Character TargetCharacter { get; } // Character being targeted
+        public abstract string Name { get; init; }
+        public Character ActiveChar { get; init; }
+        public Character? TargetChar { get; init; }
+        public abstract int Damage { get; init; }
+        public Attack() { }
+        public abstract void Execute(TheFinalBattle game);
+    }
 
-        public PunchAction(Character character, Character target)
+    public class Punch : Attack
+    {
+        public override string Name { get; init; } = "PUNCH";
+        public override int Damage { get; init; } = 1;
+        public Punch(Character activeChar, Character targetChar)
         {
-            ActiveCharacter = character;
-            TargetCharacter = target;
+            ActiveChar = activeChar;
+            TargetChar = targetChar;
         }
-
-        public void Execute(TheFinalBattle game)
+        public override void Execute(TheFinalBattle game)
         {
-            Console.WriteLine($"{ActiveCharacter.Name} did PUNCH on {TargetCharacter.Name}");
+            AttackHelper.DoDamage(this);
         }
     }
 
-    public class BoneCrunchAction : IAction
+    public class BoneCrunch : Attack
     {
-        Character ActiveCharacter { get; } // Character activating command
-        Character TargetCharacter { get; } // Character being targeted
+        public override string Name { get; init; } = "BONECRUNCH";
+        public override int Damage { get; init; }
 
-        public BoneCrunchAction(Character character, Character target)
+        public BoneCrunch(Character activeChar, Character targetChar)
         {
-            ActiveCharacter = character;
-            TargetCharacter = target;
+            ActiveChar = activeChar;
+            TargetChar = targetChar;
+
+            // Randomly set damage to 0 or 1
+            Random random = new Random();
+            Damage = random.Next(2);
         }
 
-        public void Execute(TheFinalBattle game)
+        public override void Execute(TheFinalBattle game)
         {
-            Console.WriteLine($"{ActiveCharacter.Name} did BONECRUNCH on {TargetCharacter.Name}");
+            AttackHelper.DoDamage(this);
         }
     }
 
-    public enum Action { Nothing, Attack } // Available options to characters
-    public enum Attack { Punch, BoneCrunch } // All available attacks in the game
+    // Attack helper will contain methods to help calculate attacks for all attack types
+    internal static class AttackHelper
+    {
+        public static void DoDamage(Attack attack)
+        {
+            // Temporary variables for easier readability
+            string attackName = attack.Name;
+            Character activeChar = attack.ActiveChar;
+            Character targetChar = attack.TargetChar;
+
+            // Announce attack and damage
+            Console.WriteLine($"{activeChar.Name} did {attackName} on {targetChar.Name}");
+            Console.WriteLine($"{attackName} dealt {attack.Damage} to {targetChar.Name}");
+
+            // Damage target and report new health status
+            targetChar.AlterHp(-attack.Damage);
+            Console.WriteLine($"{targetChar.Name} has {attack.TargetChar.CurrentHp}/{attack.TargetChar.MaxHp} HP");
+        }
+    }
+
+    public enum ActionType { Nothing, Attack } // Available options to characters
+    public enum AttackType { Punch, BoneCrunch } // All available attacks in the game
 }

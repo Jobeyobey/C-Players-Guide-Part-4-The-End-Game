@@ -10,37 +10,54 @@ namespace TheFinalBattleComponents
     public abstract class Character
     {
         public string Name { get; init; } = "Unnamed";
-        public int MaxHp { get; }
-        public int CurrentHP { get; private set; }
-        public List<Attack> attackList = new List<Attack>(); // List for each character to add their available actions to upon construction
+        public int MaxHp { get; init; }
+        public int CurrentHp { get; set; }
+        public List<AttackType> attackList = new List<AttackType>(); // List for each character to add their available actions to upon construction
 
         // Basic constructor
-        public Character(int maxHp)
+        public Character()
         {
-            MaxHp = maxHp;
-            CurrentHP = maxHp;
+        }
+
+        // Use this to damage or heal a character. Positive integers heal, negative integers damage.
+        public void AlterHp(int amount)
+        {
+            CurrentHp += amount;
+            if (CurrentHp > MaxHp)
+            {
+                CurrentHp = MaxHp;
+            }
+            else if (CurrentHp <= 0)
+            {
+                CurrentHp = 0;
+                // TODO Trigger death
+            }
         }
     }
 
     public class MainCharacter : Character
     {
-        public MainCharacter(int maxHp, string name) : base(maxHp)
+        public MainCharacter(string name)
         {
             Name = name;
+            MaxHp = 25;
+            CurrentHp = MaxHp;
 
             // Add actions character can do here
-            attackList.Add(Attack.Punch);
+            attackList.Add(AttackType.Punch);
         }
     }
 
     public class Skeleton : Character
     {
-        public Skeleton(int maxHp) : base(maxHp)
+        public Skeleton(string name)
         {
-            Name = "SKELETON";
+            Name = name;
+            MaxHp = 5;
+            CurrentHp = MaxHp;
 
             // Add actions character can do here
-            attackList.Add(Attack.BoneCrunch);
+            attackList.Add(AttackType.BoneCrunch);
         }
     }
 }
