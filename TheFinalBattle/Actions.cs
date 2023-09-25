@@ -34,7 +34,7 @@ namespace TheFinalBattleComponents
     {
         public abstract string Name { get; init; }
         public Character ActiveChar { get; init; }
-        public Character? TargetChar { get; init; }
+        public Character TargetChar { get; init; }
         public abstract int Damage { get; init; }
         public Attack() { }
         public abstract void Execute(TheFinalBattle game);
@@ -66,7 +66,7 @@ namespace TheFinalBattleComponents
             TargetChar = targetChar;
 
             // Randomly set damage to 0 or 1
-            Random random = new Random();
+            Random random = new ();
             Damage = random.Next(2);
         }
 
