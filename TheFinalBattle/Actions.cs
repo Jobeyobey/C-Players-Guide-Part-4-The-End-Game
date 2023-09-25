@@ -43,7 +43,7 @@ namespace TheFinalBattleComponents
     public class Punch : Attack
     {
         public override string Name { get; init; } = "PUNCH";
-        public override int Damage { get; init; } = 1;
+        public override int Damage { get; init; } = 3;
         public Punch(Character activeChar, Character targetChar)
         {
             ActiveChar = activeChar;

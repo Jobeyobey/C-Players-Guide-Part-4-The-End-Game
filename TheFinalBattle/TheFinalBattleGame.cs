@@ -17,10 +17,11 @@
         {
             MakeHeroParty();
             MakeMonsterParty();
-            StartRound();
+            bool heroWin = PlayRound();
+            EndGame(heroWin);
         }
 
-        public void StartRound() // A round consists of multiple turns, ending when a party has no characters left.
+        public bool PlayRound() // A round consists of multiple turns, ending when a party has no characters left.
         {
             int turnNumber = 0;
 
@@ -29,6 +30,18 @@
                 Thread.Sleep(1000);
 
                 TakeTurn(Player1Turn, turnNumber);
+                StatusCheck(Player1.Party);
+                StatusCheck(Player2.Party);
+
+                // Check if the hero has won the round
+                if (Player1.Party.Count == 0)
+                {
+                    return false;
+                }
+                else if (Player2.Party.Count == 0)
+                {
+                    return true;
+                }
 
                 Player1Turn = !Player1Turn; // Flip who's turn it is
 
@@ -84,6 +97,39 @@
             }
 
             action.Execute(this); // Execute chosen action
+        }
+
+        public void StatusCheck(List<Character> party)
+        {
+            List<Character> toBeRemoved = new List<Character>();
+
+            // Add list of dead characters to new list, to prevent errors removing them while iterating
+            foreach (Character character in party)
+            {
+                if (character.CurrentHp == 0)
+                {
+                    toBeRemoved.Add(character);
+                }
+            }
+
+            // Remove characters from party using temporary list
+            foreach (Character character in toBeRemoved)
+            {
+                Console.WriteLine($"{character.Name} has been defeated!");
+                party.Remove(character);
+            }
+        }
+
+        public void EndGame(bool heroWin)
+        {
+            if (heroWin)
+            {
+                Console.WriteLine($"The heroes have triumphed in their battle against The Uncoded One! The people are free to code again.");
+            }
+            else
+            {
+                Console.WriteLine($"The heroes have fallen against The Uncoded One! The reign of terror continues.");
+            }
         }
 
         public IAction GetAction(TheFinalBattle game, Character character, bool isHuman)
