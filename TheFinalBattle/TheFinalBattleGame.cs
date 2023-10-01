@@ -1,4 +1,6 @@
-﻿namespace TheFinalBattleComponents
+﻿using TheFinalBattleSettings;
+
+namespace TheFinalBattleComponents
 {
     // TheFinalBattle will track the status of the whole game and run it
     public class TheFinalBattle
@@ -15,10 +17,20 @@
 
         public void Run() // Run the game
         {
+            bool heroWin = false;
             MakeHeroParty();
-            MakeMonsterParty();
-            bool heroWin = PlayRound();
-            EndGame(heroWin);
+
+            // Keep playing through rounds until hero wins or loses
+            for (int round = 1; round <= Settings.NumRounds; round++)
+            {
+                MakeMonsterParty(round);
+                heroWin = PlayRound();
+                if (!heroWin)
+                    break;
+
+                Console.WriteLine("The enemy party has been defeated!");
+            }
+            EndGame(heroWin); // Declare winner
         }
 
         public bool PlayRound() // A round consists of multiple turns, ending when a party has no characters left.
@@ -75,9 +87,21 @@
             Player1.Party.Add(new MainCharacter(name));
         }
 
-        public void MakeMonsterParty()
+        // Depending on current round, make relevant monster party.
+        // Add rounds/monsters here as required
+        public void MakeMonsterParty(int round)
         {
-            Player2.Party.Add(new Skeleton("SKELETON ONE"));
+            Player2.Party.Clear(); // Make sure Monster party list is clear
+
+            if (round == 1)
+            {
+                Player2.Party.Add(new Skeleton("SKELETON ONE"));
+            }
+            else if (round == 2)
+            {
+                Player2.Party.Add(new Skeleton("SKELETON ONE"));
+                Player2.Party.Add(new Skeleton("SKELETON TWO"));
+            }
         }
 
         public void TakeTurn(bool player1Turn, int turnNumber)
