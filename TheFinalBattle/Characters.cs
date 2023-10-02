@@ -60,4 +60,17 @@ namespace TheFinalBattleComponents
             attackList.Add(AttackType.BoneCrunch);
         }
     }
+
+    public class TheUncodedOne : Character
+    {
+        public TheUncodedOne(string name)
+        {
+            Name = name;
+            MaxHp = 15;
+            CurrentHp = MaxHp;
+
+            // Add actions character can do here
+            attackList.Add(AttackType.Unraveling);
+        }
+    }
 }

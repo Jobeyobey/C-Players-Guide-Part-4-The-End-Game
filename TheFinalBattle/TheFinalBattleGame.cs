@@ -39,7 +39,7 @@ namespace TheFinalBattleComponents
 
             while (true) // Round Loop
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(Settings.Delay);
 
                 TakeTurn(Player1Turn, turnNumber);
                 StatusCheck(Player1.Party);
@@ -100,6 +100,12 @@ namespace TheFinalBattleComponents
             else if (round == 2)
             {
                 Player2.Party.Add(new Skeleton("SKELETON ONE"));
+                Player2.Party.Add(new Skeleton("SKELETON TWO"));
+            }
+            else if (round == 3)
+            {
+                Player2.Party.Add(new Skeleton("SKELETON ONE"));
+                Player2.Party.Add(new TheUncodedOne("THE UNCODED ONE"));
                 Player2.Party.Add(new Skeleton("SKELETON TWO"));
             }
         }
@@ -281,7 +287,7 @@ namespace TheFinalBattleComponents
                 chosenAction = Console.ReadLine();
             }
 
-            // Ensure chosenAction is valid
+            // Ensure chosenAction is valid. Compares user input against list of available actions
             while (true)
             {
                 chosenAction = chosenAction.ToLower();
@@ -298,11 +304,11 @@ namespace TheFinalBattleComponents
         // Input a list (actions, attacks etc.). Return a string indicating computer's choice.
         public static string ComputerPickFromList(List<string> list)
         {
-            Thread.Sleep(1200); // Delay computer player choice for easier reading
+            Thread.Sleep(Settings.Delay); // Delay computer player choice for easier reading
 
             // Pick a random action for character from available list
             Random random = new Random();
-            int randomIndex = random.Next(list.Count);
+            int randomIndex = random.Next(list.Count + 1);
             string chosenAction = list[randomIndex];
 
             return chosenAction;

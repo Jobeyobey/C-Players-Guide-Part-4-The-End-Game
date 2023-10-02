@@ -1,11 +1,9 @@
-﻿The game runs as a series of battles, not just one. The heroes do not win until every battle has been won,
-while the monsters win if they can stop the heroes in any battle.
+﻿It is time to put the final boss into the game: The Uncoded One itself. We will add this in as a third battle.
 
 Objectives:
 
-[X] There is one party of heroes but multiple parties of monsters. For now, build two monster parties:
-	the first should have one skeleton. The second has two skeletons.
+[ ] Define a new type of monster: The Uncoded One. It should have 15 HP and an unraveling attack that
+	randomly deals between 0 and 2 damage when used. (The Uncoded One ought to have more HP than the True Programmer,
+	but much more than 15 HP means the Uncoded One wins every time. We can adjust these numbers later.)
 
-[X] Start a battle with the heroes and the first party of monsters. When the heroes win, advance to the
-	next party of monsters. If the heroes lose a battle, end the game. If the monsters lose a battle, move
-	to the next battle unless it is the last.
+[ ] Add a third battle to the series that contains the Uncoded One.

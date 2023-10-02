@@ -77,6 +77,27 @@ namespace TheFinalBattleComponents
         }
     }
 
+    public class Unraveling : Attack
+    {
+        public override string Name { get; init; } = "UNRAVELING";
+        public override int Damage { get; init; } = Settings.UnravelingDamage;
+
+        public Unraveling(Character activeChar, Character targetChar)
+        {
+            ActiveChar = activeChar;
+            TargetChar = targetChar;
+
+            // Randomly set damage. '+1' to UnravelingDamage because allowing 0-1 damage would require "random.Next(2);"
+            Random random = new();
+            Damage = random.Next(Settings.UnravelingDamage + 1);
+        }
+
+        public override void Execute(TheFinalBattle game)
+        {
+            AttackHelper.DoDamage(this);
+        }
+    }
+
     // Attack helper will contain methods to help calculate attacks for all attack types
     internal static class AttackHelper
     {
@@ -98,5 +119,5 @@ namespace TheFinalBattleComponents
     }
 
     public enum ActionType { Nothing, Attack } // Available options to characters
-    public enum AttackType { Punch, BoneCrunch } // All available attacks in the game
+    public enum AttackType { Punch, BoneCrunch, Unraveling } // All available attacks in the game
 }
