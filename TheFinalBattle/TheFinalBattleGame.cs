@@ -46,7 +46,7 @@ namespace TheFinalBattleComponents
 
                 if (!heroWin) break; // If hero does not win, break loop and continue to EndGame
 
-                Console.WriteLine("The enemy party has been defeated!"); // Else if hero wins, announce it
+                ConsoleHelpWriteLine("The enemy party has been defeated!", ConsoleColor.Yellow); // Else if hero wins, announce it
             }
 
             EndGame(heroWin); // Declare winner
@@ -60,6 +60,8 @@ namespace TheFinalBattleComponents
             // Core Round Loop
             while (true)
             {
+                Console.WriteLine(); // Create space in console to differentiate turns
+
                 TakeTurn(Player1Turn, turnNumber);
 
                 // Check each party for dead characters
@@ -80,8 +82,6 @@ namespace TheFinalBattleComponents
 
                 // Increment turn number if this is the end of Player2's turn
                 if (!Player1Turn) turnNumber++;
-
-                Console.WriteLine(); // Create space in console to differentiate turns
             }
         }
 
@@ -101,7 +101,7 @@ namespace TheFinalBattleComponents
             // Remove characters from party using temporary list
             foreach (Character character in toBeRemoved)
             {
-                Console.WriteLine($"{character.Name} has been defeated!");
+                ConsoleHelpWriteLine($"{character.Name} has been defeated!", ConsoleColor.Yellow);
                 party.Remove(character);
             }
         }
@@ -111,11 +111,11 @@ namespace TheFinalBattleComponents
         {
             if (heroWin)
             {
-                Console.WriteLine($"The heroes have triumphed in their battle against The Uncoded One! The people are free to code again.");
+                ConsoleHelpWriteLine($"The heroes have triumphed in their battle against The Uncoded One! The people are free to code again.", ConsoleColor.Yellow);
             }
             else
             {
-                Console.WriteLine($"The heroes have fallen against The Uncoded One! The reign of terror continues.");
+                ConsoleHelpWriteLine($"The heroes have fallen against The Uncoded One! The reign of terror continues.", ConsoleColor.Red);
             }
         }
 
@@ -142,7 +142,7 @@ namespace TheFinalBattleComponents
             }
 
             // Announce beginning of turn and prompt for input
-            Console.WriteLine($"It is {activeChar.Name}'s turn...");
+            ConsoleHelpWriteLine($"It is {activeChar.Name}'s turn...", ConsoleColor.Yellow);
             ActionType chosenAction = PickAction(activePlayer.isHuman);
 
             // Resolve input
@@ -161,7 +161,7 @@ namespace TheFinalBattleComponents
             foreach (ActionType action in Enum.GetValues(typeof(ActionType)))
             {
                 index++;
-                Console.WriteLine($"{index} - {action}");
+                ConsoleHelpWriteLine($"{index} - {action}", ConsoleColor.White);
             }
 
             int actionIndex = PickFromMenu(index, isHuman);
@@ -173,14 +173,14 @@ namespace TheFinalBattleComponents
 
         public IAction PickAttack(TheFinalBattle game, Character character, bool isHuman)
         {
-            Console.WriteLine("Pick an attack.");
+            ConsoleHelpWriteLine("Pick an attack.", ConsoleColor.Yellow);
 
             // Print list of attacks with index numbers for player to pick from
             int index = 0;
             foreach (AttackType attack in character.attackList)
             {
                 index++;
-                Console.WriteLine($"{index} - {attack}");
+                ConsoleHelpWriteLine($"{index} - {attack}", ConsoleColor.White);
             }
 
             int chosenIndex = PickFromMenu(index, isHuman);
@@ -198,7 +198,7 @@ namespace TheFinalBattleComponents
 
         public Character PickTarget(bool isHuman)
         {
-            Console.WriteLine("Pick a target.");
+            ConsoleHelpWriteLine("Pick a target.", ConsoleColor.Yellow);
 
             List<Character> targetParty = new List<Character>();
             if (Player1Turn)
@@ -215,7 +215,7 @@ namespace TheFinalBattleComponents
             foreach (Character target in targetParty)
             {
                 index++;
-                Console.WriteLine($"{index} - {target.Name}");
+                ConsoleHelpWriteLine($"{index} - {target.Name}", ConsoleColor.White);
             }
 
             int chosenTarget = PickFromMenu(index, isHuman);

@@ -5,8 +5,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using TheFinalBattleComponents;
+using static TheFinalBattleComponents.Helpers;
 using TheFinalBattleSettings;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace TheFinalBattleComponents
 {
@@ -109,12 +109,12 @@ namespace TheFinalBattleComponents
             Character targetChar = attack.TargetChar;
 
             // Announce attack and damage
-            Console.WriteLine($"{activeChar.Name} did {attackName} on {targetChar.Name}");
-            Console.WriteLine($"{attackName} dealt {attack.Damage} to {targetChar.Name}");
+            ConsoleHelpWriteLine($"{activeChar.Name} did {attackName} on {targetChar.Name}", ConsoleColor.Gray);
+            ConsoleHelpWriteLine($"{attackName} dealt {attack.Damage} to {targetChar.Name}", ConsoleColor.Gray);
 
             // Damage target and report new health status
             targetChar.AlterHp(-attack.Damage);
-            Console.WriteLine($"{targetChar.Name} has {attack.TargetChar.CurrentHp}/{attack.TargetChar.MaxHp} HP");
+            ConsoleHelpWriteLine($"{targetChar.Name} has {attack.TargetChar.CurrentHp}/{attack.TargetChar.MaxHp} HP", ConsoleColor.Gray);
         }
     }
 

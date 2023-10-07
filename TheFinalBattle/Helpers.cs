@@ -17,16 +17,18 @@ namespace TheFinalBattleComponents
 
             if (isHuman)
             {
-                choice = Convert.ToInt32(Console.ReadLine());
-
+                // Ensure player choice is valid
                 while (true)
                 {
-                    if (choice > 0 && choice <= max)
+                    if (int.TryParse(ConsoleHelpReadLine(ConsoleColor.Cyan), out choice))
                     {
-                        break;
+                        if (choice > 0 && choice <= max)
+                        {
+                            break;
+                        }
                     }
-                    Console.WriteLine("Please a number from the available choices.");
-                    choice = Convert.ToInt32(Console.ReadLine());
+
+                    ConsoleHelpWriteLine("Please pick a valid number from the menu.", ConsoleColor.Red);
                 }
             }
             else
@@ -43,15 +45,15 @@ namespace TheFinalBattleComponents
         public static void MakeHeroParty(TheFinalBattle game)
         {
             // Get player to input name for MainCharacter
-            Console.WriteLine("What will the True Programmer's name be? ");
-            string? name = Console.ReadLine();
+            ConsoleHelpWriteLine("What will the True Programmer's name be?", ConsoleColor.Yellow);
+            string? name = ConsoleHelpReadLine(ConsoleColor.Cyan);
 
             while (true) // Check name is valid
             {
                 if (name == null || name == "")
                 {
-                    Console.WriteLine("Please input a valid name. ");
-                    name = Console.ReadLine();
+                    ConsoleHelpWriteLine("Please input a valid name.", ConsoleColor.Red);
+                    name = ConsoleHelpReadLine(ConsoleColor.Cyan);
                 }
                 else
                 {
@@ -86,6 +88,25 @@ namespace TheFinalBattleComponents
             }
             // New rounds go here by adding extra "else if's"
             // Number of rounds must be updated in Settings.cs
+        }
+
+        public static void ConsoleHelpWrite(string text, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.Write(text);
+        }
+
+        public static void ConsoleHelpWriteLine(string text, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine(text);
+        }
+
+        public static string ConsoleHelpReadLine(ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            string? response = Console.ReadLine();
+            return response;
         }
     }
 }
