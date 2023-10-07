@@ -11,10 +11,10 @@ namespace TheFinalBattleSettings
     {
         // Game Settings
         public static int NumRounds { get; } = 3;
-        public static int Delay { get; } = 500;
+        public static int Delay { get; } = 1000; // Introduces slight delay between computer actions just to make game easier to read
 
         // Attack Settings
-        public static int PunchDamage { get; } = 3;
+        public static int PunchDamage { get; } = 1;
         public static int BoneCrunchDamage { get; } = 1;
         public static int UnravelingDamage { get; } = 2;
 
@@ -26,12 +26,19 @@ namespace TheFinalBattleSettings
             Console.WriteLine("2 - Human vs Computer");
             Console.WriteLine("3 - Computer vs Computer");
 
-            int playerChoice = Convert.ToInt32(Console.ReadLine());
-
-            while (playerChoice != 1 && playerChoice != 2 && playerChoice != 3)
+            // Ensure player choice is valid
+            int playerChoice;
+            while (true)
             {
-                Console.WriteLine("Please pick one of the 3 options by pressing the correspending key.");
-                playerChoice = Console.Read();
+                if (int.TryParse(Console.ReadLine(), out playerChoice))
+                {
+                    if (playerChoice > 0 && playerChoice < 4)
+                    {
+                        break;
+                    }
+                }
+
+                Console.WriteLine("Please pick a valid number from the menu.");
             }
 
             return playerChoice;

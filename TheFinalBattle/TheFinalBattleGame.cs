@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using TheFinalBattleSettings;
+using static TheFinalBattleComponents.Helpers;
 
 namespace TheFinalBattleComponents
 {
@@ -34,12 +35,12 @@ namespace TheFinalBattleComponents
         public void Run() // Run the game
         {
             bool heroWin = false;
-            MakeHeroParty();
+            MakeHeroParty(this);
 
             // Keep playing through rounds until hero wins or loses
             for (int round = 1; round <= Settings.NumRounds; round++)
             {
-                MakeMonsterParty(round); // Create monster party for current round
+                MakeMonsterParty(this, round); // Create monster party for current round
 
                 heroWin = PlayRound(); // Play round until hero wins or loses
 
@@ -59,8 +60,6 @@ namespace TheFinalBattleComponents
             // Core Round Loop
             while (true)
             {
-                Thread.Sleep(Settings.Delay);
-
                 TakeTurn(Player1Turn, turnNumber);
 
                 // Check each party for dead characters
@@ -84,87 +83,6 @@ namespace TheFinalBattleComponents
 
                 Console.WriteLine(); // Create space in console to differentiate turns
             }
-        }
-        public void MakeHeroParty()
-        {
-            // Get player to input name for MainCharacter
-            Console.WriteLine("What will the True Programmer's name be? ");
-            string? name = Console.ReadLine();
-
-            while (true) // Check name is valid
-            {
-                if (name == null || name == "")
-                {
-                    Console.WriteLine("Please input a valid name. ");
-                    name = Console.ReadLine();
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            Player1.Party.Add(new MainCharacter(name));
-            // Add extra hero characters here
-        }
-
-        // Depending on current round, make relevant monster party.
-        // Add rounds/monsters here as required
-        public void MakeMonsterParty(int round)
-        {
-            Player2.Party.Clear(); // Make sure Monster party list is clear
-
-            if (round == 1)
-            {
-                Player2.Party.Add(new Skeleton("SKELETON ONE"));
-            }
-            else if (round == 2)
-            {
-                Player2.Party.Add(new Skeleton("SKELETON ONE"));
-                Player2.Party.Add(new Skeleton("SKELETON TWO"));
-            }
-            else if (round == 3)
-            {
-                Player2.Party.Add(new Skeleton("SKELETON ONE"));
-                Player2.Party.Add(new TheUncodedOne("THE UNCODED ONE"));
-                Player2.Party.Add(new Skeleton("SKELETON TWO"));
-            }
-            // New rounds go here by adding extra "else if's"
-            // Number of rounds must be updated in Settings.cs
-        }
-
-        public void TakeTurn(bool player1Turn, int turnNumber)
-        {
-            // Reserve memory for objects
-            IAction action;
-            Player activePlayer;
-            Character activeChar;
-            int charIndex;
-
-            // Find which character's turn it is
-            if (player1Turn)
-            {
-                activePlayer = Player1;
-                charIndex = turnNumber % Player1.Party.Count;
-                activeChar = Player1.Party[charIndex];
-            }
-            else
-            {
-                activePlayer = Player2;
-                charIndex = turnNumber % Player2.Party.Count;
-                activeChar = Player2.Party[charIndex];
-            }
-
-            // Announce beginning of turn and prompt for input
-            Console.WriteLine($"It is {activeChar.Name}'s turn...");
-            ActionType chosenAction = PickAction(activePlayer.isHuman);
-
-            // Resolve input
-            if (chosenAction == ActionType.Nothing) action = new NothingAction(activeChar);
-            if (chosenAction == ActionType.Attack)  action = PickAttack(this, activeChar, activePlayer.isHuman);
-            else                                    action = new NothingAction(activeChar); // Failsafe in case of error
-
-            action.Execute(this);
         }
 
         public void StatusCheck(List<Character> party)
@@ -199,6 +117,40 @@ namespace TheFinalBattleComponents
             {
                 Console.WriteLine($"The heroes have fallen against The Uncoded One! The reign of terror continues.");
             }
+        }
+
+        public void TakeTurn(bool player1Turn, int turnNumber)
+        {
+            // Reserve memory for objects
+            IAction action;
+            Player activePlayer;
+            Character activeChar;
+            int charIndex;
+
+            // Find which character's turn it is
+            if (player1Turn)
+            {
+                activePlayer = Player1;
+                charIndex = turnNumber % Player1.Party.Count;
+                activeChar = Player1.Party[charIndex];
+            }
+            else
+            {
+                activePlayer = Player2;
+                charIndex = turnNumber % Player2.Party.Count;
+                activeChar = Player2.Party[charIndex];
+            }
+
+            // Announce beginning of turn and prompt for input
+            Console.WriteLine($"It is {activeChar.Name}'s turn...");
+            ActionType chosenAction = PickAction(activePlayer.isHuman);
+
+            // Resolve input
+            if (chosenAction == ActionType.Nothing) action = new NothingAction(activeChar);
+            if (chosenAction == ActionType.Attack)  action = PickAttack(this, activeChar, activePlayer.isHuman);
+            else                                    action = new NothingAction(activeChar); // Failsafe in case of error
+
+            action.Execute(this);
         }
 
         // List actions character can take
@@ -269,33 +221,6 @@ namespace TheFinalBattleComponents
             int chosenTarget = PickFromMenu(index, isHuman);
 
             return targetParty[chosenTarget];
-        }
-
-        public static int PickFromMenu(int max, bool isHuman)
-        {
-            int choice;
-
-            if (isHuman)
-            {
-                choice = Convert.ToInt32(Console.ReadLine());
-
-                while (true)
-                {
-                    if (choice > 0 && choice <= max)
-                    {
-                        break;
-                    }
-                    Console.WriteLine("Please a number from the available choices.");
-                    choice = Convert.ToInt32(Console.ReadLine());
-                }
-            }
-            else
-            {
-                Random random = new Random();
-                choice = random.Next(max);
-            }
-
-            return choice - 1;
         }
     }
 }
