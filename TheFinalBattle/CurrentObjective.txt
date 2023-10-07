@@ -1,9 +1,21 @@
-﻿It is time to put the final boss into the game: The Uncoded One itself. We will add this in as a third battle.
+﻿We have one critical missing piece to add before our core game is done: letting a human play it.
 
 Objectives:
 
-[ ] Define a new type of monster: The Uncoded One. It should have 15 HP and an unraveling attack that
-	randomly deals between 0 and 2 damage when used. (The Uncoded One ought to have more HP than the True Programmer,
-	but much more than 15 HP means the Uncoded One wins every time. We can adjust these numbers later.)
+[ ] The game should allow a human player to play it by retrieving their action choices through the
+	console window. For a human-controlled character, the human can use that character’s standard
+	attack or do nothing. It is acceptable for all attacks selected by the human to target the first (or
+	random) target without allowing the player to pick one specifically. (You can let the player pick if
+	you want, but it is not required.) The following is one possible approach:
 
-[ ] Add a third battle to the series that contains the Uncoded One.
+	{
+		It is TOG's turn...
+		1 – Standard Attack (PUNCH)
+		2 – Do Nothing
+		What do you want to do? 2
+	}
+
+[ ] As the game is starting, allow the user to choose from the three following gameplay modes: player
+	vs. computer (the human in charge of the heroes and the computer controlling the monsters),
+	computer vs. computer (a computer player running each team, as we have done so far), and human
+	vs. human, where a human picks actions for both sides.

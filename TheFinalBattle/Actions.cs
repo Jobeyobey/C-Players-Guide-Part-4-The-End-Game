@@ -43,7 +43,7 @@ namespace TheFinalBattleComponents
 
     public class Punch : Attack
     {
-        public override string Name { get; init; } = "PUNCH";
+        public override string Name { get; init; } = "Punch";
         public override int Damage { get; init; } = Settings.PunchDamage;
         public Punch(Character activeChar, Character targetChar)
         {
@@ -58,7 +58,7 @@ namespace TheFinalBattleComponents
 
     public class BoneCrunch : Attack
     {
-        public override string Name { get; init; } = "BONECRUNCH";
+        public override string Name { get; init; } = "BoneCrunch";
         public override int Damage { get; init; }
 
         public BoneCrunch(Character activeChar, Character targetChar)
@@ -79,7 +79,7 @@ namespace TheFinalBattleComponents
 
     public class Unraveling : Attack
     {
-        public override string Name { get; init; } = "UNRAVELING";
+        public override string Name { get; init; } = "Unraveling";
         public override int Damage { get; init; } = Settings.UnravelingDamage;
 
         public Unraveling(Character activeChar, Character targetChar)
@@ -118,6 +118,6 @@ namespace TheFinalBattleComponents
         }
     }
 
-    public enum ActionType { Nothing, Attack } // Available options to characters
-    public enum AttackType { Punch, BoneCrunch, Unraveling } // All available attacks in the game
+    public enum ActionType { Nothing, Attack } // Available actions to all characters
+    public enum AttackType { Punch, BoneCrunch, Unraveling } // All available attacks in the game. Remember to add new attacks to "PickAttack" method.
 }

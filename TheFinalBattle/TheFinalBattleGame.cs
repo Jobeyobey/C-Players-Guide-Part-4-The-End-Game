@@ -1,4 +1,5 @@
-﻿using TheFinalBattleSettings;
+﻿using System.Numerics;
+using TheFinalBattleSettings;
 
 namespace TheFinalBattleComponents
 {
@@ -11,8 +12,23 @@ namespace TheFinalBattleComponents
 
         public TheFinalBattle() // Constructor
         {
-            Player1 = new Player(false);
-            Player2 = new Player(false);
+            int setupCode = Settings.SetupGame(); // Prompt user for setupCode
+
+            if (setupCode == 1) // Human v Human
+            {
+                Player1 = new Player(true);
+                Player2 = new Player(true);
+            }
+            else if (setupCode == 2) // Human v Computer
+            {
+                Player1 = new Player(true);
+                Player2 = new Player(false);
+            }
+            else if (setupCode == 3) // Computer v Computer
+            {
+                Player1 = new Player(false);
+                Player2 = new Player(false);
+            }
         }
 
         public void Run() // Run the game
@@ -23,45 +39,50 @@ namespace TheFinalBattleComponents
             // Keep playing through rounds until hero wins or loses
             for (int round = 1; round <= Settings.NumRounds; round++)
             {
-                MakeMonsterParty(round);
-                heroWin = PlayRound();
-                if (!heroWin)
-                    break;
+                MakeMonsterParty(round); // Create monster party for current round
 
-                Console.WriteLine("The enemy party has been defeated!");
+                heroWin = PlayRound(); // Play round until hero wins or loses
+
+                if (!heroWin) break; // If hero does not win, break loop and continue to EndGame
+
+                Console.WriteLine("The enemy party has been defeated!"); // Else if hero wins, announce it
             }
+
             EndGame(heroWin); // Declare winner
         }
 
-        public bool PlayRound() // A round consists of multiple turns, ending when a party has no characters left.
+        // A round consists of multiple turns, ending when a party has no characters left.
+        public bool PlayRound()
         {
             int turnNumber = 0;
 
-            while (true) // Round Loop
+            // Core Round Loop
+            while (true)
             {
                 Thread.Sleep(Settings.Delay);
 
                 TakeTurn(Player1Turn, turnNumber);
+
+                // Check each party for dead characters
                 StatusCheck(Player1.Party);
                 StatusCheck(Player2.Party);
 
-                // Check if the hero has won the round
+                // Check if either party has no characters left
                 if (Player1.Party.Count == 0)
                 {
-                    return false;
+                    return false; // heroWin == false
                 }
                 else if (Player2.Party.Count == 0)
                 {
-                    return true;
+                    return true; // heroWin == true
                 }
 
                 Player1Turn = !Player1Turn; // Flip who's turn it is
 
                 // Increment turn number if this is the end of Player2's turn
-                if (!Player1Turn)
-                    turnNumber++;
+                if (!Player1Turn) turnNumber++;
 
-                Console.WriteLine(); // Create space to differentiate turns
+                Console.WriteLine(); // Create space in console to differentiate turns
             }
         }
         public void MakeHeroParty()
@@ -83,8 +104,8 @@ namespace TheFinalBattleComponents
                 }
             }
 
-            // Create and add TOG to party
             Player1.Party.Add(new MainCharacter(name));
+            // Add extra hero characters here
         }
 
         // Depending on current round, make relevant monster party.
@@ -108,25 +129,42 @@ namespace TheFinalBattleComponents
                 Player2.Party.Add(new TheUncodedOne("THE UNCODED ONE"));
                 Player2.Party.Add(new Skeleton("SKELETON TWO"));
             }
+            // New rounds go here by adding extra "else if's"
+            // Number of rounds must be updated in Settings.cs
         }
 
         public void TakeTurn(bool player1Turn, int turnNumber)
         {
-            IAction action; // Prepare memory for action
+            // Reserve memory for objects
+            IAction action;
+            Player activePlayer;
+            Character activeChar;
+            int charIndex;
 
-            // Get current player to pick action for active character
+            // Find which character's turn it is
             if (player1Turn)
             {
-                int characterIndex = turnNumber % Player1.Party.Count;
-                action = GetAction(this, Player1.Party[characterIndex], Player1.isHuman);
+                activePlayer = Player1;
+                charIndex = turnNumber % Player1.Party.Count;
+                activeChar = Player1.Party[charIndex];
             }
             else
             {
-                int characterIndex = turnNumber % Player2.Party.Count;
-                action = GetAction(this, Player2.Party[characterIndex], Player2.isHuman);
+                activePlayer = Player2;
+                charIndex = turnNumber % Player2.Party.Count;
+                activeChar = Player2.Party[charIndex];
             }
 
-            action.Execute(this); // Execute chosen action
+            // Announce beginning of turn and prompt for input
+            Console.WriteLine($"It is {activeChar.Name}'s turn...");
+            ActionType chosenAction = PickAction(activePlayer.isHuman);
+
+            // Resolve input
+            if (chosenAction == ActionType.Nothing) action = new NothingAction(activeChar);
+            if (chosenAction == ActionType.Attack)  action = PickAttack(this, activeChar, activePlayer.isHuman);
+            else                                    action = new NothingAction(activeChar); // Failsafe in case of error
+
+            action.Execute(this);
         }
 
         public void StatusCheck(List<Character> party)
@@ -150,6 +188,7 @@ namespace TheFinalBattleComponents
             }
         }
 
+        // End game, declaring winner
         public void EndGame(bool heroWin)
         {
             if (heroWin)
@@ -162,76 +201,47 @@ namespace TheFinalBattleComponents
             }
         }
 
-        public IAction GetAction(TheFinalBattle game, Character character, bool isHuman)
-        {
-            Console.WriteLine($"It is {character.Name}'s turn...");
-            ActionType chosenAction = PickAction(isHuman);
-
-            // Resolve chosen action
-            if (chosenAction == ActionType.Nothing) return new NothingAction(character);
-            if (chosenAction == ActionType.Attack)  return PickAttack(game, character, isHuman);
-
-            // Code should not be able to get to here, but if it somehow does, do 'nothing' action.
-            return new NothingAction(character);
-        }
-
         // List actions character can take
         public ActionType PickAction(bool isHuman)
         {
-            // Print list of available actions. Also add actions to easily accessible list.
-            List<string> actionList = new List<string>();
+            // Print list of actions with index numbers for player to pick from
+            int index = 0;
             foreach (ActionType action in Enum.GetValues(typeof(ActionType)))
             {
-                Console.WriteLine($"- {action}");
-
-                string tempAction = action.ToString().ToLower(); // Ensure actions are lower case to easier match user inputs later on
-                actionList.Add(tempAction);
+                index++;
+                Console.WriteLine($"{index} - {action}");
             }
 
-            string? chosenAction; // Prepare chosenAction string for player/computer to fill in below
-            if (isHuman)
-            {
-                chosenAction = HumanPickFromList(actionList);
-            }
-            else // If computer player, pick random action
-            {
-                chosenAction = ComputerPickFromList(actionList);
-            }
+            int actionIndex = PickFromMenu(index, isHuman);
 
-            // Player or computer should have by now input a valid action. Resolve action.
-            if (chosenAction == "attack") return ActionType.Attack;
-            else                          return ActionType.Nothing;
+            ActionType chosenAction = (ActionType)actionIndex;
+
+            return chosenAction;
         }
 
         public IAction PickAttack(TheFinalBattle game, Character character, bool isHuman)
         {
             Console.WriteLine("Pick an attack.");
 
-            // Print list of available attacks. Also add attacks to easily accessible list.
-            List<string> attackList = new List<string>();
+            // Print list of attacks with index numbers for player to pick from
+            int index = 0;
             foreach (AttackType attack in character.attackList)
             {
-                Console.WriteLine($"- {attack}");
-
-                string tempAttack = attack.ToString().ToLower(); // Ensure actions are lower case to easier match user inputs later on
-                attackList.Add(tempAttack);
+                index++;
+                Console.WriteLine($"{index} - {attack}");
             }
 
-            string? chosenAttack; // Prepare chosenAction string for player/computer to fill in below
-            if (isHuman)
-            {
-                chosenAttack = HumanPickFromList(attackList);
-            }
-            else // If computer player, pick random action
-            {
-                chosenAttack = ComputerPickFromList(attackList);
-            }
+            int chosenIndex = PickFromMenu(index, isHuman);
 
             // Pick target of attack
             Character target = PickTarget(isHuman);
 
-            if (chosenAttack == "bonecrunch") return new BoneCrunch(character, target);
-            else                              return new Punch(character, target);
+            AttackType chosenAttackName = character.attackList[chosenIndex];
+
+            // Add all possible attacks here
+            if (chosenAttackName == AttackType.BoneCrunch) return new BoneCrunch(character, target);
+            if (chosenAttackName == AttackType.Unraveling) return new Unraveling(character, target);
+            else return new Punch(character, target);
         }
 
         public Character PickTarget(bool isHuman)
@@ -249,69 +259,43 @@ namespace TheFinalBattleComponents
             }
 
             // List available target
-            List<string> targetList = new List<string>();
+            int index = 0;
             foreach (Character target in targetParty)
             {
-                Console.WriteLine($"- {target.Name}");
-
-                string tempTarget = target.ToString().ToLower(); // Ensure actions are lower case to easier match user inputs later on
-                targetList.Add(tempTarget);
+                index++;
+                Console.WriteLine($"{index} - {target.Name}");
             }
 
-            // Let player pick their target
-            string chosenTarget;
+            int chosenTarget = PickFromMenu(index, isHuman);
+
+            return targetParty[chosenTarget];
+        }
+
+        public static int PickFromMenu(int max, bool isHuman)
+        {
+            int choice;
 
             if (isHuman)
             {
-                chosenTarget = HumanPickFromList(targetList);
+                choice = Convert.ToInt32(Console.ReadLine());
+
+                while (true)
+                {
+                    if (choice > 0 && choice <= max)
+                    {
+                        break;
+                    }
+                    Console.WriteLine("Please a number from the available choices.");
+                    choice = Convert.ToInt32(Console.ReadLine());
+                }
             }
             else
             {
-                chosenTarget = ComputerPickFromList(targetList);
+                Random random = new Random();
+                choice = random.Next(max);
             }
 
-            int targetIndex = targetList.IndexOf(chosenTarget);
-
-            return targetParty[targetIndex];
-        }
-
-        // Input a list (actions, attacks etc.). Return a string indicating human's choice.
-        public static string HumanPickFromList(List<string> list)
-        {
-            string? chosenAction = Console.ReadLine();
-
-            // Prevent chosenAction being null
-            while (chosenAction == null)
-            {
-                Console.WriteLine("Please input a valid action.");
-                chosenAction = Console.ReadLine();
-            }
-
-            // Ensure chosenAction is valid. Compares user input against list of available actions
-            while (true)
-            {
-                chosenAction = chosenAction.ToLower();
-                if (list.Contains(chosenAction)) break;
-
-                // If code reached here, input was invalid
-                Console.WriteLine("That is not a valid choice. Pick a choice from the list.");
-                chosenAction = Console.ReadLine();
-            }
-
-            return chosenAction;
-        }
-
-        // Input a list (actions, attacks etc.). Return a string indicating computer's choice.
-        public static string ComputerPickFromList(List<string> list)
-        {
-            Thread.Sleep(Settings.Delay); // Delay computer player choice for easier reading
-
-            // Pick a random action for character from available list
-            Random random = new Random();
-            int randomIndex = random.Next(list.Count + 1);
-            string chosenAction = list[randomIndex];
-
-            return chosenAction;
+            return choice - 1;
         }
     }
 }
