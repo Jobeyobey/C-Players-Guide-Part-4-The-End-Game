@@ -1,21 +1,21 @@
-﻿We have one critical missing piece to add before our core game is done: letting a human play it.
+﻿This challenge gives us a clearer representation of the status of the game.
 
 Objectives:
 
-[ ] The game should allow a human player to play it by retrieving their action choices through the
-	console window. For a human-controlled character, the human can use that character’s standard
-	attack or do nothing. It is acceptable for all attacks selected by the human to target the first (or
-	random) target without allowing the player to pick one specifically. (You can let the player pick if
-	you want, but it is not required.) The following is one possible approach:
+[X] Before a character gets their turn, display the overall status of the battle. This status must include
+	all characters in both parties with their current and total HP.
 
-	{
-		It is TOG's turn...
-		1 – Standard Attack (PUNCH)
-		2 – Do Nothing
-		What do you want to do? 2
-	}
+[X] You must also somehow distinguish the character whose turn it is from the others with color, a text
+	marker, or something similar.
 
-[ ] As the game is starting, allow the user to choose from the three following gameplay modes: player
-	vs. computer (the human in charge of the heroes and the computer controlling the monsters),
-	computer vs. computer (a computer player running each team, as we have done so far), and human
-	vs. human, where a human picks actions for both sides.
+
+
+Note: You have flexibility in how you approach this challenge, but the following shows one possibility
+(with the current character colored yellow instead of white):
+
+============================================= BATTLE ============================================
+TOG ( 25/25 )
+---------------------------------------------- VS -----------------------------------------------
+SKELETON ( 5/5 )
+SKELETON ( 5/5 )
+=================================================================================================

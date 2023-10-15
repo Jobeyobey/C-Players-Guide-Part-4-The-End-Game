@@ -15,7 +15,7 @@ namespace TheFinalBattleComponents
         {
             int choice;
 
-            if (isHuman)
+            if (isHuman) // If player is human, prompt them to pick an option
             {
                 // Ensure player choice is valid
                 while (true)
@@ -31,7 +31,7 @@ namespace TheFinalBattleComponents
                     ConsoleHelpWriteLine("Please pick a valid number from the menu.", ConsoleColor.Red);
                 }
             }
-            else
+            else // If player is not human, pick a random option
             {
                 Thread.Sleep(Settings.Delay);
 
@@ -39,7 +39,7 @@ namespace TheFinalBattleComponents
                 choice = random.Next(max) + 1;
             }
 
-            return choice - 1;
+            return choice - 1; // '-1' because options are 0-indexed, whereas the menu displayed to the player is not
         }
 
         public static void MakeHeroParty(TheFinalBattle game)
@@ -107,6 +107,30 @@ namespace TheFinalBattleComponents
             Console.ForegroundColor = color;
             string? response = Console.ReadLine();
             return response;
+        }
+
+        public static void DisplayGameStatus(TheFinalBattle game, Character activeChar)
+        {
+            Console.WriteLine();
+
+            ConsoleHelpWriteLine("==================== BATTLE ====================", ConsoleColor.White);
+            foreach (Character character in game.Player1.Party)
+            {
+                if (character == activeChar)
+                    ConsoleHelpWriteLine($"{character.Name} ( {character.CurrentHp}/{character.MaxHp} )", ConsoleColor.Yellow);
+                else
+                    ConsoleHelpWriteLine($"{character.Name} ( {character.CurrentHp}/{character.MaxHp} )", ConsoleColor.Gray);
+            }
+
+            ConsoleHelpWriteLine("-------------------- VS --------------------", ConsoleColor.White);
+            foreach (Character character in game.Player2.Party)
+            {
+                if (character == activeChar)
+                    ConsoleHelpWriteLine($"{character.Name} ( {character.CurrentHp}/{character.MaxHp} )", ConsoleColor.Yellow);
+                else
+                    ConsoleHelpWriteLine($"{character.Name} ( {character.CurrentHp}/{character.MaxHp} )", ConsoleColor.Gray);
+            }
+            Console.WriteLine();
         }
     }
 }

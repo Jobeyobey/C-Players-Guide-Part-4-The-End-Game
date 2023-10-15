@@ -60,9 +60,27 @@ namespace TheFinalBattleComponents
             // Core Round Loop
             while (true)
             {
-                Console.WriteLine(); // Create space in console to differentiate turns
+                Player activePlayer;
+                Character activeChar;
+                int charIndex;
 
-                TakeTurn(Player1Turn, turnNumber);
+                // Find which character's turn it is
+                if (Player1Turn)
+                {
+                    activePlayer = Player1;
+                    charIndex = turnNumber % Player1.Party.Count;
+                    activeChar = Player1.Party[charIndex];
+                }
+                else
+                {
+                    activePlayer = Player2;
+                    charIndex = turnNumber % Player2.Party.Count;
+                    activeChar = Player2.Party[charIndex];
+                }
+
+                DisplayGameStatus(this, activeChar);
+
+                TakeTurn(activePlayer, activeChar);
 
                 // Check each party for dead characters
                 StatusCheck(Player1.Party);
@@ -119,27 +137,10 @@ namespace TheFinalBattleComponents
             }
         }
 
-        public void TakeTurn(bool player1Turn, int turnNumber)
+        public void TakeTurn(Player activePlayer, Character activeChar)
         {
             // Reserve memory for objects
             IAction action;
-            Player activePlayer;
-            Character activeChar;
-            int charIndex;
-
-            // Find which character's turn it is
-            if (player1Turn)
-            {
-                activePlayer = Player1;
-                charIndex = turnNumber % Player1.Party.Count;
-                activeChar = Player1.Party[charIndex];
-            }
-            else
-            {
-                activePlayer = Player2;
-                charIndex = turnNumber % Player2.Party.Count;
-                activeChar = Player2.Party[charIndex];
-            }
 
             // Announce beginning of turn and prompt for input
             ConsoleHelpWriteLine($"It is {activeChar.Name}'s turn...", ConsoleColor.Yellow);

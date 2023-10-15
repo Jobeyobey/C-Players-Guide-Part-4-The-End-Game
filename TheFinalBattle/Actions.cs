@@ -109,12 +109,17 @@ namespace TheFinalBattleComponents
             Character targetChar = attack.TargetChar;
 
             // Announce attack and damage
+            Thread.Sleep(Settings.Delay / 2);
             ConsoleHelpWriteLine($"{activeChar.Name} did {attackName} on {targetChar.Name}", ConsoleColor.Gray);
+
+            Thread.Sleep(Settings.Delay / 2);
             ConsoleHelpWriteLine($"{attackName} dealt {attack.Damage} to {targetChar.Name}", ConsoleColor.Gray);
 
             // Damage target and report new health status
+            Thread.Sleep(Settings.Delay / 2);
             targetChar.AlterHp(-attack.Damage);
             ConsoleHelpWriteLine($"{targetChar.Name} has {attack.TargetChar.CurrentHp}/{attack.TargetChar.MaxHp} HP", ConsoleColor.Gray);
+            Thread.Sleep(Settings.Delay / 2);
         }
     }
 
