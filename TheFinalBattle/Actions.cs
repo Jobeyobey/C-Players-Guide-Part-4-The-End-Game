@@ -26,7 +26,7 @@ namespace TheFinalBattleComponents
 
         public void Execute(TheFinalBattle game)
         {
-            Console.WriteLine($"{ActiveCharacter.Name} did NOTHING");
+            ConsoleHelpWriteLine($"{ActiveCharacter.Name} did NOTHING", ConsoleColor.Gray);
         }
     }
 

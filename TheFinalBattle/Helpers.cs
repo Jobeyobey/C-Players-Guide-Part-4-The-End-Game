@@ -113,23 +113,24 @@ namespace TheFinalBattleComponents
         {
             Console.WriteLine();
 
-            ConsoleHelpWriteLine("==================== BATTLE ====================", ConsoleColor.White);
+            ConsoleHelpWriteLine("============================================= BATTLE =============================================", ConsoleColor.White);
             foreach (Character character in game.Player1.Party)
             {
                 if (character == activeChar)
-                    ConsoleHelpWriteLine($"{character.Name} ( {character.CurrentHp}/{character.MaxHp} )", ConsoleColor.Yellow);
+                    ConsoleHelpWriteLine($"{character.Name, -5} ( {character.CurrentHp}/{character.MaxHp} )", ConsoleColor.Yellow);
                 else
-                    ConsoleHelpWriteLine($"{character.Name} ( {character.CurrentHp}/{character.MaxHp} )", ConsoleColor.Gray);
+                    ConsoleHelpWriteLine($"{character.Name, -5} ( {character.CurrentHp}/{character.MaxHp} )", ConsoleColor.Gray);
             }
 
-            ConsoleHelpWriteLine("-------------------- VS --------------------", ConsoleColor.White);
+            ConsoleHelpWriteLine("----------------------------------------------- VS -----------------------------------------------", ConsoleColor.White);
             foreach (Character character in game.Player2.Party)
             {
                 if (character == activeChar)
-                    ConsoleHelpWriteLine($"{character.Name} ( {character.CurrentHp}/{character.MaxHp} )", ConsoleColor.Yellow);
+                    ConsoleHelpWriteLine($"{character.Name, 90} ( {character.CurrentHp}/{character.MaxHp} )", ConsoleColor.Yellow);
                 else
-                    ConsoleHelpWriteLine($"{character.Name} ( {character.CurrentHp}/{character.MaxHp} )", ConsoleColor.Gray);
+                    ConsoleHelpWriteLine($"{character.Name, 90} ( {character.CurrentHp}/{character.MaxHp} )", ConsoleColor.Gray);
             }
+            ConsoleHelpWriteLine("==================================================================================================", ConsoleColor.White);
             Console.WriteLine();
         }
     }
