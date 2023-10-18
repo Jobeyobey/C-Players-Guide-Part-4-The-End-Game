@@ -10,7 +10,7 @@ namespace TheFinalBattleComponents
     public class Helpers
     {
         // Pick an integer between 0 and 'max'.
-        // Used for having human/computer pick an item from action/attack menus etc.
+        // Used for having human/computer pick an action from action/attack/item menus
         public static int PickFromMenu(int max, bool isHuman)
         {
             int choice;
@@ -22,7 +22,7 @@ namespace TheFinalBattleComponents
                 {
                     if (int.TryParse(ConsoleHelpReadLine(ConsoleColor.Cyan), out choice))
                     {
-                        if (choice > 0 && choice <= max)
+                        if (choice >= 0 && choice <= max)
                         {
                             break;
                         }
@@ -33,13 +33,15 @@ namespace TheFinalBattleComponents
             }
             else // If player is not human, pick a random option
             {
+                // TODO
+                // CREATE WHOLE NEW COMPUTER METHOD TO EXECUTE HERE
                 Thread.Sleep(Settings.Delay);
 
                 Random random = new Random();
                 choice = random.Next(max) + 1;
             }
 
-            return choice - 1; // '-1' because options are 0-indexed, whereas the menu displayed to the player is not
+            return choice;
         }
 
         public static void MakeHeroParty(TheFinalBattle game)
@@ -61,8 +63,13 @@ namespace TheFinalBattleComponents
                 }
             }
 
-            game.Player1.Party.Add(new MainCharacter(name));
             // Add extra hero characters here
+            game.Player1.Party.Add(new MainCharacter(name));
+
+            // Add party items here
+            game.Player1.Items.Add(ItemType.HealthPotion);
+            game.Player1.Items.Add(ItemType.HealthPotion);
+            game.Player1.Items.Add(ItemType.HealthPotion);
         }
 
         // Depending on current round, make relevant monster party.
@@ -73,18 +80,30 @@ namespace TheFinalBattleComponents
 
             if (round == 1)
             {
+                // Add monsters here
                 game.Player2.Party.Add(new Skeleton("SKELETON ONE"));
+
+                // Add items here
+                game.Player2.Items.Add(ItemType.HealthPotion);
             }
             else if (round == 2)
             {
+                // Add monsters here
                 game.Player2.Party.Add(new Skeleton("SKELETON ONE"));
                 game.Player2.Party.Add(new Skeleton("SKELETON TWO"));
+
+                // Add items here
+                game.Player2.Items.Add(ItemType.HealthPotion);
             }
             else if (round == 3)
             {
+                // Add monsters here
                 game.Player2.Party.Add(new Skeleton("SKELETON ONE"));
                 game.Player2.Party.Add(new Skeleton("SKELETON TWO"));
                 game.Player2.Party.Add(new TheUncodedOne("THE UNCODED ONE"));
+
+                // Add items here
+                game.Player2.Items.Add(ItemType.HealthPotion);
             }
             // New rounds go here by adding extra "else if's"
             // Number of rounds must be updated in Settings.cs

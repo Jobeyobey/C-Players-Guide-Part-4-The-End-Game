@@ -140,16 +140,21 @@ namespace TheFinalBattleComponents
         public void TakeTurn(Player activePlayer, Character activeChar)
         {
             // Reserve memory for objects
-            IAction action;
+            IAction action = null;
 
-            // Announce beginning of turn and prompt for input
             ConsoleHelpWriteLine($"It is {activeChar.Name}'s turn...", ConsoleColor.Yellow);
-            ActionType chosenAction = PickAction(activePlayer.isHuman);
 
-            // Resolve input
-            if (chosenAction == ActionType.Nothing) action = new NothingAction(activeChar);
-            if (chosenAction == ActionType.Attack)  action = PickAttack(this, activeChar, activePlayer.isHuman);
-            else                                    action = new NothingAction(activeChar); // Failsafe in case of error
+            while (action == null)
+            {
+                // Prompt for input
+                ActionType chosenAction = PickAction(activePlayer.isHuman);
+
+                // Resolve input
+                if (chosenAction == ActionType.Nothing) action = new NothingAction(activeChar);
+                else if (chosenAction == ActionType.Attack) action = PickAttack(this, activeChar, activePlayer);
+                else if (chosenAction == ActionType.UseItem) action = PickItem(this, activeChar, activePlayer);
+                else action = null; // Failsafe in case of error
+            }
 
             action.Execute(this);
         }
@@ -167,16 +172,17 @@ namespace TheFinalBattleComponents
 
             int actionIndex = PickFromMenu(index, isHuman);
 
-            ActionType chosenAction = (ActionType)actionIndex;
+            ActionType chosenAction = (ActionType)actionIndex - 1; // '-1' because array is zero-indexed
 
             return chosenAction;
         }
 
-        public IAction PickAttack(TheFinalBattle game, Character character, bool isHuman)
+        public IAction PickAttack(TheFinalBattle game, Character character, Player activePlayer)
         {
             ConsoleHelpWriteLine("Pick an attack.", ConsoleColor.Yellow);
 
             // Print list of attacks with index numbers for player to pick from
+            ConsoleHelpWriteLine($"0 - Pick another action", ConsoleColor.White);
             int index = 0;
             foreach (AttackType attack in character.attackList)
             {
@@ -184,12 +190,21 @@ namespace TheFinalBattleComponents
                 ConsoleHelpWriteLine($"{index} - {attack}", ConsoleColor.White);
             }
 
-            int chosenIndex = PickFromMenu(index, isHuman);
+            int chosenIndex = PickFromMenu(index, activePlayer.isHuman);
 
-            // Pick target of attack
-            Character target = PickTarget(isHuman);
+            // Calculate target player
+            Player targetPlayer;
+            if (activePlayer == Player1)
+                targetPlayer = Player2;
+            else
+                targetPlayer = Player1;
 
-            AttackType chosenAttackName = character.attackList[chosenIndex];
+            // Pick target. Returns null if user wants to pick another action
+            Character target = PickTarget(targetPlayer.Party, activePlayer.isHuman);
+            if (target == null)
+                return null;
+
+            AttackType chosenAttackName = character.attackList[chosenIndex - 1]; // '-1' because array is zero-indexed
 
             // Add all possible attacks here
             if (chosenAttackName == AttackType.BoneCrunch) return new BoneCrunch(character, target);
@@ -197,21 +212,60 @@ namespace TheFinalBattleComponents
             else return new Punch(character, target);
         }
 
-        public Character PickTarget(bool isHuman)
+        public IAction PickItem(TheFinalBattle game, Character character, Player activePlayer)
         {
-            ConsoleHelpWriteLine("Pick a target.", ConsoleColor.Yellow);
-
-            List<Character> targetParty = new List<Character>();
-            if (Player1Turn)
+            // Check player has items to use
+            if (activePlayer.Items.Count == 0)
             {
-                targetParty = Player2.Party;
+                ConsoleHelpWriteLine("You have no items in your inventory.", ConsoleColor.Red);
+                return null;
+            }
+
+            ConsoleHelpWriteLine("Pick an item to use.", ConsoleColor.Yellow);
+
+            // Print list of items with index numbers for player to pick from
+            ConsoleHelpWriteLine($"0 - Pick another action", ConsoleColor.White);
+            int index = 0;
+            foreach (ItemType item in activePlayer.Items)
+            {
+                index++;
+                ConsoleHelpWriteLine($"{index} - {item}", ConsoleColor.White);
+            }
+
+            // Pick item to use. '0' is to pick another action
+            int chosenIndex = PickFromMenu(index, activePlayer.isHuman);
+            if (chosenIndex == 0)
+                return null;
+
+            ItemType chosenItem = activePlayer.Items[chosenIndex - 1]; // '-1' because array is zero-indexed
+
+            // Choose target party depending on whether it's an offensive/defensive item
+            Player targetPlayer;
+            if (chosenItem == ItemType.HealthPotion)
+            {
+                targetPlayer = activePlayer == Player1 ? Player1 : Player2; // Target friendly party
             }
             else
             {
-                targetParty = Player1.Party;
+                targetPlayer = activePlayer == Player1 ? Player2 : Player1; // Target enemy party
             }
 
+            // Pick target. '0' is to pick another action
+            Character target = PickTarget(targetPlayer.Party, activePlayer.isHuman);
+            if (target == null)
+                return null;
+
+            // Add all possible items here
+            if (chosenItem == ItemType.HealthPotion) return new HealthPotion(activePlayer, character, target);
+            else return new Punch(character, target);
+        }
+
+        public Character PickTarget(List<Character> targetParty, bool isHuman)
+        {
+            ConsoleHelpWriteLine("Pick a target.", ConsoleColor.Yellow);
+
             // List available target
+            ConsoleHelpWriteLine($"0 - Pick another action", ConsoleColor.White);
             int index = 0;
             foreach (Character target in targetParty)
             {
@@ -219,9 +273,12 @@ namespace TheFinalBattleComponents
                 ConsoleHelpWriteLine($"{index} - {target.Name}", ConsoleColor.White);
             }
 
+            // Prompt user to pick target. If user returns '0', they want to go back and pick another action.
             int chosenTarget = PickFromMenu(index, isHuman);
+            if (chosenTarget == 0)
+                return null;
 
-            return targetParty[chosenTarget];
+            return targetParty[chosenTarget - 1]; // '-1' because array is zero-indexed
         }
     }
 }

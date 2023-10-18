@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TheFinalBattleComponents;
 using static TheFinalBattleComponents.Helpers;
 using TheFinalBattleSettings;
+using System.Collections;
 
 namespace TheFinalBattleComponents
 {
@@ -52,7 +53,7 @@ namespace TheFinalBattleComponents
         }
         public override void Execute(TheFinalBattle game)
         {
-            AttackHelper.DoDamage(this);
+            ActionHelper.DoDamage(this);
         }
     }
 
@@ -73,7 +74,7 @@ namespace TheFinalBattleComponents
 
         public override void Execute(TheFinalBattle game)
         {
-            AttackHelper.DoDamage(this);
+            ActionHelper.DoDamage(this);
         }
     }
 
@@ -94,12 +95,51 @@ namespace TheFinalBattleComponents
 
         public override void Execute(TheFinalBattle game)
         {
-            AttackHelper.DoDamage(this);
+            ActionHelper.DoDamage(this);
         }
     }
 
-    // Attack helper will contain methods to help calculate attacks for all attack types
-    internal static class AttackHelper
+    // ITEMS
+    public abstract class Item : IAction
+    {
+        public abstract string Name { get; init; }
+        public Player ActivePlayer { get; init; }
+        public Character ActiveChar { get; init; }
+        public Character TargetChar { get; init; }
+        public Item() { }
+        public abstract void Execute(TheFinalBattle game); // To keep creation of new items flexible, all settings are added in "Execute" command
+    }
+
+    public class HealthPotion : Item
+    {
+        public override string Name { get; init; } = "Health Potion";
+
+        public HealthPotion(Player activePlayer, Character activeChar, Character targetChar)
+        {
+            ActivePlayer = activePlayer;
+            ActiveChar = activeChar;
+            TargetChar = targetChar;
+        }
+
+        public override void Execute(TheFinalBattle game)
+        {
+            // Announce use of Item
+            Thread.Sleep(Settings.Delay / 2);
+            ConsoleHelpWriteLine($"{ActiveChar.Name} used {Name} on {TargetChar.Name}", ConsoleColor.Gray);
+
+            // Resolve item
+            Thread.Sleep(Settings.Delay / 2);
+            TargetChar.AlterHp(10);
+            ConsoleHelpWriteLine($"{TargetChar.Name} has {TargetChar.CurrentHp}/{TargetChar.MaxHp} HP", ConsoleColor.Gray);
+            Thread.Sleep(Settings.Delay / 2);
+
+            // Remove item from party inventory
+            ActivePlayer.Items.Remove(ItemType.HealthPotion);
+        }
+    }
+
+    // Action helper will contain methods to help calculate attacks for all Action types
+    internal static class ActionHelper
     {
         public static void DoDamage(Attack attack)
         {
@@ -123,6 +163,7 @@ namespace TheFinalBattleComponents
         }
     }
 
-    public enum ActionType { Nothing, Attack } // Available actions to all characters
+    public enum ActionType { Nothing, Attack, UseItem } // Available actions to all characters
     public enum AttackType { Punch, BoneCrunch, Unraveling } // All available attacks in the game. Remember to add new attacks to "PickAttack" method.
+    public enum ItemType { HealthPotion }
 }
