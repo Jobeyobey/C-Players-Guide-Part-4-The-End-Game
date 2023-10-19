@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static TheFinalBattleComponents.Helpers;
+using static TheFinalBattleComponents.ConsoleHelpers;
 
 // This class contains the settings for different aspects of the game, for easy balancing and testing
 namespace TheFinalBattleSettings
@@ -12,7 +13,7 @@ namespace TheFinalBattleSettings
     {
         // Game Settings
         public static int NumRounds { get; } = 3;
-        public static int Delay { get; } = 1000; // Introduces slight delay between computer actions just to make game easier to read
+        public static int Delay { get; } = 500; // Introduces slight delay between computer actions just to make game easier to read
 
         // Attack Settings
         public static int PunchDamage { get; } = 1;
