@@ -9,18 +9,21 @@ namespace TheFinalBattleComponents
 {
     internal class ConsoleHelpers
     {
+        // Console.Write with custom colour
         public static void ConsoleHelpWrite(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.Write(text);
         }
 
+        // Console.WriteLine with custom colour
         public static void ConsoleHelpWriteLine(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.WriteLine(text);
         }
 
+        // Console.ReadLine with custom colour
         public static string ConsoleHelpReadLine(ConsoleColor color)
         {
             Console.ForegroundColor = color;
@@ -28,6 +31,7 @@ namespace TheFinalBattleComponents
             return response;
         }
 
+        // Display current names, health etc. of both parties. Active player is highlighted in yellow.
         public static void DisplayGameStatus(TheFinalBattle game, Character activeChar)
         {
             Console.WriteLine();

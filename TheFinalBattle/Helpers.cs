@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using TheFinalBattleSettings;
@@ -159,6 +160,7 @@ namespace TheFinalBattleComponents
             AttackType chosenAttackName = character.attackList[chosenIndex - 1]; // '-1' because array is zero-indexed
 
             // Add all possible attacks here
+            if (chosenAttackName == AttackType.Weapon)     return new WeaponAttack(character, target);
             if (chosenAttackName == AttackType.BoneCrunch) return new BoneCrunch(character, target);
             if (chosenAttackName == AttackType.Unraveling) return new Unraveling(character, target);
             else return new Punch(character, target);
@@ -286,6 +288,33 @@ namespace TheFinalBattleComponents
                 return null;
 
             return targetParty[chosenTarget - 1]; // '-1' because array is zero-indexed
+        }
+
+        public static IAction PickGear(TheFinalBattle game, Character activeChar, Player activePlayer)
+        {
+            // Check player has items to use
+            if (activePlayer.Gear.Count == 0)
+            {
+                ConsoleHelpWriteLine("You have no gear in your inventory.", ConsoleColor.Red);
+                return null;
+            }
+
+            // Print list of items with index numbers for player to pick from
+            int index = 0;
+            foreach (Gear gear in activePlayer.Gear)
+            {
+                index++;
+                ConsoleHelpWriteLine($"{index} - {gear.Name}", ConsoleColor.White);
+            }
+
+            // Pick item to use. '0' is to pick another action
+            int chosenIndex = PickFromMenu(index, activePlayer.isHuman);
+            if (chosenIndex == 0)
+                return null;
+
+            Gear chosenGear = activePlayer.Gear[chosenIndex - 1]; // '-1' because array is zero-indexed
+
+            return new EquipGear(activePlayer, activeChar, chosenGear);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace TheFinalBattleComponents
         public bool isHuman { get; }
         public List<Character> Party = new List<Character>();
         public List<ItemType> Items = new List<ItemType>();
+        public List<Gear> Gear = new List<Gear>();
 
         public Player(bool isHuman)
         {

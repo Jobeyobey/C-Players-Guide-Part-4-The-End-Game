@@ -12,11 +12,13 @@ using System.Collections;
 
 namespace TheFinalBattleComponents
 {
+    // All actions implement this interface
     public interface IAction
     {
         void Execute(TheFinalBattle game);
     }
 
+    // This action does nothing. It effectively just passes the turn
     public class NothingAction : IAction
     {
         Character ActiveCharacter { get; } // Character activating command
@@ -32,15 +34,36 @@ namespace TheFinalBattleComponents
         }
     }
 
+    // EQUIP GEAR
+    public class EquipGear : IAction
+    {
+        public Player ActivePlayer { get; init; }
+        public Character ActiveChar { get; init; }
+        public Gear Gear { get; init; }
+
+        public EquipGear(Player activePlayer, Character activeChar, Gear gear) {
+            ActivePlayer = activePlayer;
+            ActiveChar = activeChar;
+            Gear = gear;
+        }
+
+        public void Execute(TheFinalBattle game)
+        {
+            ActiveChar.Equipped = Gear;
+            ActiveChar.attackList.Add(AttackType.Weapon);
+            ActivePlayer.Gear.Remove(Gear);
+        }
+    }
+
     // ATTACKS
     public abstract class Attack : IAction
     {
-        public abstract string Name { get; init; }
-        public Character ActiveChar { get; init; }
-        public Character TargetChar { get; init; }
-        public abstract int Damage { get; init; }
+        public abstract string Name { get; init; } // Used for displaying name of attack in menu, as well as in battle description. (e.g. Player1 {Punched} Player2)
+        public Character ActiveChar { get; init; } // Character initiating the action
+        public Character TargetChar { get; init; } // Target of action
+        public abstract int Damage { get; init; } // Damage dealt by action
         public Attack() { }
-        public abstract void Execute(TheFinalBattle game);
+        public abstract void Execute(TheFinalBattle game); // Method to execute action
     }
 
     public class Punch : Attack
@@ -52,6 +75,24 @@ namespace TheFinalBattleComponents
             ActiveChar = activeChar;
             TargetChar = targetChar;
         }
+        public override void Execute(TheFinalBattle game)
+        {
+            ActionHelper.DoDamage(this);
+        }
+    }
+
+    public class WeaponAttack : Attack
+    {
+        public override string Name { get; init; }
+        public override int Damage { get; init; }
+        public WeaponAttack(Character activeChar, Character targetChar)
+        {
+            ActiveChar = activeChar;
+            TargetChar = targetChar;
+            Name = activeChar.Equipped.Name;
+            Damage = activeChar.Equipped.Damage;
+        }
+
         public override void Execute(TheFinalBattle game)
         {
             ActionHelper.DoDamage(this);
@@ -103,12 +144,12 @@ namespace TheFinalBattleComponents
     // ITEMS
     public abstract class Item : IAction
     {
-        public abstract string Name { get; init; }
-        public Player ActivePlayer { get; init; }
-        public Character ActiveChar { get; init; }
-        public Character TargetChar { get; init; }
+        public abstract string Name { get; init; } // Used for displaying name of item in menu, as well as in battle description. (e.g. Char1 used {HealthPotion} on Char2)
+        public Player ActivePlayer { get; init; } // Player using item
+        public Character ActiveChar { get; init; } // Character using item
+        public Character TargetChar { get; init; } // Targeted character
         public Item() { }
-        public abstract void Execute(TheFinalBattle game); // To keep creation of new items flexible, all settings are added in "Execute" command
+        public abstract void Execute(TheFinalBattle game); // Method to execute action. These will contain more code than attacks due to the flexible nature of items
     }
 
     public class HealthPotion : Item
@@ -164,7 +205,7 @@ namespace TheFinalBattleComponents
         }
     }
 
-    public enum ActionType { Nothing, Attack, UseItem } // Available actions to all characters
-    public enum AttackType { Punch, BoneCrunch, Unraveling } // All available attacks in the game. Remember to add new attacks to "PickAttack" method.
-    public enum ItemType { HealthPotion }
+    public enum ActionType { Nothing, Attack, UseItem, Equip } // Available actions to all characters
+    public enum AttackType { Punch, Weapon, BoneCrunch, Unraveling } // All available attacks in the game. Remember to add new attacks to "PickAttack" method.
+    public enum ItemType { HealthPotion } // All available items in the game.
 }

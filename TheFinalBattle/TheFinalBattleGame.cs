@@ -155,6 +155,7 @@ namespace TheFinalBattleComponents
                 if (chosenAction == ActionType.Nothing) action = new NothingAction(activeChar);
                 else if (chosenAction == ActionType.Attack) action = PickAttack(this, activeChar, activePlayer);
                 else if (chosenAction == ActionType.UseItem) action = PickItem(this, activeChar, activePlayer);
+                else if (chosenAction == ActionType.Equip) action = PickGear(this, activeChar, activePlayer);
                 else action = null; // Failsafe in case of error
             }
 

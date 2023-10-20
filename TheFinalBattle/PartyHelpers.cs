@@ -29,45 +29,51 @@ namespace TheFinalBattleComponents
             }
 
             // Add extra hero characters here
-            game.Player1.Party.Add(new MainCharacter(name));
+            game.Player1.Party.Add(new MainCharacter(name, null));
 
             // Add party items here
             game.Player1.Items.Add(ItemType.HealthPotion);
             game.Player1.Items.Add(ItemType.HealthPotion);
             game.Player1.Items.Add(ItemType.HealthPotion);
+            game.Player1.Gear.Add(new Dagger());
         }
 
         // Depending on current round, make relevant monster party.
-        // Add rounds/monsters here as required
         public static void MakeMonsterParty(TheFinalBattle game, int round)
         {
             // Clear existing members/items
             game.Player2.Party.Clear();
             game.Player2.Items.Clear();
 
+            // ROUND ONE
             if (round == 1)
             {
                 // Add monsters here
-                game.Player2.Party.Add(new Skeleton("SKELETON ONE"));
+                game.Player2.Party.Add(new Skeleton("SKELETON ONE", null));
 
                 // Add items here
                 game.Player2.Items.Add(ItemType.HealthPotion);
+                game.Player2.Gear.Add(new Dagger());
             }
+
+            // ROUND TWO
             else if (round == 2)
             {
                 // Add monsters here
-                game.Player2.Party.Add(new Skeleton("SKELETON ONE"));
-                game.Player2.Party.Add(new Skeleton("SKELETON TWO"));
+                game.Player2.Party.Add(new Skeleton("SKELETON ONE", null));
+                game.Player2.Party.Add(new Skeleton("SKELETON TWO", null));
 
                 // Add items here
                 game.Player2.Items.Add(ItemType.HealthPotion);
             }
+
+            // ROUND THREE
             else if (round == 3)
             {
                 // Add monsters here
-                game.Player2.Party.Add(new Skeleton("SKELETON ONE"));
-                game.Player2.Party.Add(new Skeleton("SKELETON TWO"));
-                game.Player2.Party.Add(new TheUncodedOne("THE UNCODED ONE"));
+                game.Player2.Party.Add(new Skeleton("SKELETON ONE", null));
+                game.Player2.Party.Add(new Skeleton("SKELETON TWO", null));
+                game.Player2.Party.Add(new TheUncodedOne("THE UNCODED ONE", null));
 
                 // Add items here
                 game.Player2.Items.Add(ItemType.HealthPotion);
