@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheFinalBattleComponents;
+using TheFinalBattleSettings;
 
 namespace TheFinalBattleComponents
 {
@@ -35,9 +36,12 @@ namespace TheFinalBattleComponents
         public static void DisplayGameStatus(TheFinalBattle game, Character activeChar)
         {
             Console.WriteLine();
+
+            Thread.Sleep(Settings.Delay / 3);
             ConsoleHelpWriteLine("============================================= BATTLE =============================================", ConsoleColor.White);
             foreach (Character character in game.Player1.Party)
             {
+                Thread.Sleep(Settings.Delay / 3);
                 string charStatus = GetCharacterStatus(character);
 
                 if (character == activeChar)
@@ -46,9 +50,11 @@ namespace TheFinalBattleComponents
                     ConsoleHelpWriteLine($"{charStatus}", ConsoleColor.Gray);
             }
 
+            Thread.Sleep(Settings.Delay / 3);
             ConsoleHelpWriteLine("----------------------------------------------- VS -----------------------------------------------", ConsoleColor.White);
             foreach (Character character in game.Player2.Party)
             {
+                Thread.Sleep(Settings.Delay / 3);
                 string charStatus = GetCharacterStatus(character);
 
                 if (character == activeChar)
@@ -56,6 +62,8 @@ namespace TheFinalBattleComponents
                 else
                     ConsoleHelpWriteLine($"{charStatus,98}", ConsoleColor.Gray);
             }
+
+            Thread.Sleep(Settings.Delay / 3);
             ConsoleHelpWriteLine("==================================================================================================", ConsoleColor.White);
             Console.WriteLine();
         }

@@ -1,41 +1,15 @@
-﻿Characters can equip gear that allows them to have a second special attack. A party can have gear in their
-shared inventory, but unlike items, gear is not usable until a character equips it, and it takes a turn to
-equip gear from inventory.
+﻿This feature will allow us to have a basic loot system. When a character dies, the opposing side should
+immediately recover the dead character’s equipped gear. When the monster party is eliminated, the
+monster party’s unequipped gear and items should be transferred to the hero party.
 
 Objectives:
 
-[X] The game must support the concept of gear. All gear has a name and an attack they provide.
+[X] If you did the Items challenge, when a party is eliminated, transfer all items from the losing party’s
+	inventory items to the winning party. Display a message that indicates which items have been acquired.
+	Note: It is okay only to do this when the hero party wins. When the monster party wins a battle, the game ends.
 
-[X] Each character can equip one piece of gear.
+[X] If you did the Gear challenge, when a party is eliminated, transfer all unequipped gear from the losing
+	party’s inventory to the winning party. Display a message that indicates when gear has been acquired.
 
-[X] Each party also has a collection of unequipped gear.
-
-[X] Add the ability to perform an equip action, which knows what gear is being equipped. When this
-	action runs, it should move the gear from the party’s inventory to the character.
-
-[X] If a character already has something equipped, the previously equipped gear should be unequipped
-	and moved back to the party’s shared inventory.
-
-[X] The computer player should equip gear. If a character has nothing equipped but the party has
-	equipable gear, the computer player should choose to equip the gear 50% of the time.
-
-[X] Note: If you also did the Items challenge, using potions should be a priority over equipping gear.
-
-[X] The console player should also have the option to equip gear. If there is more than one thing to
-	equip, allow the player to choose from all available options.
-
-[X] The computer player should prefer the attack provided by equipped gear when one is available. Gearbased attacks are typically stronger.
-
-[X] If gear is equipped, the human player should be able to pick either the standard attack or the gearbased attack.
-
-[X] The True Programmer character should start the game with a sword item equipped. The sword
-	should have a slash attack that deals two damage.
-
-[X] Create a dagger with the attack stab that reliably deals 1 point of damage.
-
-[X] Start the first battle’s skeleton with a dagger equipped. This one was prepared for battle.
-
-[X] Put two daggers in the team inventory for the second battle. Both skeletons will be able to use a
-	dagger, but they will have to equip it first.These two were less prepared.
-
-[X] Optional: If you did The Game’s Status, consider showing what gear each character has equipped.
+[X] If you did the Gear challenge, when a character is eliminated, transfer any equipped gear to the
+	winning party’s inventory. Display a message that states gear that was acquired.

@@ -40,10 +40,6 @@ namespace TheFinalBattleComponents
         // Depending on current round, make relevant monster party.
         public static void MakeMonsterParty(TheFinalBattle game, int round)
         {
-            // Clear existing members/items
-            game.Player2.Party.Clear();
-            game.Player2.Items.Clear();
-
             // ROUND ONE
             if (round == 1)
             {
@@ -84,6 +80,25 @@ namespace TheFinalBattleComponents
             }
             // New rounds go here by adding extra "else if's"
             // Number of rounds must be updated in Settings.cs
+        }
+
+        public static void LootEnemyParty(TheFinalBattle game)
+        {
+            // Move all items to Player1's inventory
+            foreach (ItemType item in game.Player2.Items)
+            {
+                game.Player1.Items.Add(item);
+            }
+
+            // Move all items to Player1's inventory
+            foreach (Gear gear in game.Player2.Gear)
+            {
+                game.Player1.Gear.Add(gear);
+            }
+
+            // Clear Player2's inventory and gear
+            game.Player2.Items.Clear();
+            game.Player2.Gear.Clear();
         }
     }
 }

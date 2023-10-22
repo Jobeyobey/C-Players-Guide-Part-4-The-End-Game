@@ -48,7 +48,9 @@ namespace TheFinalBattleComponents
 
                 if (!heroWin) break; // If hero does not win, break loop and continue to EndGame
 
-                ConsoleHelpWriteLine("The enemy party has been defeated!", ConsoleColor.Yellow); // Else if hero wins, announce it
+                ConsoleHelpWriteLine("The enemy party has been defeated!", ConsoleColor.Yellow);
+
+                LootEnemyParty(this);
             }
 
             EndGame(heroWin); // Declare winner
@@ -62,6 +64,7 @@ namespace TheFinalBattleComponents
             // Core Round Loop
             while (true)
             {
+                Thread.Sleep(Settings.Delay / 3);
                 Player activePlayer;
                 Character activeChar;
                 int charIndex;
@@ -85,8 +88,8 @@ namespace TheFinalBattleComponents
                 TakeTurn(activePlayer, activeChar);
 
                 // Check each party for dead characters
-                StatusCheck(Player1.Party);
-                StatusCheck(Player2.Party);
+                DeathCheck(this, Player1);
+                DeathCheck(this, Player2);
 
                 // Check if either party has no characters left
                 if (Player1.Party.Count == 0)
@@ -105,12 +108,13 @@ namespace TheFinalBattleComponents
             }
         }
 
-        public void StatusCheck(List<Character> party)
+        public void DeathCheck(TheFinalBattle game, Player player)
         {
             List<Character> toBeRemoved = new List<Character>();
+            List<Gear> toBeLooted = new List<Gear>();
 
             // Add list of dead characters to new list, to prevent errors removing them while iterating
-            foreach (Character character in party)
+            foreach (Character character in player.Party)
             {
                 if (character.CurrentHp == 0)
                 {
@@ -118,11 +122,22 @@ namespace TheFinalBattleComponents
                 }
             }
 
-            // Remove characters from party using temporary list
+            // Loot and remove characters from party using temporary list
             foreach (Character character in toBeRemoved)
             {
                 ConsoleHelpWriteLine($"{character.Name} has been defeated!", ConsoleColor.Yellow);
-                party.Remove(character);
+
+                // Loot gear if equipped
+                if (character.Equipped != null)
+                {
+                    ConsoleHelpWriteLine($"{character.Name} dropped {character.Equipped.Name}", ConsoleColor.Green);
+                    if (game.Player1Turn)
+                        game.Player1.Gear.Add(character.Equipped);
+                    else
+                        game.Player2.Gear.Add(character.Equipped);
+                }
+
+                player.Party.Remove(character);
             }
         }
 
