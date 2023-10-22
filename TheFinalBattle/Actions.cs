@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using TheFinalBattleComponents;
-using static TheFinalBattleComponents.Helpers;
+using static TheFinalBattleComponents.MenuHelpers;
 using static TheFinalBattleComponents.ConsoleHelpers;
 using TheFinalBattleSettings;
 using System.Collections;

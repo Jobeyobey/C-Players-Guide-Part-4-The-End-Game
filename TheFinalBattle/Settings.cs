@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static TheFinalBattleComponents.Helpers;
+using static TheFinalBattleComponents.MenuHelpers;
 using static TheFinalBattleComponents.ConsoleHelpers;
 
 // This class contains the settings for different aspects of the game, for easy balancing and testing

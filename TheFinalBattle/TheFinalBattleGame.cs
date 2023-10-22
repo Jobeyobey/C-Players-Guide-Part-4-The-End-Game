@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 using TheFinalBattleSettings;
-using static TheFinalBattleComponents.Helpers;
+using static TheFinalBattleComponents.MenuHelpers;
 using static TheFinalBattleComponents.PartyHelpers;
 using static TheFinalBattleComponents.ConsoleHelpers;
 
