@@ -49,6 +49,15 @@ namespace TheFinalBattleComponents
 
         public void Execute(TheFinalBattle game)
         {
+            // If Character already has gear equipped, move it to Player inventory
+            if (ActiveChar.Equipped != null)
+            {
+                ActivePlayer.Gear.Add(ActiveChar.Equipped);
+                ActiveChar.attackList.Remove(AttackType.Weapon);
+                ActiveChar.Equipped = null;
+            }
+
+            // Equip character with gear, remove it from inventory
             ActiveChar.Equipped = Gear;
             ActiveChar.attackList.Add(AttackType.Weapon);
             ActivePlayer.Gear.Remove(Gear);
@@ -102,7 +111,7 @@ namespace TheFinalBattleComponents
     public class BoneCrunch : Attack
     {
         public override string Name { get; init; } = "BoneCrunch";
-        public override int Damage { get; init; }
+        public override int Damage { get; init; } = Settings.BoneCrunchDamage;
 
         public BoneCrunch(Character activeChar, Character targetChar)
         {
@@ -111,7 +120,7 @@ namespace TheFinalBattleComponents
 
             // Randomly set damage. '+1' to BoneCrunchDamage because allowing 0-1 damage would require "random.Next(2);"
             Random random = new ();
-            Damage = random.Next(Settings.BoneCrunchDamage + 1);
+            Damage = random.Next(Damage + 1);
         }
 
         public override void Execute(TheFinalBattle game)
@@ -132,7 +141,7 @@ namespace TheFinalBattleComponents
 
             // Randomly set damage. '+1' to UnravelingDamage because allowing 0-1 damage would require "random.Next(2);"
             Random random = new();
-            Damage = random.Next(Settings.UnravelingDamage + 1);
+            Damage = random.Next(Damage + 1);
         }
 
         public override void Execute(TheFinalBattle game)

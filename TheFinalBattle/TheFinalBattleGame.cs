@@ -149,7 +149,7 @@ namespace TheFinalBattleComponents
             while (action == null)
             {
                 // Prompt for input
-                ActionType chosenAction = activePlayer.isHuman ? PickAction(activePlayer.isHuman) : ComputerAction(this, activePlayer);
+                ActionType chosenAction = activePlayer.isHuman ? PickAction(activePlayer.isHuman) : ComputerAction(this, activePlayer, activeChar);
 
                 // Resolve input
                 if (chosenAction == ActionType.Nothing) action = new NothingAction(activeChar);

@@ -14,6 +14,18 @@ namespace TheFinalBattleComponents
         public abstract DamageType Type { get; init; }
     }
 
+    public class Sword : Gear
+    {
+        override public string Name { get; init; } = "Sword";
+        override public int Damage { get; init; } = 2;
+        override public int HitChance { get; init; } = 90;
+        override public DamageType Type { get; init; } = DamageType.Normal;
+        public Sword()
+        {
+
+        }
+    }
+
     public class Dagger : Gear
     {
         override public string Name { get; init; } = "Dagger";

@@ -35,26 +35,42 @@ namespace TheFinalBattleComponents
         public static void DisplayGameStatus(TheFinalBattle game, Character activeChar)
         {
             Console.WriteLine();
-
             ConsoleHelpWriteLine("============================================= BATTLE =============================================", ConsoleColor.White);
             foreach (Character character in game.Player1.Party)
             {
+                string charStatus = GetCharacterStatus(character);
+
                 if (character == activeChar)
-                    ConsoleHelpWriteLine($"{character.Name,-5} ( {character.CurrentHp}/{character.MaxHp} )", ConsoleColor.Yellow);
+                    ConsoleHelpWriteLine($"{charStatus}", ConsoleColor.Yellow);
                 else
-                    ConsoleHelpWriteLine($"{character.Name,-5} ( {character.CurrentHp}/{character.MaxHp} )", ConsoleColor.Gray);
+                    ConsoleHelpWriteLine($"{charStatus}", ConsoleColor.Gray);
             }
 
             ConsoleHelpWriteLine("----------------------------------------------- VS -----------------------------------------------", ConsoleColor.White);
             foreach (Character character in game.Player2.Party)
             {
+                string charStatus = GetCharacterStatus(character);
+
                 if (character == activeChar)
-                    ConsoleHelpWriteLine($"{character.Name,90} ( {character.CurrentHp}/{character.MaxHp} )", ConsoleColor.Yellow);
+                    ConsoleHelpWriteLine($"{charStatus,98}", ConsoleColor.Yellow);
                 else
-                    ConsoleHelpWriteLine($"{character.Name,90} ( {character.CurrentHp}/{character.MaxHp} )", ConsoleColor.Gray);
+                    ConsoleHelpWriteLine($"{charStatus,98}", ConsoleColor.Gray);
             }
             ConsoleHelpWriteLine("==================================================================================================", ConsoleColor.White);
             Console.WriteLine();
+        }
+
+        public static string GetCharacterStatus(Character character)
+        {
+            string charStatus = $"{character.Name} ({character.CurrentHp}/{character.MaxHp})";
+
+            // If character has gear equipped, add to string
+            if (character.Equipped != null)
+            {
+                charStatus += $" Gear: {character.Equipped.Name}";
+            }
+
+            return charStatus;
         }
     }
 }

@@ -29,13 +29,12 @@ namespace TheFinalBattleComponents
             }
 
             // Add extra hero characters here
-            game.Player1.Party.Add(new MainCharacter(name, null));
+            game.Player1.Party.Add(new MainCharacter(name, new Sword()));
 
             // Add party items here
             game.Player1.Items.Add(ItemType.HealthPotion);
             game.Player1.Items.Add(ItemType.HealthPotion);
             game.Player1.Items.Add(ItemType.HealthPotion);
-            game.Player1.Gear.Add(new Dagger());
         }
 
         // Depending on current round, make relevant monster party.
@@ -49,11 +48,10 @@ namespace TheFinalBattleComponents
             if (round == 1)
             {
                 // Add monsters here
-                game.Player2.Party.Add(new Skeleton("SKELETON ONE", null));
+                game.Player2.Party.Add(new Skeleton("SKELETON ONE", new Dagger()));
 
                 // Add items here
                 game.Player2.Items.Add(ItemType.HealthPotion);
-                game.Player2.Gear.Add(new Dagger());
             }
 
             // ROUND TWO
@@ -65,18 +63,24 @@ namespace TheFinalBattleComponents
 
                 // Add items here
                 game.Player2.Items.Add(ItemType.HealthPotion);
+
+                // Add gear here
+                game.Player2.Gear.Add(new Dagger());
+                game.Player2.Gear.Add(new Dagger());
             }
 
             // ROUND THREE
             else if (round == 3)
             {
                 // Add monsters here
-                game.Player2.Party.Add(new Skeleton("SKELETON ONE", null));
-                game.Player2.Party.Add(new Skeleton("SKELETON TWO", null));
+                game.Player2.Party.Add(new Skeleton("SKELETON ONE", new Dagger()));
+                game.Player2.Party.Add(new Skeleton("SKELETON TWO", new Dagger()));
                 game.Player2.Party.Add(new TheUncodedOne("THE UNCODED ONE", null));
 
                 // Add items here
                 game.Player2.Items.Add(ItemType.HealthPotion);
+
+                // Add gear here
             }
             // New rounds go here by adding extra "else if's"
             // Number of rounds must be updated in Settings.cs

@@ -62,7 +62,7 @@ namespace TheFinalBattleComponents
             return chosenAction;
         }
 
-        public static ActionType ComputerAction(TheFinalBattle game, Player activePlayer)
+        public static ActionType ComputerAction(TheFinalBattle game, Player activePlayer, Character activeChar)
         {
             // Print menu to console despite player being computer (Just nice to see what options are available when watching)
             int index = 0;
@@ -74,12 +74,13 @@ namespace TheFinalBattleComponents
 
             Thread.Sleep(Settings.Delay);
 
+            // Declare chance variables
+            int attackChance = 100;
+            int itemChance = 0;
+            int equipChance = 0;
+
             // Check if party has items to use
-            if (activePlayer.Items.Count == 0)
-            {
-                return ActionType.Attack;
-            }
-            else
+            if (activePlayer.Items.Count != 0)
             {
                 // Check whether items in inventory are offensive or defensive
                 bool hasDefensiveItem = false;
@@ -89,63 +90,87 @@ namespace TheFinalBattleComponents
                 {
                     if (item == ItemType.HealthPotion)
                         hasDefensiveItem = true;
-                    // ADD ELSE IF FOR OFFENSIVE ITEMS WHEN ADDED
+                    // TODO add offensive items
                 }
 
-                // Check if available items are useful
-                bool healUseful = false;
-
+                // Check if available defensive items are useful
                 if (hasDefensiveItem)
                 {
                     foreach (Character character in activePlayer.Party)
                     {
                         if (character.CurrentHp <= character.MaxHp / 2)
                         {
-                            healUseful = true;
+                            itemChance = 25; // 25% chance of using an item if healing is needed
+                            attackChance -= 25; // Compensate by removing 25% from attack chance
                         }
                     }
                 }
-                // Calculate what action to take
-                Random random = new Random();
-                int randomInt = random.Next(100);
-                int attackChance;
-                int itemChance;
 
-                if (healUseful)
-                {
-                    attackChance = 75;
-                    itemChance = 25;
-
-                    if (randomInt < attackChance)
-                        return ActionType.Attack;
-                    else if (randomInt < attackChance + itemChance)
-                        return ActionType.UseItem;
-                    else
-                        return ActionType.Nothing;
-                }
-                else
-                {
-                    return ActionType.Attack;
-                }
+                //TODO Check if available offensive items are useful
             }
+
+            // Check if character needs gear and has it available
+            if (activeChar.Equipped == null && activePlayer.Gear.Count != 0)
+            {
+                equipChance = 50; // 50% chance of equipping gear if it's available and character doesn't have gear
+                attackChance -= 50; // Compensate by removing 50% from attack chance
+            }
+
+            // Prioritise healing over equipping if healing is needed, as per challenge requirements
+            if (itemChance != 0)
+            {
+                itemChance = 50;
+                attackChance = 50;
+                equipChance = 0;
+            }
+
+            // Calculate what action to take
+            Random random = new Random();
+            int randomInt = random.Next(100);
+
+            if (randomInt < attackChance)
+                return ActionType.Attack;
+            else if (randomInt < attackChance + itemChance)
+                return ActionType.UseItem;
+            else if (randomInt < attackChance + itemChance + equipChance)
+                return ActionType.Equip;
+            else
+                return ActionType.Nothing;
         }
 
-        public static IAction PickAttack(TheFinalBattle game, Character character, Player activePlayer)
+        public static IAction PickAttack(TheFinalBattle game, Character activeChar, Player activePlayer)
         {
             ConsoleHelpWriteLine("Pick an attack.", ConsoleColor.Yellow);
 
             // Print list of attacks with index numbers for player to pick from
             ConsoleHelpWriteLine($"0 - Pick another action", ConsoleColor.White);
             int index = 0;
-            foreach (AttackType attack in character.attackList)
+            foreach (AttackType attack in activeChar.attackList)
             {
                 index++;
-                ConsoleHelpWriteLine($"{index} - {attack}", ConsoleColor.White);
+
+                if (attack == AttackType.Weapon) // Print weapon name
+                {
+                    ConsoleHelpWriteLine($"{index} - {activeChar.Equipped.Name}", ConsoleColor.White);
+                }
+                else
+                {
+                    ConsoleHelpWriteLine($"{index} - {attack}", ConsoleColor.White);
+                }
             }
 
-            int chosenIndex = PickFromMenu(index, activePlayer.isHuman);
+            // Choose attack from list
+            AttackType chosenAttack;
 
-            // Calculate target player
+            if (!activePlayer.isHuman && activeChar.Equipped != null) // If computer and character is equipped, use equipped weapon
+                chosenAttack = AttackType.Weapon;
+            else
+            {
+                int chosenAttackIndex = PickFromMenu(index, activePlayer.isHuman);
+                chosenAttack = activeChar.attackList[chosenAttackIndex - 1]; // '-1' because array is zero-indexed
+            }
+
+            // Calculate target player/party
             Player targetPlayer;
             if (activePlayer == game.Player1)
                 targetPlayer = game.Player2;
@@ -157,20 +182,15 @@ namespace TheFinalBattleComponents
             if (target == null)
                 return null;
 
-            AttackType chosenAttackName = character.attackList[chosenIndex - 1]; // '-1' because array is zero-indexed
-
             // Add all possible attacks here
-            if (chosenAttackName == AttackType.Weapon)     return new WeaponAttack(character, target);
-            if (chosenAttackName == AttackType.BoneCrunch) return new BoneCrunch(character, target);
-            if (chosenAttackName == AttackType.Unraveling) return new Unraveling(character, target);
-            else return new Punch(character, target);
+            if (chosenAttack == AttackType.Weapon)     return new WeaponAttack(activeChar, target);
+            if (chosenAttack == AttackType.BoneCrunch) return new BoneCrunch(activeChar, target);
+            if (chosenAttack == AttackType.Unraveling) return new Unraveling(activeChar, target);
+            else return new Punch(activeChar, target);
         }
 
         public static IAction PickItem(TheFinalBattle game, Character character, Player activePlayer)
         {
-            if (!activePlayer.isHuman)
-                return ComputerItem(game, character, activePlayer);
-
             // Check player has items to use
             if (activePlayer.Items.Count == 0)
             {
@@ -178,9 +198,12 @@ namespace TheFinalBattleComponents
                 return null;
             }
 
-            ConsoleHelpWriteLine("Pick an item to use.", ConsoleColor.Yellow);
+            // If player is computer, use computer method
+            if (!activePlayer.isHuman)
+                return ComputerItem(game, character, activePlayer);
 
-            // Print list of items with index numbers for player to pick from
+            // Prompt player for choice, listing available items
+            ConsoleHelpWriteLine("Pick an item to use.", ConsoleColor.Yellow);
             ConsoleHelpWriteLine($"0 - Pick another action", ConsoleColor.White);
             int index = 0;
             foreach (ItemType item in activePlayer.Items)
@@ -300,6 +323,7 @@ namespace TheFinalBattleComponents
             }
 
             // Print list of items with index numbers for player to pick from
+            ConsoleHelpWriteLine($"0 - Pick another action", ConsoleColor.White);
             int index = 0;
             foreach (Gear gear in activePlayer.Gear)
             {

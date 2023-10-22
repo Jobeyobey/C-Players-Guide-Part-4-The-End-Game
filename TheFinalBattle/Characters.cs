@@ -12,13 +12,17 @@ namespace TheFinalBattleComponents
         public string Name { get; init; } = "Unnamed";
         public int MaxHp { get; init; }
         public int CurrentHp { get; set; }
-        public Gear Equipped { get; set; }
+        public Gear Equipped { get; set; } = null;
         public List<AttackType> attackList = new List<AttackType>(); // List for each character to add their available actions to upon construction
 
         // Basic constructor
         public Character(Gear gear)
         {
-            Equipped = gear;
+            if (gear != null)
+            {
+                Equipped = gear;
+                attackList.Add(AttackType.Weapon);
+            }
         }
 
         // Use this to damage or heal a character. Positive integers heal, negative integers damage.
@@ -47,7 +51,7 @@ namespace TheFinalBattleComponents
             Equipped = gear;
 
             // Add actions character can do here
-            attackList.Add(AttackType.Punch);
+            attackList.Insert(0, AttackType.Punch);
         }
     }
 
@@ -62,7 +66,7 @@ namespace TheFinalBattleComponents
             Equipped = gear;
 
             // Add actions character can do here
-            attackList.Add(AttackType.BoneCrunch);
+            attackList.Insert(0, AttackType.BoneCrunch);
         }
     }
 
@@ -77,7 +81,7 @@ namespace TheFinalBattleComponents
             Equipped = gear;
 
             // Add actions character can do here
-            attackList.Add(AttackType.Unraveling);
+            attackList.Insert(0, AttackType.Unraveling);
         }
     }
 }
