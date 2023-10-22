@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace TheFinalBattleComponents
 {
+    // Base gear class
     public abstract class Gear
     {
         public abstract string Name { get; init; }
@@ -20,10 +21,7 @@ namespace TheFinalBattleComponents
         override public int Damage { get; init; } = 2;
         override public int HitChance { get; init; } = 90;
         override public DamageType Type { get; init; } = DamageType.Normal;
-        public Sword()
-        {
-
-        }
+        public Sword() {}
     }
 
     public class Dagger : Gear
@@ -32,10 +30,7 @@ namespace TheFinalBattleComponents
         override public int Damage { get; init; } = 1;
         override public int HitChance { get; init; } = 90;
         override public DamageType Type { get; init; } = DamageType.Normal;
-        public Dagger()
-        {
-
-        }
+        public Dagger() {}
     }
 
     public enum DamageType { Normal };

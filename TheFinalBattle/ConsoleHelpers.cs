@@ -60,6 +60,7 @@ namespace TheFinalBattleComponents
             Console.WriteLine();
         }
 
+        // Create a string for displaying character status
         public static string GetCharacterStatus(Character character)
         {
             string charStatus = $"{character.Name} ({character.CurrentHp}/{character.MaxHp})";

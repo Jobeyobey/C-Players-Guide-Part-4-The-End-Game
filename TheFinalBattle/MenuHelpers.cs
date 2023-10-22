@@ -9,7 +9,7 @@ using static TheFinalBattleComponents.ConsoleHelpers;
 
 namespace TheFinalBattleComponents
 {
-    public class Helpers
+    public class MenuHelpers
     {
         // Pick an integer between 0 and 'max'.
         // Used for having human/computer pick an action from action/attack/item menus
