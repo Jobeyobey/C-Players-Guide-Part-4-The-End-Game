@@ -40,7 +40,7 @@ namespace TheFinalBattleComponents
         }
     }
 
-    // Main player character. The 'Coding Hero'
+    // HEROES
     public class MainCharacter : Character
     {
         public MainCharacter(string name, Gear gear) : base (gear)
@@ -50,12 +50,26 @@ namespace TheFinalBattleComponents
             CurrentHp = MaxHp;
             Equipped = gear;
 
+            // Add actions character can do here. 'Insert' because I want the character-specific attacks to be listed first.
+            attackList.Insert(0, AttackType.Punch);
+        }
+    }
+
+    public class VinFletcher : Character
+    {
+        public VinFletcher(Gear gear) : base (gear)
+        {
+            Name = "Vin Fletcher";
+            MaxHp = 15;
+            CurrentHp = MaxHp;
+            Equipped = gear;
+
             // Add actions character can do here
             attackList.Insert(0, AttackType.Punch);
         }
     }
 
-    // Basic Skeleton
+    // MONSTERS
     public class Skeleton : Character
     {
         public Skeleton(string name, Gear gear) : base (gear)
@@ -70,7 +84,6 @@ namespace TheFinalBattleComponents
         }
     }
 
-    // Final boss
     public class TheUncodedOne : Character
     {
         public TheUncodedOne(string name, Gear gear) : base(gear)

@@ -67,18 +67,20 @@ namespace TheFinalBattleComponents
     // ATTACKS
     public abstract class Attack : IAction
     {
-        public abstract string Name { get; init; } // Used for displaying name of attack in menu, as well as in battle description. (e.g. Player1 {Punched} Player2)
-        public Character ActiveChar { get; init; } // Character initiating the action
-        public Character TargetChar { get; init; } // Target of action
-        public abstract int Damage { get; init; } // Damage dealt by action
+        public abstract string AttackName { get; init; }
+        public Character ActiveChar { get; init; }
+        public Character TargetChar { get; init; }
+        public abstract int Damage { get; init; }
+        public abstract int Accuracy { get; init; }
         public Attack() { }
         public abstract void Execute(TheFinalBattle game); // Method to execute action
     }
 
     public class Punch : Attack
     {
-        public override string Name { get; init; } = "Punch";
+        public override string AttackName { get; init; } = "Punch";
         public override int Damage { get; init; } = Settings.PunchDamage;
+        public override int Accuracy { get; init; } = Settings.PunchAccuracy;
         public Punch(Character activeChar, Character targetChar)
         {
             ActiveChar = activeChar;
@@ -86,32 +88,35 @@ namespace TheFinalBattleComponents
         }
         public override void Execute(TheFinalBattle game)
         {
-            ActionHelper.DoDamage(this);
+            ActionHelper.DoAttack(this);
         }
     }
 
     public class WeaponAttack : Attack
     {
-        public override string Name { get; init; }
+        public override string AttackName { get; init; }
         public override int Damage { get; init; }
+        public override int Accuracy { get; init; }
         public WeaponAttack(Character activeChar, Character targetChar)
         {
             ActiveChar = activeChar;
             TargetChar = targetChar;
-            Name = activeChar.Equipped.Name;
+            AttackName = activeChar.Equipped.AttackName;
             Damage = activeChar.Equipped.Damage;
+            Accuracy = activeChar.Equipped.Accuracy;
         }
 
         public override void Execute(TheFinalBattle game)
         {
-            ActionHelper.DoDamage(this);
+            ActionHelper.DoAttack(this);
         }
     }
 
     public class BoneCrunch : Attack
     {
-        public override string Name { get; init; } = "BoneCrunch";
+        public override string AttackName { get; init; } = "BoneCrunch";
         public override int Damage { get; init; } = Settings.BoneCrunchDamage;
+        public override int Accuracy { get; init; } = Settings.BoneCrunchAccuracy;
 
         public BoneCrunch(Character activeChar, Character targetChar)
         {
@@ -125,14 +130,15 @@ namespace TheFinalBattleComponents
 
         public override void Execute(TheFinalBattle game)
         {
-            ActionHelper.DoDamage(this);
+            ActionHelper.DoAttack(this);
         }
     }
 
     public class Unraveling : Attack
     {
-        public override string Name { get; init; } = "Unraveling";
+        public override string AttackName { get; init; } = "Unraveling";
         public override int Damage { get; init; } = Settings.UnravelingDamage;
+        public override int Accuracy { get; init; } = Settings.UnravelingAccuracy;
 
         public Unraveling(Character activeChar, Character targetChar)
         {
@@ -146,7 +152,7 @@ namespace TheFinalBattleComponents
 
         public override void Execute(TheFinalBattle game)
         {
-            ActionHelper.DoDamage(this);
+            ActionHelper.DoAttack(this);
         }
     }
 
@@ -192,25 +198,47 @@ namespace TheFinalBattleComponents
     // Action helper will contain methods to help calculate attacks for all Action types
     internal static class ActionHelper
     {
-        public static void DoDamage(Attack attack)
+        public static void DoAttack(Attack attack)
         {
+            // Check if attack hit or misses
+            bool hit = CheckHit(attack);
+
             // Temporary variables for easier readability
-            string attackName = attack.Name;
+            string attackName = attack.AttackName;
             Character activeChar = attack.ActiveChar;
             Character targetChar = attack.TargetChar;
 
-            // Announce attack and damage
+            // Announce attack and result
             Thread.Sleep(Settings.Delay / 2);
             ConsoleHelpWriteLine($"{activeChar.Name} did {attackName} on {targetChar.Name}", ConsoleColor.Gray);
 
             Thread.Sleep(Settings.Delay / 2);
-            ConsoleHelpWriteLine($"{attackName} dealt {attack.Damage} to {targetChar.Name}", ConsoleColor.Gray);
+            if (hit)
+                ConsoleHelpWriteLine($"{attackName} dealt {attack.Damage} to {targetChar.Name}", ConsoleColor.Gray);
+            else
+                ConsoleHelpWriteLine($"{activeChar.Name} missed {targetChar.Name}!", ConsoleColor.Gray);
 
-            // Damage target and report new health status
+            // Update and report status of target
             Thread.Sleep(Settings.Delay / 2);
-            targetChar.AlterHp(-attack.Damage);
+
+            if (hit)
+                targetChar.AlterHp(-attack.Damage);
+
             ConsoleHelpWriteLine($"{targetChar.Name} has {attack.TargetChar.CurrentHp}/{attack.TargetChar.MaxHp} HP", ConsoleColor.Gray);
             Thread.Sleep(Settings.Delay / 2);
+        }
+
+        // Check if an attack hits or misses based on accuracy
+        public static bool CheckHit(Attack attack)
+        {
+            bool hit;
+
+            Random random = new Random();
+            int fire = random.Next(0, 100);
+
+            hit = fire < attack.Accuracy ? true : false;
+
+            return hit;
         }
     }
 

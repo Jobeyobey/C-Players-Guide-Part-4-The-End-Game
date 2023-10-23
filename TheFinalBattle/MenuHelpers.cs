@@ -151,7 +151,7 @@ namespace TheFinalBattleComponents
 
                 if (attack == AttackType.Weapon) // Print weapon name
                 {
-                    ConsoleHelpWriteLine($"{index} - {activeChar.Equipped.Name}", ConsoleColor.White);
+                    ConsoleHelpWriteLine($"{index} - {activeChar.Equipped.AttackName}", ConsoleColor.White);
                 }
                 else
                 {
@@ -328,7 +328,7 @@ namespace TheFinalBattleComponents
             foreach (Gear gear in activePlayer.Gear)
             {
                 index++;
-                ConsoleHelpWriteLine($"{index} - {gear.Name}", ConsoleColor.White);
+                ConsoleHelpWriteLine($"{index} - {gear.AttackName}", ConsoleColor.White);
             }
 
             // Pick item to use. '0' is to pick another action

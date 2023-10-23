@@ -130,7 +130,7 @@ namespace TheFinalBattleComponents
                 // Loot gear if equipped
                 if (character.Equipped != null)
                 {
-                    ConsoleHelpWriteLine($"{character.Name} dropped {character.Equipped.Name}", ConsoleColor.Green);
+                    ConsoleHelpWriteLine($"{character.Name} dropped {character.Equipped.AttackName}", ConsoleColor.Green);
                     if (game.Player1Turn)
                         game.Player1.Gear.Add(character.Equipped);
                     else

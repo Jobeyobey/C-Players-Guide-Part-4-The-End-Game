@@ -30,6 +30,7 @@ namespace TheFinalBattleComponents
 
             // Add extra hero characters here
             game.Player1.Party.Add(new MainCharacter(name, new Sword()));
+            game.Player1.Party.Add(new VinFletcher(new Bow()));
 
             // Add party items here
             game.Player1.Items.Add(ItemType.HealthPotion);

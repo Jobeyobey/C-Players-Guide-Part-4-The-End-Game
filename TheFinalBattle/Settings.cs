@@ -17,8 +17,13 @@ namespace TheFinalBattleSettings
 
         // Attack Settings
         public static int PunchDamage { get; } = 1;
+        public static int PunchAccuracy { get; } = 100;
+        public static int QuickShotDamage { get; } = 3;
+        public static int QuickShotAccuracy { get; } = 50;
         public static int BoneCrunchDamage { get; } = 1;
+        public static int BoneCrunchAccuracy { get; } = 50;
         public static int UnravelingDamage { get; } = 2;
+        public static int UnravelingAccuracy { get; } = 50;
 
         // Game Setup
         public static int SetupGame()
