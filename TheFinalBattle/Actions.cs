@@ -58,6 +58,7 @@ namespace TheFinalBattleComponents
             }
 
             // Equip character with gear, remove it from inventory
+            ConsoleHelpWriteLine($"{ActiveChar.Name} equipped {Gear.Name}", ConsoleColor.Yellow);
             ActiveChar.Equipped = Gear;
             ActiveChar.attackList.Add(AttackType.Weapon);
             ActivePlayer.Gear.Remove(Gear);
@@ -70,7 +71,7 @@ namespace TheFinalBattleComponents
         public abstract string AttackName { get; init; }
         public Character ActiveChar { get; init; }
         public Character TargetChar { get; init; }
-        public abstract int Damage { get; init; }
+        public abstract int Damage { get; set; }
         public abstract int Accuracy { get; init; }
         public Attack() { }
         public abstract void Execute(TheFinalBattle game); // Method to execute action
@@ -79,7 +80,7 @@ namespace TheFinalBattleComponents
     public class Punch : Attack
     {
         public override string AttackName { get; init; } = "Punch";
-        public override int Damage { get; init; } = Settings.PunchDamage;
+        public override int Damage { get; set; } = Settings.PunchDamage;
         public override int Accuracy { get; init; } = Settings.PunchAccuracy;
         public Punch(Character activeChar, Character targetChar)
         {
@@ -95,7 +96,7 @@ namespace TheFinalBattleComponents
     public class WeaponAttack : Attack
     {
         public override string AttackName { get; init; }
-        public override int Damage { get; init; }
+        public override int Damage { get; set; }
         public override int Accuracy { get; init; }
         public WeaponAttack(Character activeChar, Character targetChar)
         {
@@ -115,7 +116,7 @@ namespace TheFinalBattleComponents
     public class BoneCrunch : Attack
     {
         public override string AttackName { get; init; } = "BoneCrunch";
-        public override int Damage { get; init; } = Settings.BoneCrunchDamage;
+        public override int Damage { get; set; } = Settings.BoneCrunchDamage;
         public override int Accuracy { get; init; } = Settings.BoneCrunchAccuracy;
 
         public BoneCrunch(Character activeChar, Character targetChar)
@@ -134,10 +135,26 @@ namespace TheFinalBattleComponents
         }
     }
 
+    public class Bite : Attack
+    {
+        public override string AttackName { get; init; } = "Bite";
+        public override int Damage { get; set; } = Settings.BiteDamage;
+        public override int Accuracy { get; init; } = Settings.BiteAccuracy;
+        public Bite(Character activeChar, Character targetChar)
+        {
+            ActiveChar = activeChar;
+            TargetChar = targetChar;
+        }
+        public override void Execute(TheFinalBattle game)
+        {
+            ActionHelper.DoAttack(this);
+        }
+    }
+
     public class Unraveling : Attack
     {
         public override string AttackName { get; init; } = "Unraveling";
-        public override int Damage { get; init; } = Settings.UnravelingDamage;
+        public override int Damage { get; set; } = Settings.UnravelingDamage;
         public override int Accuracy { get; init; } = Settings.UnravelingAccuracy;
 
         public Unraveling(Character activeChar, Character targetChar)
@@ -200,7 +217,6 @@ namespace TheFinalBattleComponents
     {
         public static void DoAttack(Attack attack)
         {
-            // Check if attack hit or misses
             bool hit = CheckHit(attack);
 
             // Temporary variables for easier readability
@@ -211,6 +227,8 @@ namespace TheFinalBattleComponents
             // Announce attack and result
             Thread.Sleep(Settings.Delay / 2);
             ConsoleHelpWriteLine($"{activeChar.Name} did {attackName} on {targetChar.Name}", ConsoleColor.Gray);
+
+            AttackModifier(ref attack);
 
             Thread.Sleep(Settings.Delay / 2);
             if (hit)
@@ -240,9 +258,26 @@ namespace TheFinalBattleComponents
 
             return hit;
         }
+
+        public static void AttackModifier (ref Attack attack)
+        {
+            switch(attack.TargetChar.Defense)
+            {
+                case DefenseType.StoneArmour:
+                    if (attack.Damage > 0)
+                    {
+                        ConsoleHelpWriteLine($"{attack.TargetChar.Name}'s stone armour reduced damage by 1!", ConsoleColor.Gray);
+                        attack.Damage -= 1;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public enum ActionType { Nothing, Attack, UseItem, Equip } // Available actions to all characters
-    public enum AttackType { Punch, Weapon, BoneCrunch, Unraveling } // All available attacks in the game. Remember to add new attacks to "PickAttack" method.
+    public enum AttackType { Punch, Weapon, BoneCrunch, Bite, Unraveling } // All available attacks in the game. Remember to add new attacks to "PickAttack" method.
+    public enum DefenseType { None, StoneArmour } // All available defense types in the game.
     public enum ItemType { HealthPotion } // All available items in the game.
 }

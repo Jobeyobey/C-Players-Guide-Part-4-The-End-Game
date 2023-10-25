@@ -70,6 +70,14 @@ namespace TheFinalBattleComponents
             else if (round == 3)
             {
                 // Add monsters here
+                game.Player2.Party.Add(new StoneAmarok("STONE AMAROK ONE", null));
+                game.Player2.Party.Add(new StoneAmarok("STONE AMAROK TWO", null));
+            }
+
+            // ROUND FOUR
+            else if (round == 4)
+            {
+                // Add monsters here
                 game.Player2.Party.Add(new Skeleton("SKELETON ONE", new Dagger()));
                 game.Player2.Party.Add(new Skeleton("SKELETON TWO", new Dagger()));
                 game.Player2.Party.Add(new TheUncodedOne("THE UNCODED ONE", null));

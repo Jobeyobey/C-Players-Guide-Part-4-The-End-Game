@@ -243,7 +243,7 @@ namespace TheFinalBattleComponents
         public static IAction ComputerItem(TheFinalBattle game, Character activeChar, Player activePlayer)
         {
             ItemType chosenItem;
-            ConsoleHelpWriteLine("Pick an item to use.", ConsoleColor.Yellow);
+            ConsoleHelpWriteLine("Pick an item to use...", ConsoleColor.Yellow);
 
             // Print list of items with index numbers for player to pick from
             int index = 0;
@@ -294,7 +294,7 @@ namespace TheFinalBattleComponents
 
         public static Character PickTarget(List<Character> targetParty, bool isHuman)
         {
-            ConsoleHelpWriteLine("Pick a target.", ConsoleColor.Yellow);
+            ConsoleHelpWriteLine("Pick a target...", ConsoleColor.Yellow);
 
             // List available target
             ConsoleHelpWriteLine($"0 - Pick another action", ConsoleColor.White);
@@ -315,6 +315,8 @@ namespace TheFinalBattleComponents
 
         public static IAction PickGear(TheFinalBattle game, Character activeChar, Player activePlayer)
         {
+            ConsoleHelpWriteLine("Equip some gear...", ConsoleColor.Yellow);
+
             // Check player has items to use
             if (activePlayer.Gear.Count == 0)
             {
@@ -328,7 +330,7 @@ namespace TheFinalBattleComponents
             foreach (Gear gear in activePlayer.Gear)
             {
                 index++;
-                ConsoleHelpWriteLine($"{index} - {gear.AttackName}", ConsoleColor.White);
+                ConsoleHelpWriteLine($"{index} - {gear.Name}", ConsoleColor.White);
             }
 
             // Pick item to use. '0' is to pick another action

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheFinalBattleSettings;
 
 namespace TheFinalBattleComponents
 {
@@ -20,8 +21,8 @@ namespace TheFinalBattleComponents
     {
         override public string Name { get; init; } = "Sword";
         override public string AttackName { get; init; } = "Slash";
-        override public int Damage { get; init; } = 2;
-        override public int Accuracy { get; init; } = 90;
+        override public int Damage { get; init; } = Settings.SwordDamage;
+        override public int Accuracy { get; init; } = Settings.SwordAccuracy;
         override public DamageType Type { get; init; } = DamageType.Normal;
         public Sword() { }
     }
@@ -30,8 +31,8 @@ namespace TheFinalBattleComponents
     {
         override public string Name { get; init; } = "Dagger";
         override public string AttackName { get; init; } = "Stab";
-        override public int Damage { get; init; } = 1;
-        override public int Accuracy { get; init; } = 90;
+        override public int Damage { get; init; } = Settings.DaggerDamage;
+        override public int Accuracy { get; init; } = Settings.DaggerAccuracy;
         override public DamageType Type { get; init; } = DamageType.Normal;
         public Dagger() { }
     }
@@ -40,8 +41,8 @@ namespace TheFinalBattleComponents
     {
         override public string Name { get; init; } = "Bow";
         override public string AttackName { get; init; } = "Quick Shot";
-        override public int Damage { get; init; } = 3;
-        override public int Accuracy { get; init; } = 50;
+        override public int Damage { get; init; } = Settings.BowDamage;
+        override public int Accuracy { get; init; } = Settings.BowAccuracy;
         override public DamageType Type { get; init; } = DamageType.Normal;
         public Bow() { }
     }

@@ -12,6 +12,7 @@ namespace TheFinalBattleComponents
         public string Name { get; init; } = "Unnamed";
         public int MaxHp { get; init; }
         public int CurrentHp { get; set; }
+        public DefenseType Defense { get; set; } = DefenseType.None;
         public Gear Equipped { get; set; } = null;
         public List<AttackType> attackList = new List<AttackType>(); // List for each character to add their available actions to upon construction
 
@@ -81,6 +82,21 @@ namespace TheFinalBattleComponents
 
             // Add actions character can do here
             attackList.Insert(0, AttackType.BoneCrunch);
+        }
+    }
+
+    public class StoneAmarok : Character
+    {
+        public StoneAmarok(string name, Gear gear) : base(gear)
+        {
+            Name = name;
+            MaxHp = 4;
+            CurrentHp = MaxHp;
+            Equipped = gear;
+            Defense = DefenseType.StoneArmour;
+
+            // Add actions character can do here
+            attackList.Insert(0, AttackType.Bite);
         }
     }
 

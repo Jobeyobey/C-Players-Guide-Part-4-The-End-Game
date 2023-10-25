@@ -12,18 +12,28 @@ namespace TheFinalBattleSettings
     public static class Settings
     {
         // Game Settings
-        public static int NumRounds { get; } = 3;
+        public static int NumRounds { get; } = 4;
         public static int Delay { get; } = 500; // Introduces slight delay between computer actions just to make game easier to read
 
-        // Attack Settings
+        // Standard Attack Settings
         public static int PunchDamage { get; } = 1;
         public static int PunchAccuracy { get; } = 100;
         public static int QuickShotDamage { get; } = 3;
         public static int QuickShotAccuracy { get; } = 50;
         public static int BoneCrunchDamage { get; } = 1;
-        public static int BoneCrunchAccuracy { get; } = 50;
+        public static int BoneCrunchAccuracy { get; } = 100;
+        public static int BiteDamage { get; } = 1;
+        public static int BiteAccuracy { get; } = 100;
         public static int UnravelingDamage { get; } = 2;
-        public static int UnravelingAccuracy { get; } = 50;
+        public static int UnravelingAccuracy { get; } = 100;
+
+        // Gear Attack Settings
+        public static int SwordDamage { get; } = 2;
+        public static int SwordAccuracy { get; } = 90;
+        public static int DaggerDamage { get; } = 1;
+        public static int DaggerAccuracy { get; } = 85;
+        public static int BowDamage { get; } = 3;
+        public static int BowAccuracy { get; } = 50;
 
         // Game Setup
         public static int SetupGame()
