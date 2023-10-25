@@ -72,6 +72,7 @@ namespace TheFinalBattleComponents
         public Character ActiveChar { get; init; }
         public Character TargetChar { get; init; }
         public abstract int Damage { get; set; }
+        public abstract DamageType Type { get; set; }
         public abstract int Accuracy { get; init; }
         public Attack() { }
         public abstract void Execute(TheFinalBattle game); // Method to execute action
@@ -81,6 +82,7 @@ namespace TheFinalBattleComponents
     {
         public override string AttackName { get; init; } = "Punch";
         public override int Damage { get; set; } = Settings.PunchDamage;
+        public override DamageType Type { get; set; } = DamageType.Normal;
         public override int Accuracy { get; init; } = Settings.PunchAccuracy;
         public Punch(Character activeChar, Character targetChar)
         {
@@ -97,6 +99,7 @@ namespace TheFinalBattleComponents
     {
         public override string AttackName { get; init; }
         public override int Damage { get; set; }
+        public override DamageType Type { get; set; }
         public override int Accuracy { get; init; }
         public WeaponAttack(Character activeChar, Character targetChar)
         {
@@ -104,6 +107,7 @@ namespace TheFinalBattleComponents
             TargetChar = targetChar;
             AttackName = activeChar.Equipped.AttackName;
             Damage = activeChar.Equipped.Damage;
+            Type = activeChar.Equipped.Type;
             Accuracy = activeChar.Equipped.Accuracy;
         }
 
@@ -117,6 +121,7 @@ namespace TheFinalBattleComponents
     {
         public override string AttackName { get; init; } = "BoneCrunch";
         public override int Damage { get; set; } = Settings.BoneCrunchDamage;
+        public override DamageType Type { get; set; } = DamageType.Normal;
         public override int Accuracy { get; init; } = Settings.BoneCrunchAccuracy;
 
         public BoneCrunch(Character activeChar, Character targetChar)
@@ -139,6 +144,7 @@ namespace TheFinalBattleComponents
     {
         public override string AttackName { get; init; } = "Bite";
         public override int Damage { get; set; } = Settings.BiteDamage;
+        public override DamageType Type { get; set; } = DamageType.Normal;
         public override int Accuracy { get; init; } = Settings.BiteAccuracy;
         public Bite(Character activeChar, Character targetChar)
         {
@@ -155,6 +161,7 @@ namespace TheFinalBattleComponents
     {
         public override string AttackName { get; init; } = "Unraveling";
         public override int Damage { get; set; } = Settings.UnravelingDamage;
+        public override DamageType Type { get; set; } = DamageType.Decoding;
         public override int Accuracy { get; init; } = Settings.UnravelingAccuracy;
 
         public Unraveling(Character activeChar, Character targetChar)
@@ -263,6 +270,13 @@ namespace TheFinalBattleComponents
         {
             switch(attack.TargetChar.Defense)
             {
+                case DefenseType.ObjectSight:
+                    if (attack.Type == DamageType.Decoding)
+                    {
+                        ConsoleHelpWriteLine($"{attack.TargetChar.Name}'s Object Sight reduced damage by 2!", ConsoleColor.Gray);
+                        attack.Damage -= 2;
+                    }
+                    break;
                 case DefenseType.StoneArmour:
                     if (attack.Damage > 0)
                     {
@@ -278,6 +292,7 @@ namespace TheFinalBattleComponents
 
     public enum ActionType { Nothing, Attack, UseItem, Equip } // Available actions to all characters
     public enum AttackType { Punch, Weapon, BoneCrunch, Bite, Unraveling } // All available attacks in the game. Remember to add new attacks to "PickAttack" method.
-    public enum DefenseType { None, StoneArmour } // All available defense types in the game.
+    public enum DamageType { Normal, Decoding } // All available damage types in the game.
+    public enum DefenseType { None, ObjectSight, StoneArmour } // All available defense types in the game.
     public enum ItemType { HealthPotion } // All available items in the game.
 }

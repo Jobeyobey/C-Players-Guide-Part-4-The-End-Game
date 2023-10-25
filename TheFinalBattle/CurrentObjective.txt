@@ -1,29 +1,19 @@
-﻿An attack modifier is a character attribute that adjusts attacks involving them. We will make only
-defensive attack modifiers for this challenge, which apply when a character is on the receiving end of an
-attack. You can add offensive attack modifiers as a part of the Making It Yours challenge.Attack modifiers
-are applied when an attack action is being resolved. An attack modifier takes the current attack data as
-input and produces new, potentially altered attack data. For example, it could reduce the damage done
-(a resistance to the attack) or increase it (a weakness to the attack). This challenge will add a new monster
-type with resistance to all attacks, reducing incoming damage by 1.
+﻿Attacks should have a damage type that may affect how it works. For now, our damage types must
+include at least normal and decoding, but you can add additional damage types (such as fire or ice) if you
+want. The damage type primarily adds flavor to the game but also leads to additional game mechanics.
+For example, we will give the True Programmer a defensive attack modifier called Object Sight, which
+gives the character resistance to decoding damage.
 
 Objectives:
 
-[X] The game must be able to represent attack modifiers. Attack modifiers take attack data as an input
-	and produce new attack data as a result, possibly tweaking the attack data in the process. Attack
-	modifiers also have names.
+[X] Attack data should include a damage type. You are free to define any damage types that you think
+	make sense, but include the damage types of normal (or similar) and decoding.
 
-[X] All characters should be able to have a defensive attack modifier.
+[X] Have each attack use one of these types when producing damage data. Use whatever damage types
+	you wish, but make The Uncoded One’s unraveling attack be decoding damage.
 
-[X] When performing an attack, see if the target character has a defensive attack modifier before
-	delivering damage to the target. If it does, allow the modifier to manipulate the attack data and use
-	the modified results instead.
+[X] Give the True Programmer character a defensive attack modifier called Object Sight that reduces
+	decoding damage by 2.
 
-[X] When attack modifiers adjust damage, they should report that they changed the damage and by
-	how much. For example, “STONE ARMOR reduced the attack by 1 point.”
-
-[X] The game must support a new stone amarok character. Stone amaroks have 4 HP and a standard bite
-	attack that deals 1 damage. They also have a defensive attack modifier called stone armor that
-	reduces all attacks by 1 damage. If your heroes still only have a 1-point punch attack, change
-	something so that the heroes can survive an encounter with stone amaroks.
-
-[X] Add a battle that includes two stone amaroks as monsters.
+[X] Increase the unraveling attack to deal 0 to 4 damage randomly, instead of 0 to 2, ensuring that this
+	attack is the single most powerful attack in the game (but one that the hero has resistance to).

@@ -46,6 +46,4 @@ namespace TheFinalBattleComponents
         override public DamageType Type { get; init; } = DamageType.Normal;
         public Bow() { }
     }
-
-    public enum DamageType { Normal };
 }

@@ -24,7 +24,7 @@ namespace TheFinalBattleSettings
         public static int BoneCrunchAccuracy { get; } = 100;
         public static int BiteDamage { get; } = 1;
         public static int BiteAccuracy { get; } = 100;
-        public static int UnravelingDamage { get; } = 2;
+        public static int UnravelingDamage { get; } = 4;
         public static int UnravelingAccuracy { get; } = 100;
 
         // Gear Attack Settings

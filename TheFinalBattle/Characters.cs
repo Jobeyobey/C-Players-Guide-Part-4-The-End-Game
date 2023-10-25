@@ -49,6 +49,7 @@ namespace TheFinalBattleComponents
             Name = name;
             MaxHp = 25;
             CurrentHp = MaxHp;
+            Defense = DefenseType.ObjectSight;
             Equipped = gear;
 
             // Add actions character can do here. 'Insert' because I want the character-specific attacks to be listed first.
