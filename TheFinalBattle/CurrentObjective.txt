@@ -1,19 +1,37 @@
-﻿Attacks should have a damage type that may affect how it works. For now, our damage types must
-include at least normal and decoding, but you can add additional damage types (such as fire or ice) if you
-want. The damage type primarily adds flavor to the game but also leads to additional game mechanics.
-For example, we will give the True Programmer a defensive attack modifier called Object Sight, which
-gives the character resistance to decoding damage.
+﻿This is perhaps the most exciting challenge: the one where you get to do whatever you want to the game.
 
-Objectives:
+[ ] More heroes. You could add Mylara and Skorin, whose gear (or standard attack) is the Cannon of
+Consolas, which deals 1 damage most of the time, 2 damage every multiple of 3 or 5, and 5 damage
+every multiple of 3 and 5. (This adds some continuity from the early part of the book!)
+// Add a new character
+// Add a 'Cannon of Consolas' gear
+// Give the cannon a counter to track shots
+// Can damage use a ternary operator to calculate damage during shot?
+// Can also add new standard attack, 'double punch'. Two 50% chances to do 1 damage.
 
-[X] Attack data should include a damage type. You are free to define any damage types that you think
-	make sense, but include the damage types of normal (or similar) and decoding.
+[ ] Add more item types. Maybe Simula’s soup is a full heal, restoring HP to its maximum.
+// Simula's soup for full heal?
+// HoT effect?
+// Bomb that deals damage to multiple enemies
+// Throwing knife/axe?
 
-[X] Have each attack use one of these types when producing damage data. Use whatever damage types
-	you wish, but make The Uncoded One’s unraveling attack be decoding damage.
+[ ] Add offensive attack modifiers.
+// Certain attack types do extra damage to certain defense types
 
-[X] Give the True Programmer character a defensive attack modifier called Object Sight that reduces
-	decoding damage by 2.
+[ ] More monster types.
 
-[X] Increase the unraveling attack to deal 0 to 4 damage randomly, instead of 0 to 2, ensuring that this
-	attack is the single most powerful attack in the game (but one that the hero has resistance to).
+[ ] Add attack side effects, which allow an attack to run other logic when an attack happens. Maybe a
+Shadow Octopoid with a grapple attack that has a chance of stealing equipped gear.
+
+[ ] Allow characters to taunt their enemies with messages like the Uncoded One saying <<THE
+UNRAVELLING OF ALL THINGS IS INEVITABLE>> and a skeleton saying, “We will repel your
+spineless assault!”
+
+[ ] Allow characters to have temporary effects applied to them. For example, a poison effect that deals
+1 damage per turn for three turns.
+// Would be cool to have poison effect on daggers?
+
+[ ] Craft gear or recruit allies between rounds
+// Can create poison dagger, code a sword with an upgrade etc.
+// Can find allies as you progress
+// Could have an item that summons an ally
