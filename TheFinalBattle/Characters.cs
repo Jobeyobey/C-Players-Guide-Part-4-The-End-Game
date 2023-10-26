@@ -13,7 +13,7 @@ namespace TheFinalBattleComponents
         public int MaxHp { get; init; }
         public int CurrentHp { get; set; }
         public DefenseType Defense { get; set; } = DefenseType.None;
-        public Gear Equipped { get; set; } = null;
+        public Gear? Equipped { get; set; } = null;
         public List<AttackType> attackList = new List<AttackType>(); // List for each character to add their available actions to upon construction
 
         // Basic constructor

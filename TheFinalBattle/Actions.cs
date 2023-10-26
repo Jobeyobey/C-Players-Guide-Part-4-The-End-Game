@@ -276,14 +276,10 @@ namespace TheFinalBattleComponents
         // Check if an attack hits or misses based on accuracy
         public static bool CheckHit(Attack attack)
         {
-            bool hit;
-
             Random random = new Random();
-            int fire = random.Next(0, 100);
+            int accuracy = random.Next(0, 100);
 
-            hit = fire < attack.Accuracy ? true : false;
-
-            return hit;
+            return accuracy < attack.Accuracy;
         }
 
         public static void AttackModifier (ref Attack attack)

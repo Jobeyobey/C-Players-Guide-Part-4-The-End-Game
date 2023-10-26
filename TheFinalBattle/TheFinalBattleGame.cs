@@ -108,10 +108,9 @@ namespace TheFinalBattleComponents
             }
         }
 
-        public void DeathCheck(TheFinalBattle game, Player player)
+        public static void DeathCheck(TheFinalBattle game, Player player)
         {
             List<Character> toBeRemoved = new List<Character>();
-            List<Gear> toBeLooted = new List<Gear>();
 
             // Add list of dead characters to new list, to prevent errors removing them while iterating
             foreach (Character character in player.Party)
@@ -142,7 +141,7 @@ namespace TheFinalBattleComponents
         }
 
         // End game, declaring winner
-        public void EndGame(bool heroWin)
+        public static void EndGame(bool heroWin)
         {
             if (heroWin)
             {
@@ -156,32 +155,22 @@ namespace TheFinalBattleComponents
 
         public void TakeTurn(Player activePlayer, Character activeChar)
         {
-            IAction action = null;
+            IAction? action = null;
 
             ConsoleHelpWriteLine($"It is {activeChar.Name}'s turn...", ConsoleColor.Yellow);
 
             while (action == null)
             {
-                ActionType chosenAction = activePlayer.isHuman ? PickAction(activePlayer.isHuman) : ComputerAction(this, activePlayer, activeChar);
+                ActionType chosenAction = activePlayer.isHuman ? PickAction(activePlayer.isHuman) : ComputerAction(activePlayer, activeChar);
 
-                switch(chosenAction)
+                action = chosenAction switch
                 {
-                    case ActionType.Nothing:
-                        action = new NothingAction(activeChar);
-                        break;
-                    case ActionType.Attack:
-                        action = PickAttack(this, activeChar, activePlayer);
-                        break;
-                    case ActionType.UseItem:
-                        action = PickItem(this, activeChar, activePlayer);
-                        break;
-                    case ActionType.Equip:
-                        action = PickGear(this, activeChar, activePlayer);
-                        break;
-                    default:
-                        action = null;
-                        break;
-                }
+                    ActionType.Nothing  => new NothingAction(activeChar),
+                    ActionType.Attack   => PickAttack(this, activeChar, activePlayer),
+                    ActionType.UseItem  => PickItem(this, activeChar, activePlayer),
+                    ActionType.Equip    => PickGear(activeChar, activePlayer),
+                    _                   => null,
+                };
             }
 
             action.Execute(this);

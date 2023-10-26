@@ -62,7 +62,7 @@ namespace TheFinalBattleComponents
             return chosenAction;
         }
 
-        public static ActionType ComputerAction(TheFinalBattle game, Player activePlayer, Character activeChar)
+        public static ActionType ComputerAction(Player activePlayer, Character activeChar)
         {
             // Print menu to console despite player being computer (Just nice to see what options are available when watching)
             int index = 0;
@@ -138,7 +138,7 @@ namespace TheFinalBattleComponents
                 return ActionType.Nothing;
         }
 
-        public static IAction PickAttack(TheFinalBattle game, Character activeChar, Player activePlayer)
+        public static IAction? PickAttack(TheFinalBattle game, Character activeChar, Player activePlayer)
         {
             ConsoleHelpWriteLine("Pick an attack.", ConsoleColor.Yellow);
 
@@ -186,23 +186,16 @@ namespace TheFinalBattleComponents
                 return null;
 
             // Add all possible attacks here
-            switch (chosenAttack)
+            return chosenAttack switch
             {
-                case AttackType.Punch:
-                    return new Punch(activeChar, target);
-                case AttackType.PileOn:
-                    return new PileOn(activeChar, target);
-                case AttackType.BoneCrunch:
-                    return new BoneCrunch(activeChar, target);
-                case AttackType.Bite:
-                    return new Bite(activeChar, target);
-                case AttackType.Unraveling:
-                    return new Unraveling(activeChar, target);
-                case AttackType.Weapon:
-                    return new WeaponAttack(activeChar, target);
-                default:
-                    return null;
-            }
+                AttackType.Punch        => new Punch(activeChar, target),
+                AttackType.PileOn       => new PileOn(activeChar, target),
+                AttackType.BoneCrunch   => new BoneCrunch(activeChar, target),
+                AttackType.Bite         => new Bite(activeChar, target),
+                AttackType.Unraveling   => new Unraveling(activeChar, target),
+                AttackType.Weapon       => new WeaponAttack(activeChar, target),
+                _                       => null,
+            };
         }
 
         public static IAction PickItem(TheFinalBattle game, Character character, Player activePlayer)
@@ -216,7 +209,7 @@ namespace TheFinalBattleComponents
 
             // If player is computer, use computer method
             if (!activePlayer.isHuman)
-                return ComputerItem(game, character, activePlayer);
+                return ComputerItem(character, activePlayer);
 
             // Prompt player for choice, listing available items
             ConsoleHelpWriteLine("Pick an item to use.", ConsoleColor.Yellow);
@@ -256,7 +249,7 @@ namespace TheFinalBattleComponents
             else return null;
         }
 
-        public static IAction ComputerItem(TheFinalBattle game, Character activeChar, Player activePlayer)
+        public static IAction ComputerItem(Character activeChar, Player activePlayer)
         {
             ItemType chosenItem;
             ConsoleHelpWriteLine("Pick an item to use...", ConsoleColor.Yellow);
@@ -308,7 +301,7 @@ namespace TheFinalBattleComponents
             return null;
         }
 
-        public static Character PickTarget(List<Character> targetParty, bool isHuman)
+        public static Character? PickTarget(List<Character> targetParty, bool isHuman)
         {
             ConsoleHelpWriteLine("Pick a target...", ConsoleColor.Yellow);
 
@@ -329,7 +322,7 @@ namespace TheFinalBattleComponents
             return targetParty[chosenTarget - 1]; // '-1' because array is zero-indexed
         }
 
-        public static IAction PickGear(TheFinalBattle game, Character activeChar, Player activePlayer)
+        public static IAction PickGear(Character activeChar, Player activePlayer)
         {
             ConsoleHelpWriteLine("Equip some gear...", ConsoleColor.Yellow);
 
