@@ -18,8 +18,12 @@ namespace TheFinalBattleSettings
         // Standard Attack Settings
         public static int PunchDamage { get; } = 1;
         public static int PunchAccuracy { get; } = 100;
+        public static int PileOnDamage { get; } = 1;
+        public static int PileOnAccuracy { get; } = 40;
         public static int QuickShotDamage { get; } = 3;
         public static int QuickShotAccuracy { get; } = 50;
+        public static int CannonOfConsolasDamage { get; } = 1;
+        public static int CannonOfConsolasAccuracy { get; } = 100;
         public static int BoneCrunchDamage { get; } = 1;
         public static int BoneCrunchAccuracy { get; } = 100;
         public static int BiteDamage { get; } = 1;

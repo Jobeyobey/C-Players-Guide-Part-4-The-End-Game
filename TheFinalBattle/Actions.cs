@@ -94,6 +94,25 @@ namespace TheFinalBattleComponents
             ActionHelper.DoAttack(this);
         }
     }
+    public class PileOn : Attack
+    {
+        public override string AttackName { get; init; } = "Pile On";
+        public override int Damage { get; set; } = Settings.PileOnDamage;
+        public override DamageType Type { get; set; } = DamageType.Normal;
+        public override int Accuracy { get; init; } = Settings.PileOnAccuracy;
+
+        public PileOn(Character activeChar, Character targetChar)
+        {
+            ActiveChar = activeChar;
+            TargetChar = targetChar;
+        }
+
+        public override void Execute(TheFinalBattle game)
+        {
+            ActionHelper.DoAttack(this);
+            ActionHelper.DoAttack(this);
+        }
+    }
 
     public class WeaponAttack : Attack
     {
@@ -105,6 +124,7 @@ namespace TheFinalBattleComponents
         {
             ActiveChar = activeChar;
             TargetChar = targetChar;
+            activeChar.Equipped.Special();
             AttackName = activeChar.Equipped.AttackName;
             Damage = activeChar.Equipped.Damage;
             Type = activeChar.Equipped.Type;
@@ -291,7 +311,7 @@ namespace TheFinalBattleComponents
     }
 
     public enum ActionType { Nothing, Attack, UseItem, Equip } // Available actions to all characters
-    public enum AttackType { Punch, Weapon, BoneCrunch, Bite, Unraveling } // All available attacks in the game. Remember to add new attacks to "PickAttack" method.
+    public enum AttackType { Punch, PileOn, Weapon, BoneCrunch, Bite, Unraveling } // All available attacks in the game. Remember to add new attacks to "PickAttack" method.
     public enum DamageType { Normal, Decoding } // All available damage types in the game.
     public enum DefenseType { None, ObjectSight, StoneArmour } // All available defense types in the game.
     public enum ItemType { HealthPotion } // All available items in the game.

@@ -162,11 +162,14 @@ namespace TheFinalBattleComponents
             // Choose attack from list
             AttackType chosenAttack;
 
-            if (!activePlayer.isHuman && activeChar.Equipped != null) // If computer and character is equipped, use equipped weapon
+            if (!activePlayer.isHuman && activeChar.Equipped != null) // If computer and character has weapon equipped, weapon
                 chosenAttack = AttackType.Weapon;
             else
             {
                 int chosenAttackIndex = PickFromMenu(index, activePlayer.isHuman);
+                if (chosenAttackIndex == 0)
+                    return null;
+
                 chosenAttack = activeChar.attackList[chosenAttackIndex - 1]; // '-1' because array is zero-indexed
             }
 
@@ -183,10 +186,23 @@ namespace TheFinalBattleComponents
                 return null;
 
             // Add all possible attacks here
-            if (chosenAttack == AttackType.Weapon)     return new WeaponAttack(activeChar, target);
-            if (chosenAttack == AttackType.BoneCrunch) return new BoneCrunch(activeChar, target);
-            if (chosenAttack == AttackType.Unraveling) return new Unraveling(activeChar, target);
-            else return new Punch(activeChar, target);
+            switch (chosenAttack)
+            {
+                case AttackType.Punch:
+                    return new Punch(activeChar, target);
+                case AttackType.PileOn:
+                    return new PileOn(activeChar, target);
+                case AttackType.BoneCrunch:
+                    return new BoneCrunch(activeChar, target);
+                case AttackType.Bite:
+                    return new Bite(activeChar, target);
+                case AttackType.Unraveling:
+                    return new Unraveling(activeChar, target);
+                case AttackType.Weapon:
+                    return new WeaponAttack(activeChar, target);
+                default:
+                    return null;
+            }
         }
 
         public static IAction PickItem(TheFinalBattle game, Character character, Player activePlayer)

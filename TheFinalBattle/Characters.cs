@@ -67,7 +67,21 @@ namespace TheFinalBattleComponents
             Equipped = gear;
 
             // Add actions character can do here
-            attackList.Insert(0, AttackType.Punch);
+            attackList.Insert(0, AttackType.PileOn);
+        }
+    }
+
+    public class MylaraAndSkorin : Character
+    {
+        public MylaraAndSkorin(Gear gear) : base(gear)
+        {
+            Name = "Mylara and Skorin";
+            MaxHp = 10;
+            CurrentHp = MaxHp;
+            Equipped = gear;
+
+            // Add actions character can do here
+            attackList.Insert(0, AttackType.PileOn);
         }
     }
 

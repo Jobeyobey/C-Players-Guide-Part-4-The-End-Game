@@ -1,13 +1,8 @@
 ﻿This is perhaps the most exciting challenge: the one where you get to do whatever you want to the game.
 
-[ ] More heroes. You could add Mylara and Skorin, whose gear (or standard attack) is the Cannon of
+[X] More heroes. You could add Mylara and Skorin, whose gear (or standard attack) is the Cannon of
 Consolas, which deals 1 damage most of the time, 2 damage every multiple of 3 or 5, and 5 damage
 every multiple of 3 and 5. (This adds some continuity from the early part of the book!)
-// Add a new character
-// Add a 'Cannon of Consolas' gear
-// Give the cannon a counter to track shots
-// Can damage use a ternary operator to calculate damage during shot?
-// Can also add new standard attack, 'double punch'. Two 50% chances to do 1 damage.
 
 [ ] Add more item types. Maybe Simula’s soup is a full heal, restoring HP to its maximum.
 // Simula's soup for full heal?
@@ -22,6 +17,9 @@ every multiple of 3 and 5. (This adds some continuity from the early part of the
 
 [ ] Add attack side effects, which allow an attack to run other logic when an attack happens. Maybe a
 Shadow Octopoid with a grapple attack that has a chance of stealing equipped gear.
+// Current iteration of this on Cannon of Consolas isn't great.
+// Alternative could be to create a Special() method in the Attack IAction, which is called during the DoDamage() method.
+// This Special() method could call a Special() method in weapons, as well?
 
 [ ] Allow characters to taunt their enemies with messages like the Uncoded One saying <<THE
 UNRAVELLING OF ALL THINGS IS INEVITABLE>> and a skeleton saying, “We will repel your

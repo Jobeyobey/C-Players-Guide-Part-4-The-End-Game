@@ -6,16 +6,16 @@ using static TheFinalBattleComponents.ConsoleHelpers;
 
 namespace TheFinalBattleComponents
 {
-    // TheFinalBattle will track the status of the whole game and run it
+    // TheFinalBattle will track the status of all the game's components and game loop. This is the core of the game.
     public class TheFinalBattle
     {
         public Player Player1 { get; private set; }
         public Player Player2 { get; private set; }
         public bool Player1Turn { get; private set; } = true;
 
-        public TheFinalBattle() // Constructor
+        public TheFinalBattle()
         {
-            int setupCode = Settings.SetupGame(); // Prompt user for setupCode
+            int setupCode = Settings.SetupGame(); // Prompt user for what type of game they want. HvH, HvC or CvC
 
             if (setupCode == 1) // Human v Human
             {
@@ -34,7 +34,7 @@ namespace TheFinalBattleComponents
             }
         }
 
-        public void Run() // Run the game
+        public void Run()
         {
             bool heroWin = false;
             MakeHeroParty(this);
@@ -42,9 +42,9 @@ namespace TheFinalBattleComponents
             // Keep playing through rounds until hero wins or loses
             for (int round = 1; round <= Settings.NumRounds; round++)
             {
-                MakeMonsterParty(this, round); // Create monster party for current round
+                MakeMonsterParty(this, round);
 
-                heroWin = PlayRound(); // Play round until hero wins or loses
+                heroWin = PlayRound(); // Play round, taking turns until hero wins or loses
 
                 if (!heroWin) break; // If hero does not win, break loop and continue to EndGame
 
@@ -101,7 +101,7 @@ namespace TheFinalBattleComponents
                     return true; // heroWin == true
                 }
 
-                Player1Turn = !Player1Turn; // Flip who's turn it is
+                Player1Turn = !Player1Turn;
 
                 // Increment turn number if this is the end of Player2's turn
                 if (!Player1Turn) turnNumber++;
@@ -156,22 +156,32 @@ namespace TheFinalBattleComponents
 
         public void TakeTurn(Player activePlayer, Character activeChar)
         {
-            // Reserve memory for objects
             IAction action = null;
 
             ConsoleHelpWriteLine($"It is {activeChar.Name}'s turn...", ConsoleColor.Yellow);
 
             while (action == null)
             {
-                // Prompt for input
                 ActionType chosenAction = activePlayer.isHuman ? PickAction(activePlayer.isHuman) : ComputerAction(this, activePlayer, activeChar);
 
-                // Resolve input
-                if (chosenAction == ActionType.Nothing) action = new NothingAction(activeChar);
-                else if (chosenAction == ActionType.Attack) action = PickAttack(this, activeChar, activePlayer);
-                else if (chosenAction == ActionType.UseItem) action = PickItem(this, activeChar, activePlayer);
-                else if (chosenAction == ActionType.Equip) action = PickGear(this, activeChar, activePlayer);
-                else action = null; // Failsafe in case of error
+                switch(chosenAction)
+                {
+                    case ActionType.Nothing:
+                        action = new NothingAction(activeChar);
+                        break;
+                    case ActionType.Attack:
+                        action = PickAttack(this, activeChar, activePlayer);
+                        break;
+                    case ActionType.UseItem:
+                        action = PickItem(this, activeChar, activePlayer);
+                        break;
+                    case ActionType.Equip:
+                        action = PickGear(this, activeChar, activePlayer);
+                        break;
+                    default:
+                        action = null;
+                        break;
+                }
             }
 
             action.Execute(this);
