@@ -64,7 +64,7 @@ namespace TheFinalBattleComponents
         override public int Damage { get; set; } = Settings.CannonOfConsolasDamage;
         override public int Accuracy { get; init; } = Settings.CannonOfConsolasAccuracy;
         public int CannonCharge { get; set; } = 1;
-        override public DamageType Type { get; init; } = DamageType.Normal;
+        override public DamageType Type { get; init; } = DamageType.Energy;
         override public bool HasSpecial { get; init; } = true;
         override public void Special(Attack attack)
         {

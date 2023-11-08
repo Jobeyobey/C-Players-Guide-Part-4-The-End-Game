@@ -46,10 +46,10 @@ namespace TheFinalBattleComponents
             {
                 // Add monsters here
                 game.Player2.Party.Add(new Skeleton("SKELETON ONE", new Dagger()));
+                game.Player2.Party.Add(new StoneAmarok("STONE AMAROK ONE", null));
 
                 // Add items here
                 game.Player2.Items.Add(ItemType.HealthPotion);
-                game.Player2.Items.Add(ItemType.Bomb);
             }
 
             // ROUND TWO
@@ -61,6 +61,8 @@ namespace TheFinalBattleComponents
 
                 // Add items here
                 game.Player2.Items.Add(ItemType.HealthPotion);
+                game.Player2.Items.Add(ItemType.Bomb);
+                game.Player2.Items.Add(ItemType.Bomb);
                 game.Player2.Items.Add(ItemType.Bomb);
 
                 // Add gear here
@@ -89,6 +91,9 @@ namespace TheFinalBattleComponents
 
                 // Add items here
                 game.Player2.Items.Add(ItemType.HealthPotion);
+                game.Player2.Items.Add(ItemType.Bomb);
+                game.Player2.Items.Add(ItemType.Bomb);
+                game.Player2.Items.Add(ItemType.Bomb);
 
                 // Add gear here
             }

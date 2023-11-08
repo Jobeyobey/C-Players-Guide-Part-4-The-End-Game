@@ -332,10 +332,15 @@ namespace TheFinalBattleComponents
                     }
                     break;
                 case DefenseType.StoneArmour:
-                    if (attack.Damage > 0)
+                    if (attack.Damage > 0 && attack.Type != DamageType.Energy)
                     {
                         ConsoleHelpWriteLine($"{attack.TargetChar.Name}'s stone armour reduced damage by 1!", ConsoleColor.Gray);
                         attack.Damage -= 1;
+                    }
+                    else if (attack.Damage > 0 && attack.Type == DamageType.Energy)
+                    {
+                        ConsoleHelpWriteLine($"{attack.TargetChar.Name}'s stone armour is vulnerable to energy damage!", ConsoleColor.Gray);
+                        attack.Damage = attack.Damage * 2;
                     }
                     break;
                 default:
@@ -346,7 +351,7 @@ namespace TheFinalBattleComponents
 
     public enum ActionType { Nothing, Attack, UseItem, Equip } // Available actions to all characters
     public enum AttackType { Punch, PileOn, Weapon, BoneCrunch, Bite, Unraveling } // All available attacks in the game. Remember to add new attacks to "PickAttack" method.
-    public enum DamageType { Normal, Decoding } // All available damage types in the game.
+    public enum DamageType { Normal, Decoding, Energy } // All available damage types in the game.
     public enum DefenseType { None, ObjectSight, StoneArmour } // All available defense types in the game.
     public enum ItemType { HealthPotion, Bomb } // All available items in the game.
 }
