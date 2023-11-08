@@ -35,8 +35,6 @@ namespace TheFinalBattleComponents
             }
             else // If player is not human, pick a random option
             {
-                Thread.Sleep(Settings.Delay);
-
                 Random random = new Random();
                 choice = random.Next(max) + 1;
             }
@@ -245,8 +243,12 @@ namespace TheFinalBattleComponents
                 return null;
 
             // Add all possible items here
-            if (chosenItem == ItemType.HealthPotion) return new HealthPotion(activePlayer, character, target);
-            else return null;
+            return chosenItem switch
+            {
+                ItemType.HealthPotion => new HealthPotion(activePlayer, character, target),
+                ItemType.Bomb => new Bomb(activePlayer, character, target),
+                _ => null,
+            };
         }
 
         public static IAction ComputerItem(Character activeChar, Player activePlayer)

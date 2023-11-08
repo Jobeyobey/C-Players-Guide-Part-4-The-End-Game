@@ -13,6 +13,7 @@ namespace TheFinalBattleComponents
         // Console.Write with custom colour
         public static void ConsoleHelpWrite(string text, ConsoleColor color)
         {
+            Thread.Sleep(Settings.Delay / 3);
             Console.ForegroundColor = color;
             Console.Write(text);
         }
@@ -20,6 +21,7 @@ namespace TheFinalBattleComponents
         // Console.WriteLine with custom colour
         public static void ConsoleHelpWriteLine(string text, ConsoleColor color)
         {
+            Thread.Sleep(Settings.Delay / 3);
             Console.ForegroundColor = color;
             Console.WriteLine(text);
         }
@@ -27,6 +29,7 @@ namespace TheFinalBattleComponents
         // Console.ReadLine with custom colour
         public static string ConsoleHelpReadLine(ConsoleColor color)
         {
+            Thread.Sleep(Settings.Delay / 3);
             Console.ForegroundColor = color;
             string? response = Console.ReadLine();
             return response;
@@ -35,13 +38,12 @@ namespace TheFinalBattleComponents
         // Display current names, health etc. of both parties. Active player is highlighted in yellow.
         public static void DisplayGameStatus(TheFinalBattle game, Character activeChar)
         {
+            Thread.Sleep(Settings.Delay / 3);
             Console.WriteLine();
 
-            Thread.Sleep(Settings.Delay / 3);
             ConsoleHelpWriteLine("============================================= BATTLE =============================================", ConsoleColor.White);
             foreach (Character character in game.Player1.Party)
             {
-                Thread.Sleep(Settings.Delay / 3);
                 string charStatus = GetCharacterStatus(character);
 
                 if (character == activeChar)
@@ -50,11 +52,9 @@ namespace TheFinalBattleComponents
                     ConsoleHelpWriteLine($"{charStatus}", ConsoleColor.Gray);
             }
 
-            Thread.Sleep(Settings.Delay / 3);
             ConsoleHelpWriteLine("----------------------------------------------- VS -----------------------------------------------", ConsoleColor.White);
             foreach (Character character in game.Player2.Party)
             {
-                Thread.Sleep(Settings.Delay / 3);
                 string charStatus = GetCharacterStatus(character);
 
                 if (character == activeChar)
@@ -63,7 +63,6 @@ namespace TheFinalBattleComponents
                     ConsoleHelpWriteLine($"{charStatus,98}", ConsoleColor.Gray);
             }
 
-            Thread.Sleep(Settings.Delay / 3);
             ConsoleHelpWriteLine("==================================================================================================", ConsoleColor.White);
             Console.WriteLine();
         }

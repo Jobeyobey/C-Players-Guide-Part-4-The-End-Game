@@ -13,7 +13,7 @@ namespace TheFinalBattleSettings
     {
         // Game Settings
         public static int NumRounds { get; } = 4;
-        public static int Delay { get; } = 500; // Introduces slight delay between computer actions just to make game easier to read
+        public static int Delay { get; } = 400; // Introduces slight delay between computer actions just to make game easier to read
 
         // Standard Attack Settings
         public static int PunchDamage { get; } = 1;
@@ -38,6 +38,10 @@ namespace TheFinalBattleSettings
         public static int DaggerAccuracy { get; } = 85;
         public static int BowDamage { get; } = 3;
         public static int BowAccuracy { get; } = 50;
+
+        // Item Settings
+        public static int HealthPotionStrength { get; } = 10;
+        public static int BombDamage { get; } = 3;
 
         // Game Setup
         public static int SetupGame()

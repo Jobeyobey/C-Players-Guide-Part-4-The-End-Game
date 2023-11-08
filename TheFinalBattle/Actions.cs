@@ -231,17 +231,45 @@ namespace TheFinalBattleComponents
         public override void Execute(TheFinalBattle game)
         {
             // Announce use of Item
-            Thread.Sleep(Settings.Delay / 2);
             ConsoleHelpWriteLine($"{ActiveChar.Name} used {Name} on {TargetChar.Name}", ConsoleColor.Gray);
 
             // Resolve item
-            Thread.Sleep(Settings.Delay / 2);
-            TargetChar.AlterHp(10);
+            TargetChar.AlterHp(Settings.HealthPotionStrength);
             ConsoleHelpWriteLine($"{TargetChar.Name} has {TargetChar.CurrentHp}/{TargetChar.MaxHp} HP", ConsoleColor.Gray);
-            Thread.Sleep(Settings.Delay / 2);
 
             // Remove item from party inventory
             ActivePlayer.Items.Remove(ItemType.HealthPotion);
+        }
+    }
+
+    public class Bomb : Item
+    {
+        public override string Name { get; init; } = "Bomb";
+
+        public Bomb(Player activePlayer, Character activeChar, Character targetChar)
+        {
+            ActivePlayer = activePlayer;
+            ActiveChar = activeChar;
+            TargetChar = targetChar;
+        }
+
+        public override void Execute(TheFinalBattle game)
+        {
+            // Announce use of Item
+            ConsoleHelpWriteLine($"{ActiveChar.Name} used {Name}", ConsoleColor.Gray);
+
+            // Resolve item
+            Player targetPlayer = ActivePlayer == game.Player1 ? game.Player2 : game.Player1;
+
+            foreach (Character character in targetPlayer.Party)
+            {
+                character.AlterHp(-3);
+                ConsoleHelpWriteLine($"{Name} did {Settings.BombDamage} to {character.Name}", ConsoleColor.Gray);
+                ConsoleHelpWriteLine($"{character.Name} has {character.CurrentHp}/{character.MaxHp} HP", ConsoleColor.Gray);
+            }
+
+            // Remove item from party inventory
+            ActivePlayer.Items.Remove(ItemType.Bomb);
         }
     }
 
@@ -258,25 +286,20 @@ namespace TheFinalBattleComponents
             Character targetChar = attack.TargetChar;
 
             // Announce attack and result
-            Thread.Sleep(Settings.Delay / 2);
             ConsoleHelpWriteLine($"{activeChar.Name} did {attackName} on {targetChar.Name}", ConsoleColor.Gray);
 
             AttackModifier(ref attack);
 
-            Thread.Sleep(Settings.Delay / 2);
             if (hit)
                 ConsoleHelpWriteLine($"{attackName} dealt {attack.Damage} to {targetChar.Name}", ConsoleColor.Gray);
             else
                 ConsoleHelpWriteLine($"{activeChar.Name} missed {targetChar.Name}!", ConsoleColor.Gray);
 
             // Update and report status of target
-            Thread.Sleep(Settings.Delay / 2);
-
             if (hit)
                 targetChar.AlterHp(-attack.Damage);
 
             ConsoleHelpWriteLine($"{targetChar.Name} has {attack.TargetChar.CurrentHp}/{attack.TargetChar.MaxHp} HP", ConsoleColor.Gray);
-            Thread.Sleep(Settings.Delay / 2);
         }
 
         // Check if an attack hits or misses based on accuracy
@@ -316,5 +339,5 @@ namespace TheFinalBattleComponents
     public enum AttackType { Punch, PileOn, Weapon, BoneCrunch, Bite, Unraveling } // All available attacks in the game. Remember to add new attacks to "PickAttack" method.
     public enum DamageType { Normal, Decoding } // All available damage types in the game.
     public enum DefenseType { None, ObjectSight, StoneArmour } // All available defense types in the game.
-    public enum ItemType { HealthPotion } // All available items in the game.
+    public enum ItemType { HealthPotion, Bomb } // All available items in the game.
 }

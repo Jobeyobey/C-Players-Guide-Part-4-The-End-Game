@@ -35,8 +35,7 @@ namespace TheFinalBattleComponents
 
             // Add party items here
             game.Player1.Items.Add(ItemType.HealthPotion);
-            game.Player1.Items.Add(ItemType.HealthPotion);
-            game.Player1.Items.Add(ItemType.HealthPotion);
+            game.Player1.Items.Add(ItemType.Bomb);
         }
 
         // Depending on current round, make relevant monster party.
