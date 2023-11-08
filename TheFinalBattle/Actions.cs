@@ -124,7 +124,6 @@ namespace TheFinalBattleComponents
         {
             ActiveChar = activeChar;
             TargetChar = targetChar;
-            activeChar.Equipped.Special();
             AttackName = activeChar.Equipped.AttackName;
             Damage = activeChar.Equipped.Damage;
             Type = activeChar.Equipped.Type;
@@ -133,7 +132,14 @@ namespace TheFinalBattleComponents
 
         public override void Execute(TheFinalBattle game)
         {
-            ActionHelper.DoAttack(this);
+            if (ActiveChar.Equipped.HasSpecial)
+            {
+                ActiveChar.Equipped.Special(this);
+            }
+            else
+            {
+                ActionHelper.DoAttack(this);
+            }
         }
     }
 

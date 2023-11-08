@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using TheFinalBattleSettings;
@@ -16,7 +17,8 @@ namespace TheFinalBattleComponents
         public abstract int Damage { get; set; }
         public abstract int Accuracy { get; init; }
         public abstract DamageType Type { get; init; }
-        public abstract void Special();
+        public abstract bool HasSpecial { get; init; }
+        public abstract void Special(Attack attack);
     }
 
     public class Sword : Gear
@@ -26,7 +28,8 @@ namespace TheFinalBattleComponents
         override public int Damage { get; set; } = Settings.SwordDamage;
         override public int Accuracy { get; init; } = Settings.SwordAccuracy;
         override public DamageType Type { get; init; } = DamageType.Normal;
-        override public void Special() { }
+        override public bool HasSpecial { get; init; } = false;
+        override public void Special(Attack attack) { }
         public Sword() { }
     }
 
@@ -37,7 +40,8 @@ namespace TheFinalBattleComponents
         override public int Damage { get; set; } = Settings.DaggerDamage;
         override public int Accuracy { get; init; } = Settings.DaggerAccuracy;
         override public DamageType Type { get; init; } = DamageType.Normal;
-        override public void Special() { }
+        override public bool HasSpecial { get; init; } = false;
+        override public void Special(Attack attack) { }
         public Dagger() { }
     }
 
@@ -48,7 +52,8 @@ namespace TheFinalBattleComponents
         override public int Damage { get; set; } = Settings.BowDamage;
         override public int Accuracy { get; init; } = Settings.BowAccuracy;
         override public DamageType Type { get; init; } = DamageType.Normal;
-        override public void Special() { }
+        override public bool HasSpecial { get; init; } = false;
+        override public void Special(Attack attack) { }
         public Bow() { }
     }
 
@@ -58,10 +63,13 @@ namespace TheFinalBattleComponents
         override public string AttackName { get; init; } = "Cannon Blast";
         override public int Damage { get; set; } = Settings.CannonOfConsolasDamage;
         override public int Accuracy { get; init; } = Settings.CannonOfConsolasAccuracy;
-        public int CannonCharge { get; set; } = 0;
+        public int CannonCharge { get; set; } = 1;
         override public DamageType Type { get; init; } = DamageType.Normal;
-        override public void Special()
+        override public bool HasSpecial { get; init; } = true;
+        override public void Special(Attack attack)
         {
+            ActionHelper.DoAttack(attack);
+
             // The Cannon of Consolas does extra damage on every 3rd and 5th shot. When both of those requirements are satisfied, it does an extra powerful shot!
             CannonCharge++;
             if (CannonCharge % 5 == 0 && CannonCharge % 3 == 0)
@@ -80,6 +88,8 @@ namespace TheFinalBattleComponents
             {
                 Damage = Settings.CannonOfConsolasDamage;
             }
+
+            ConsoleHelpWriteLine($"Cannon charge: {CannonCharge}. Next shot damage: {Damage}", ConsoleColor.Yellow);
         }
         public CannonOfConsolas() { }
     }

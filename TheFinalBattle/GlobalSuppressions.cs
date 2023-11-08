@@ -5,8 +5,8 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~M:TheFinalBattleComponents.TheFinalBattle.DeathCheck(TheFinalBattleComponents.TheFinalBattle,TheFinalBattleComponents.Player)")]
-[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~M:TheFinalBattleComponents.MenuHelpers.PickFromMenu(System.Int32,System.Boolean)~System.Int32")]
-[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~F:TheFinalBattleComponents.Character.attackList")]
-[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~M:TheFinalBattleComponents.ActionHelper.CheckHit(TheFinalBattleComponents.Attack)~System.Boolean")]
-[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~M:TheFinalBattleComponents.MenuHelpers.ComputerAction(TheFinalBattleComponents.Player,TheFinalBattleComponents.Character)~TheFinalBattleComponents.ActionType")]
+[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "I prefer it like this", Scope = "member", Target = "~M:TheFinalBattleComponents.TheFinalBattle.DeathCheck(TheFinalBattleComponents.TheFinalBattle,TheFinalBattleComponents.Player)")]
+[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "I prefer it like this", Scope = "member", Target = "~M:TheFinalBattleComponents.MenuHelpers.PickFromMenu(System.Int32,System.Boolean)~System.Int32")]
+[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "I prefer it like this", Scope = "member", Target = "~F:TheFinalBattleComponents.Character.attackList")]
+[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "I prefer it like this", Scope = "member", Target = "~M:TheFinalBattleComponents.ActionHelper.CheckHit(TheFinalBattleComponents.Attack)~System.Boolean")]
+[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "I prefer it like this", Scope = "member", Target = "~M:TheFinalBattleComponents.MenuHelpers.ComputerAction(TheFinalBattleComponents.Player,TheFinalBattleComponents.Character)~TheFinalBattleComponents.ActionType")]
