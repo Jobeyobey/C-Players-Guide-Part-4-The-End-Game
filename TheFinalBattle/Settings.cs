@@ -41,7 +41,7 @@ namespace TheFinalBattleSettings
 
         // Item Settings
         public static int HealthPotionStrength { get; } = 10;
-        public static int BombDamage { get; } = 3;
+        public static int BombDamage { get; } = 4;
 
         // Game Setup
         public static int SetupGame()

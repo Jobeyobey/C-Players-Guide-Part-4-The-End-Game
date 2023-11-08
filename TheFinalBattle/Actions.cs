@@ -256,15 +256,24 @@ namespace TheFinalBattleComponents
         public override void Execute(TheFinalBattle game)
         {
             // Announce use of Item
-            ConsoleHelpWriteLine($"{ActiveChar.Name} used {Name}", ConsoleColor.Gray);
+            ConsoleHelpWriteLine($"{ActiveChar.Name} used {Name} on {TargetChar.Name}", ConsoleColor.Gray);
 
             // Resolve item
             Player targetPlayer = ActivePlayer == game.Player1 ? game.Player2 : game.Player1;
 
             foreach (Character character in targetPlayer.Party)
             {
-                character.AlterHp(-3);
-                ConsoleHelpWriteLine($"{Name} did {Settings.BombDamage} to {character.Name}", ConsoleColor.Gray);
+                if (character == TargetChar)
+                {
+                    character.AlterHp(-Settings.BombDamage);
+                    ConsoleHelpWriteLine($"{Name} did {Settings.BombDamage} to {character.Name}", ConsoleColor.Gray);
+                }
+                else
+                {
+                    character.AlterHp(-Settings.BombDamage / 2);
+                    ConsoleHelpWriteLine($"{Name} did {Settings.BombDamage / 2} to {character.Name}", ConsoleColor.Gray);
+                }
+
                 ConsoleHelpWriteLine($"{character.Name} has {character.CurrentHp}/{character.MaxHp} HP", ConsoleColor.Gray);
             }
 

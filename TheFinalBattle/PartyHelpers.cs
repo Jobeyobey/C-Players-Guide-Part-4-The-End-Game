@@ -29,8 +29,8 @@ namespace TheFinalBattleComponents
             }
 
             // Add extra hero characters here
-            //game.Player1.Party.Add(new MainCharacter(name, new Sword()));
-            //game.Player1.Party.Add(new VinFletcher(new Bow()));
+            game.Player1.Party.Add(new MainCharacter(name, new Sword()));
+            game.Player1.Party.Add(new VinFletcher(new Bow()));
             game.Player1.Party.Add(new MylaraAndSkorin(new CannonOfConsolas()));
 
             // Add party items here
@@ -49,6 +49,7 @@ namespace TheFinalBattleComponents
 
                 // Add items here
                 game.Player2.Items.Add(ItemType.HealthPotion);
+                game.Player2.Items.Add(ItemType.Bomb);
             }
 
             // ROUND TWO
@@ -60,6 +61,7 @@ namespace TheFinalBattleComponents
 
                 // Add items here
                 game.Player2.Items.Add(ItemType.HealthPotion);
+                game.Player2.Items.Add(ItemType.Bomb);
 
                 // Add gear here
                 game.Player2.Gear.Add(new Dagger());
@@ -72,6 +74,9 @@ namespace TheFinalBattleComponents
                 // Add monsters here
                 game.Player2.Party.Add(new StoneAmarok("STONE AMAROK ONE", null));
                 game.Player2.Party.Add(new StoneAmarok("STONE AMAROK TWO", null));
+
+                // Add items here
+                game.Player2.Items.Add(ItemType.Bomb);
             }
 
             // ROUND FOUR

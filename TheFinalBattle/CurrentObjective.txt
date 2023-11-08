@@ -6,6 +6,7 @@ every multiple of 3 and 5. (This adds some continuity from the early part of the
 
 [X] Add more item types. Maybe Simula’s soup is a full heal, restoring HP to its maximum.
 // Bomb that deals damage to multiple enemies
+// Make sure computer can pick it
 
 [ ] Add offensive attack modifiers.
 // Certain attack types do extra damage to certain defense types

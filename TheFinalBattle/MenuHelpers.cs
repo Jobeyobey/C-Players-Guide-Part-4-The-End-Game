@@ -77,18 +77,21 @@ namespace TheFinalBattleComponents
             int itemChance = 0;
             int equipChance = 0;
 
+
+            bool hasDefensiveItem = false;
+            bool defensiveItemUseful = false;
+            bool hasOffensiveItem = false;
+
             // Check if party has items to use
             if (activePlayer.Items.Count != 0)
             {
-                // Check whether items in inventory are offensive or defensive
-                bool hasDefensiveItem = false;
-                bool hasOffensiveItem = false;
-
+                // Check whether items in inventory are offensive or defensive, as this will effect priority
                 foreach (ItemType item in activePlayer.Items)
                 {
                     if (item == ItemType.HealthPotion)
                         hasDefensiveItem = true;
-                    // TODO add offensive items
+                    if (item == ItemType.Bomb)
+                        hasOffensiveItem = true;
                 }
 
                 // Check if available defensive items are useful
@@ -98,28 +101,30 @@ namespace TheFinalBattleComponents
                     {
                         if (character.CurrentHp <= character.MaxHp / 2)
                         {
-                            itemChance = 25; // 25% chance of using an item if healing is needed
-                            attackChance -= 25; // Compensate by removing 25% from attack chance
+                            defensiveItemUseful = true;
                         }
                     }
                 }
-
-                //TODO Check if available offensive items are useful
             }
 
             // Check if character needs gear and has it available
             if (activeChar.Equipped == null && activePlayer.Gear.Count != 0)
             {
-                equipChance = 50; // 50% chance of equipping gear if it's available and character doesn't have gear
-                attackChance -= 50; // Compensate by removing 50% from attack chance
+                equipChance = 50;
+                attackChance -= 50;
             }
 
             // Prioritise healing over equipping if healing is needed, as per challenge requirements
-            if (itemChance != 0)
+            if (defensiveItemUseful)
             {
                 itemChance = 50;
                 attackChance = 50;
                 equipChance = 0;
+            }
+            else if (hasOffensiveItem)
+            {
+                itemChance += 25;
+                attackChance -= 25;
             }
 
             // Calculate what action to take
@@ -207,7 +212,7 @@ namespace TheFinalBattleComponents
 
             // If player is computer, use computer method
             if (!activePlayer.isHuman)
-                return ComputerItem(character, activePlayer);
+                return ComputerItem(game, character, activePlayer);
 
             // Prompt player for choice, listing available items
             ConsoleHelpWriteLine("Pick an item to use.", ConsoleColor.Yellow);
@@ -251,7 +256,7 @@ namespace TheFinalBattleComponents
             };
         }
 
-        public static IAction ComputerItem(Character activeChar, Player activePlayer)
+        public static IAction ComputerItem(TheFinalBattle game, Character activeChar, Player activePlayer)
         {
             ItemType chosenItem;
             ConsoleHelpWriteLine("Pick an item to use...", ConsoleColor.Yellow);
@@ -266,11 +271,14 @@ namespace TheFinalBattleComponents
 
             // Check what items are available
             bool hasHealthPotion = false;
+            bool hasBomb = false;
 
             foreach (ItemType item in activePlayer.Items)
             {
                 if (item == ItemType.HealthPotion)
                     hasHealthPotion = true;
+                if (item == ItemType.Bomb)
+                    hasBomb = true;
             }
 
             // Check if health potion can/should be used
@@ -298,6 +306,19 @@ namespace TheFinalBattleComponents
                 {
                     return new HealthPotion(activePlayer, activeChar, damagedChar); 
                 }
+            }
+            if (hasBomb)
+            {
+                // Target enemy party
+                Player targetPlayer;
+                    targetPlayer = activePlayer == game.Player1 ? game.Player2 : game.Player1;
+
+                // Pick target from party. Returns null if user wants to pick another action
+                Character target = PickTarget(targetPlayer.Party, activePlayer.isHuman);
+                if (target == null)
+                    return null;
+
+                return new Bomb(activePlayer, activeChar, target);
             }
 
             return null;
