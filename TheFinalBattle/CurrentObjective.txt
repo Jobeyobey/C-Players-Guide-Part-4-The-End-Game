@@ -12,22 +12,3 @@ every multiple of 3 and 5. (This adds some continuity from the early part of the
 // Certain attack types do extra damage to certain defense types
 
 [X] More monster types.
-
-[ ] Add attack side effects, which allow an attack to run other logic when an attack happens. Maybe a
-Shadow Octopoid with a grapple attack that has a chance of stealing equipped gear.
-// Current iteration of this on Cannon of Consolas isn't great.
-// Alternative could be to create a Special() method in the Attack IAction, which is called during the DoDamage() method.
-// This Special() method could call a Special() method in weapons, as well?
-
-[ ] Allow characters to taunt their enemies with messages like the Uncoded One saying <<THE
-UNRAVELLING OF ALL THINGS IS INEVITABLE>> and a skeleton saying, “We will repel your
-spineless assault!”
-
-[ ] Allow characters to have temporary effects applied to them. For example, a poison effect that deals
-1 damage per turn for three turns.
-// Would be cool to have poison effect on daggers?
-
-[ ] Craft gear or recruit allies between rounds
-// Can create poison dagger, code a sword with an upgrade etc.
-// Can find allies as you progress
-// Could have an item that summons an ally
