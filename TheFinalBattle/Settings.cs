@@ -38,6 +38,9 @@ namespace TheFinalBattleSettings
         public static int DaggerAccuracy { get; } = 85;
         public static int BowDamage { get; } = 3;
         public static int BowAccuracy { get; } = 50;
+        public static int TomeDamage { get; } = 1;
+        public static int CurseDamage { get; } = 1;
+        public static int TomeAccuracy { get; } = 75;
 
         // Item Settings
         public static int HealthPotionStrength { get; } = 10;

@@ -49,6 +49,7 @@ namespace TheFinalBattleComponents
                 if (!heroWin) break; // If hero does not win, break loop and continue to EndGame
 
                 ConsoleHelpWriteLine("The enemy party has been defeated!", ConsoleColor.Yellow);
+                ClearStatusEffects(this);
 
                 LootEnemyParty(this);
             }
@@ -158,6 +159,7 @@ namespace TheFinalBattleComponents
             IAction? action = null;
 
             ConsoleHelpWriteLine($"It is {activeChar.Name}'s turn...", ConsoleColor.Yellow);
+            CheckStatus(activeChar);
 
             while (action == null)
             {
@@ -174,6 +176,19 @@ namespace TheFinalBattleComponents
             }
 
             action.Execute(this);
+        }
+
+        public void CheckStatus(Character activeChar)
+        {
+            foreach (NegativeStatus status in activeChar.negativeStatuses)
+            {
+                if (status == NegativeStatus.Cursed)
+                {
+                    activeChar.AlterHp(-Settings.CurseDamage);
+                    ConsoleHelpWriteLine($"{activeChar.Name} is cursed! They take {Settings.CurseDamage} damage.", ConsoleColor.Yellow);
+                    ConsoleHelpWriteLine($"{activeChar.Name} has {activeChar.CurrentHp}/{activeChar.MaxHp} HP", ConsoleColor.Gray);
+                }
+            }
         }
     }
 }

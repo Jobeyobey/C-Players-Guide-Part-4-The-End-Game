@@ -85,6 +85,7 @@ namespace TheFinalBattleComponents
             else if (round == 4)
             {
                 // Add monsters here
+                game.Player2.Party.Add(new UncodedFollower("ACOLYTE ONE", new Tome()));
                 game.Player2.Party.Add(new Skeleton("SKELETON ONE", new Dagger()));
                 game.Player2.Party.Add(new Skeleton("SKELETON TWO", new Dagger()));
                 game.Player2.Party.Add(new TheUncodedOne("THE UNCODED ONE", null));
@@ -118,6 +119,15 @@ namespace TheFinalBattleComponents
             // Clear Player2's inventory and gear
             game.Player2.Items.Clear();
             game.Player2.Gear.Clear();
+        }
+
+        public static void ClearStatusEffects(TheFinalBattle game)
+        {
+            foreach (Character character in game.Player1.Party)
+            {
+                ConsoleHelpWriteLine($"The curse on {character.Name} fades.", ConsoleColor.Yellow);
+                character.negativeStatuses.Clear();
+            }
         }
     }
 }

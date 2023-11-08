@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace TheFinalBattleComponents
         public DefenseType Defense { get; set; } = DefenseType.None;
         public Gear? Equipped { get; set; } = null;
         public List<AttackType> attackList = new List<AttackType>(); // List for each character to add their available actions to upon construction
+        public List<NegativeStatus> negativeStatuses = new List<NegativeStatus>();
 
         // Basic constructor
         public Character(Gear gear)
@@ -115,6 +117,21 @@ namespace TheFinalBattleComponents
         }
     }
 
+    public class UncodedFollower : Character
+    {
+        public UncodedFollower(string name, Gear gear) : base(gear)
+        {
+            Name = name;
+            MaxHp = 10;
+            CurrentHp = MaxHp;
+            Equipped = gear;
+            Defense = DefenseType.None;
+
+            // Add actions character can do here
+            attackList.Insert(0, AttackType.Punch);
+        }
+    }
+
     public class TheUncodedOne : Character
     {
         public TheUncodedOne(string name, Gear gear) : base(gear)
@@ -128,4 +145,6 @@ namespace TheFinalBattleComponents
             attackList.Insert(0, AttackType.Unraveling);
         }
     }
+
+    public enum NegativeStatus { None, Cursed }
 }

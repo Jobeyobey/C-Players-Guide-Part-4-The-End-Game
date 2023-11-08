@@ -93,4 +93,48 @@ namespace TheFinalBattleComponents
         }
         public CannonOfConsolas() { }
     }
+
+    public class Tome : Gear
+    {
+        override public string Name { get; init; } = "Tome";
+        override public string AttackName { get; init; } = "Tome";
+        override public int Damage { get; set; } = Settings.TomeDamage;
+        override public int Accuracy { get; init; } = Settings.TomeAccuracy;
+        override public DamageType Type { get; init; } = DamageType.Normal;
+        override public bool HasSpecial { get; init; } = true;
+        override public void Special(Attack attack)
+        {
+            ConsoleHelpWriteLine($"{attack.ActiveChar.Name} attempts to curse {attack.TargetChar.Name}", ConsoleColor.Yellow);
+
+            Random random = new Random();
+            int randomInt = random.Next(100);
+
+            if(randomInt < Accuracy)
+            {
+                bool isCursed = false;
+
+                foreach (NegativeStatus status in attack.TargetChar.negativeStatuses)
+                {
+                    if (status == NegativeStatus.Cursed)
+                        isCursed = true;
+                }
+
+                if (!isCursed)
+                {
+                    attack.TargetChar.negativeStatuses.Add(NegativeStatus.Cursed);
+                    ConsoleHelpWriteLine($"{attack.TargetChar.Name} has been cursed!", ConsoleColor.Yellow);
+                }
+                else
+                {
+                    ConsoleHelpWriteLine($"{attack.TargetChar.Name} is already cursed!", ConsoleColor.Yellow);
+                }
+            }
+            else
+            {
+                ConsoleHelpWriteLine($"{attack.TargetChar.Name} resisted the curse!", ConsoleColor.Yellow);
+            }
+        }
+
+        public Tome() { }
+    }
 }
