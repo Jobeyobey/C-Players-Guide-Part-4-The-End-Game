@@ -329,6 +329,8 @@ namespace TheFinalBattleComponents
                     {
                         ConsoleHelpWriteLine($"{attack.TargetChar.Name}'s Object Sight reduced damage by 2!", ConsoleColor.Gray);
                         attack.Damage -= 2;
+                        if (attack.Damage <= 0)
+                            attack.Damage = 0;
                     }
                     break;
                 case DefenseType.StoneArmour:
@@ -336,6 +338,8 @@ namespace TheFinalBattleComponents
                     {
                         ConsoleHelpWriteLine($"{attack.TargetChar.Name}'s stone armour reduced damage by 1!", ConsoleColor.Gray);
                         attack.Damage -= 1;
+                        if (attack.Damage <= 0)
+                            attack.Damage = 0;
                     }
                     else if (attack.Damage > 0 && attack.Type == DamageType.Energy)
                     {

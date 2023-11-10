@@ -1,14 +1,11 @@
-﻿This is perhaps the most exciting challenge: the one where you get to do whatever you want to the game.
+﻿Depending on the challenges you completed, the game is likely not very balanced anymore. Either the
+heroes or the monsters win all the time. Without changing logic and mechanics, adjust things like potion
+counts, attack strengths and probabilities, the number of battles and monsters they contain to produce
+a version of the game where if you play wisely, you are likely to win, but if you play poorly, you will lose.
 
-[X] More heroes. You could add Mylara and Skorin, whose gear (or standard attack) is the Cannon of
-Consolas, which deals 1 damage most of the time, 2 damage every multiple of 3 or 5, and 5 damage
-every multiple of 3 and 5. (This adds some continuity from the early part of the book!)
+Objectives:
 
-[X] Add more item types. Maybe Simula’s soup is a full heal, restoring HP to its maximum.
-// Bomb that deals damage to multiple enemies
-// Make sure computer can pick it
+[ ] Tweak aspects of the game (no need to write new logic, just change parameters and character counts,
+	etc.) until you have something challenging and fun.
 
-[X] Add offensive attack modifiers.
-// Certain attack types do extra damage to certain defense types
-
-[X] More monster types.
+[ ] Do what you can to ensure that The Uncoded One feels formidable.

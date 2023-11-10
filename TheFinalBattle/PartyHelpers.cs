@@ -35,7 +35,6 @@ namespace TheFinalBattleComponents
 
             // Add party items here
             game.Player1.Items.Add(ItemType.HealthPotion);
-            game.Player1.Items.Add(ItemType.Bomb);
         }
 
         // Depending on current round, make relevant monster party.
@@ -50,6 +49,7 @@ namespace TheFinalBattleComponents
 
                 // Add items here
                 game.Player2.Items.Add(ItemType.HealthPotion);
+                game.Player2.Items.Add(ItemType.Bomb);
             }
 
             // ROUND TWO
@@ -66,8 +66,6 @@ namespace TheFinalBattleComponents
                 game.Player2.Items.Add(ItemType.Bomb);
 
                 // Add gear here
-                game.Player2.Gear.Add(new Dagger());
-                game.Player2.Gear.Add(new Dagger());
             }
 
             // ROUND THREE
@@ -78,7 +76,6 @@ namespace TheFinalBattleComponents
                 game.Player2.Party.Add(new StoneAmarok("STONE AMAROK TWO", null));
 
                 // Add items here
-                game.Player2.Items.Add(ItemType.Bomb);
             }
 
             // ROUND FOUR
@@ -91,6 +88,7 @@ namespace TheFinalBattleComponents
                 game.Player2.Party.Add(new TheUncodedOne("THE UNCODED ONE", null));
 
                 // Add items here
+                game.Player2.Items.Add(ItemType.HealthPotion);
                 game.Player2.Items.Add(ItemType.HealthPotion);
                 game.Player2.Items.Add(ItemType.Bomb);
                 game.Player2.Items.Add(ItemType.Bomb);
@@ -125,8 +123,17 @@ namespace TheFinalBattleComponents
         {
             foreach (Character character in game.Player1.Party)
             {
-                ConsoleHelpWriteLine($"The curse on {character.Name} fades.", ConsoleColor.Yellow);
-                character.negativeStatuses.Clear();
+                if (character.negativeStatuses.Count > 0)
+                {
+                    foreach (NegativeStatus status in character.negativeStatuses)
+                    {
+                        if (status == NegativeStatus.Cursed)
+                        {
+                            ConsoleHelpWriteLine($"The curse on {character.Name} fades.", ConsoleColor.Yellow);
+                        }
+                    }
+                    character.negativeStatuses.Clear();
+                }
             }
         }
     }

@@ -74,7 +74,7 @@ namespace TheFinalBattleComponents
             CannonCharge++;
             if (CannonCharge % 5 == 0 && CannonCharge % 3 == 0)
             {
-                Damage = Settings.CannonOfConsolasDamage * 10;
+                Damage = Settings.CannonOfConsolasDamage * 8;
             }
             else if (CannonCharge % 3 == 0)
             {

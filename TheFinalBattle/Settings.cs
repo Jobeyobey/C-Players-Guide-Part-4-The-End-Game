@@ -23,27 +23,27 @@ namespace TheFinalBattleSettings
         public static int QuickShotDamage { get; } = 3;
         public static int QuickShotAccuracy { get; } = 50;
         public static int CannonOfConsolasDamage { get; } = 1;
-        public static int CannonOfConsolasAccuracy { get; } = 100;
+        public static int CannonOfConsolasAccuracy { get; } = 95;
         public static int BoneCrunchDamage { get; } = 1;
         public static int BoneCrunchAccuracy { get; } = 100;
         public static int BiteDamage { get; } = 1;
         public static int BiteAccuracy { get; } = 100;
-        public static int UnravelingDamage { get; } = 4;
+        public static int UnravelingDamage { get; } = 6;
         public static int UnravelingAccuracy { get; } = 100;
 
         // Gear Attack Settings
         public static int SwordDamage { get; } = 2;
         public static int SwordAccuracy { get; } = 90;
         public static int DaggerDamage { get; } = 1;
-        public static int DaggerAccuracy { get; } = 85;
+        public static int DaggerAccuracy { get; } = 90;
         public static int BowDamage { get; } = 3;
         public static int BowAccuracy { get; } = 50;
         public static int TomeDamage { get; } = 1;
-        public static int CurseDamage { get; } = 1;
-        public static int TomeAccuracy { get; } = 75;
+        public static int CurseDamage { get; } = 2;
+        public static int TomeAccuracy { get; } = 90;
 
         // Item Settings
-        public static int HealthPotionStrength { get; } = 10;
+        public static int HealthPotionStrength { get; } = 8;
         public static int BombDamage { get; } = 4;
 
         // Game Setup

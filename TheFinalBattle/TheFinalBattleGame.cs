@@ -65,7 +65,6 @@ namespace TheFinalBattleComponents
             // Core Round Loop
             while (true)
             {
-                Thread.Sleep(Settings.Delay / 3);
                 Player activePlayer;
                 Character activeChar;
                 int charIndex;
@@ -102,10 +101,9 @@ namespace TheFinalBattleComponents
                     return true; // heroWin == true
                 }
 
-                Player1Turn = !Player1Turn;
-
                 // Increment turn number if this is the end of Player2's turn
                 if (!Player1Turn) turnNumber++;
+                Player1Turn = !Player1Turn;
             }
         }
 
@@ -159,7 +157,10 @@ namespace TheFinalBattleComponents
             IAction? action = null;
 
             ConsoleHelpWriteLine($"It is {activeChar.Name}'s turn...", ConsoleColor.Yellow);
-            CheckStatus(activeChar);
+            if (CheckStatus(activeChar))
+            {
+                return;
+            }
 
             while (action == null)
             {
@@ -178,7 +179,7 @@ namespace TheFinalBattleComponents
             action.Execute(this);
         }
 
-        public void CheckStatus(Character activeChar)
+        public bool CheckStatus(Character activeChar)
         {
             foreach (NegativeStatus status in activeChar.negativeStatuses)
             {
@@ -189,6 +190,11 @@ namespace TheFinalBattleComponents
                     ConsoleHelpWriteLine($"{activeChar.Name} has {activeChar.CurrentHp}/{activeChar.MaxHp} HP", ConsoleColor.Gray);
                 }
             }
+
+            if (activeChar.CurrentHp <= 0)
+                return true;
+            else
+                return false;
         }
     }
 }
