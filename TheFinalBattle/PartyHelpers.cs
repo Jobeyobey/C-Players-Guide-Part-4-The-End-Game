@@ -45,7 +45,6 @@ namespace TheFinalBattleComponents
             {
                 // Add monsters here
                 game.Player2.Party.Add(new Skeleton("SKELETON ONE", new Dagger()));
-                game.Player2.Party.Add(new StoneAmarok("STONE AMAROK ONE", null));
 
                 // Add items here
                 game.Player2.Items.Add(ItemType.HealthPotion);
@@ -76,10 +75,23 @@ namespace TheFinalBattleComponents
                 game.Player2.Party.Add(new StoneAmarok("STONE AMAROK TWO", null));
 
                 // Add items here
+                game.Player2.Items.Add(ItemType.HealthPotion);
             }
 
             // ROUND FOUR
             else if (round == 4)
+            {
+                // Add monsters here
+                game.Player2.Party.Add(new UncodedFollower("ACOLYTE ONE", new Tome()));
+                game.Player2.Party.Add(new Skeleton("SKELETON ONE", null));
+                game.Player2.Party.Add(new Skeleton("SKELETON TWO", null));
+
+                // Add items here
+                game.Player2.Items.Add(ItemType.HealthPotion);
+            }
+
+            // ROUND FIVE
+            else if (round == 5)
             {
                 // Add monsters here
                 game.Player2.Party.Add(new UncodedFollower("ACOLYTE ONE", new Tome()));

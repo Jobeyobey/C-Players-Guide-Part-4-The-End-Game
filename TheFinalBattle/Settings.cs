@@ -12,7 +12,7 @@ namespace TheFinalBattleSettings
     public static class Settings
     {
         // Game Settings
-        public static int NumRounds { get; } = 4;
+        public static int NumRounds { get; } = 5;
         public static int Delay { get; } = 400; // Introduces slight delay between computer actions just to make game easier to read
 
         // Standard Attack Settings

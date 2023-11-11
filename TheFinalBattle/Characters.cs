@@ -69,7 +69,7 @@ namespace TheFinalBattleComponents
             Equipped = gear;
 
             // Add actions character can do here
-            attackList.Insert(0, AttackType.PileOn);
+            attackList.Insert(0, AttackType.Punch);
         }
     }
 

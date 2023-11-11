@@ -5,7 +5,7 @@ a version of the game where if you play wisely, you are likely to win, but if yo
 
 Objectives:
 
-[ ] Tweak aspects of the game (no need to write new logic, just change parameters and character counts,
+[X] Tweak aspects of the game (no need to write new logic, just change parameters and character counts,
 	etc.) until you have something challenging and fun.
 
-[ ] Do what you can to ensure that The Uncoded One feels formidable.
+[X] Do what you can to ensure that The Uncoded One feels formidable.
